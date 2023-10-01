@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Statistics: Data analysis and modelling
 ]
 .subtitle[
-## Week 1
+## Week 1: Statistical models and inference
 ]
 .author[
 ### Maarten Speekenbrink
@@ -72,7 +72,7 @@ A main quantity in model comparison is the likelihood-ratio:
 
 ## Module structure
 
-Blended learning
+The module takes a *blended learning* approach
 
 Online:
 
@@ -96,7 +96,7 @@ Deadline to be confirmed (may be **8 January 2024**).
 
 In addition to the write-up, you will also be asked to submit your analyses code (R script). This is not marked but can be helpful in case things are unclear to markers.
 
-It is recommended to use R Markdown for the report and to start practicing R Markdown with the weekly exercises. 
+It is recommended to use R Markdown for the report and to start practising R Markdown in the weekly exercises. 
 
 ---
 
@@ -117,7 +117,7 @@ It is recommended to use R Markdown for the report and to start practicing R Mar
 
 * Read the chapters of the SDAM and R companion books listed on Moodle
 * Read the exercise sheet and complete the "Preparatory bits and pieces"
-* Install `R` and `R-studio` on your laptop.
+* Install `R` and `R-studio` on your laptop, and the `sdamr` package.
 
 ---
 
@@ -134,11 +134,25 @@ It is recommended to use R Markdown for the report and to start practicing R Mar
 
 Different types of data
 
+* Favourite character from Star Wars (Luke Skywalker, Princess Leia Organa, Han Solo, Yoda, Darth Vader, the Emperor, etc)
 * Prediction of the outcome of a football match (correct or incorrect)
 * "I like statistics" (strongly disagree, disagree, neither agree nor disagree, agree, strongly agree)
 * "I love statistics" (place marker on a line)
 * Response-time in a motion detection task
 
+--
+
+Measurement scales:
+
+*Categorical*
+
+* Nominal
+* Ordinal
+
+*Metric*
+
+* Interval
+* Ratio
 ---
 
 ## What is the height of Mount Everest?
@@ -146,15 +160,30 @@ Different types of data
 &lt;img src="lecture1_files/figure-html/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 `\(n=109\)` Polish participants, provided with an *anchor* of 610 meters.
+
+---
+
+## The Data Generating Process
+
+* Participants were recruited in-person (Polish university) or online (visitors to Polish website). Number of participants likely based on opportunity.
+* Among other questions, participants were asked "Mount Everest is taller than 610 meters. How tall is Mount Everest?"
+
+The **Data Generating Process** refers to how this data was collected, as well as *all possible replications* of the study.
+
+--
+
+The set of all possible replications of the study defines the **population** from which the current **sample** was drawn. The scientific interest is not in the current sample, but in the population: We want to **generalize** from sample to population.
+
+
 ---
 
 ## Statistical models
 
-A statistical model defines a probability distribution over the data.
+A statistical model defines a **probability distribution** over possible data.
 
 Statistical models aim to capture important aspects of the **Data Generating Process**.
 
-Most models consist of a **structural** (predictable) part, and a **random** (unpredicable) part.
+Most models consist of a **structural** (predictable) part, and a **random** (unpredictable) part.
 
 Models contain **parameters** which are assumed known or otherwise can be estimated.
 
@@ -172,7 +201,7 @@ Two parameters:
 
 ---
 
-## Unbiased judgements?
+## Unbiased but noisy judgements?
 
 &lt;img src="lecture1_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
@@ -182,13 +211,13 @@ Two parameters:
 
 ---
 
-## What is a good model?
+## A good model?
 
 &lt;img src="lecture1_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-## What is a good model?
+## A good model?
 
 &lt;img src="lecture1_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
@@ -200,7 +229,7 @@ Assuming independence, the **likelihood** is
 
 `$$p(\text{DATA}|\text{MODEL}) = \prod_{i=1}^n p(Y_i|\underline{\mu} = 8848, \sigma)$$`
 
-**Maximum likelihood estimation**: Find value `\(\hat{\sigma}\)` so that `\(p(\text{DATA}|\text{MODEL})\)` is highest
+**Maximum likelihood estimation**: Find the value of `\(\sigma\)` such that `\(p(\text{DATA}|\text{MODEL})\)` reaches its maximum.
 
 --
 
@@ -211,13 +240,28 @@ Assuming independence, the **likelihood** is
 ## Maximum likelihood MODEL R
 
 &lt;img src="lecture1_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+---
+
+## Why maximum likelihood?
+
+When estimating a parameter from noisy data, it is unlikely we will find the true value *exactly*. 
+
+Good estimators are
+
+* **Unbiased**: on average (over all possible datasets) estimates are equal to the true parameter value
+* **Consistent**: with larger datasets, estimates are less variable (more reliable)
+* **Efficient**: variability is at the lowest bound (most reliable)
+
+--
+
+Maximum likelihood estimators are consistent and (asymptotically) efficient. They are not always unbiased, but the bias decreases with larger datasets. Maximum likelihood estimates are (asymptotically) Normal-distributed. 
 
 ---
 
 ## Maximum likelihood estimation MODEL G
 
 &lt;img src="lecture1_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
-Two parameters
+Two estimated parameters
 
 * `\(\hat{\mu} = 6312.19\)`
 * `\(\hat{\sigma} = 3135.74\)`
@@ -235,7 +279,7 @@ Two parameters
 Two models
 
 * MODEL R: `\(\mu = 8848\)`, `\(\sigma\)` unknown but can be estimated
-* MODEl G: both `\(\mu\)` and `\(\sigma\)` unknown but can be estimated
+* MODEL G: both `\(\mu\)` and `\(\sigma\)` unknown but can be estimated
 
 MODEL R is more specific and contains more information.
 
@@ -279,12 +323,12 @@ Is the difference *sufficient* to reject MODEL R?
 
 ## Distribution of the likelihood ratio
 
-If MODEL R were true, we can simulate (noisy) datasets of `\(n=109\)` and for each compute the likeihood ratio value
+Using MODEL R, we can simulate (noisy) datasets of `\(n=109\)` and for each compute the value of the likelihood ratio for estimated MODEL R and MODEL G based on that data. This provides a distribution of likelihood ratio values under the assumption that MODEL R is true.
 
 &lt;img src="lecture1_files/figure-html/unnamed-chunk-12-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 --
 
-A value of .000000000001 is not to be expected!
+A value of .000000000001 is very unlikely!
 
 ---
 
@@ -293,50 +337,64 @@ A value of .000000000001 is not to be expected!
 &lt;img src="lecture1_files/figure-html/unnamed-chunk-13-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 The `\(p\)`-value is the probability of obtaining a particular *or more extreme* value for a given test statistic (e.g. likelihood-ratio), assuming MODEL R is true.
 
---
+---
+
+## `\(p\)`-value and significance
+
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-14-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+The `\(p\)`-value is the probability of obtaining a particular *or more extreme* value for a given test statistic (e.g. likelihood-ratio), assuming MODEL R is true.
 
 For a significance level `\(\alpha\)` (usually `\(\alpha = .05\)`), we can determine a *critical value* (the value of the statistic with `\(p\)`-value = `\(\alpha\)`). Rejecting models which exceed the critical value will limit the probability of Type 1 errors to at most `\(\alpha\)`.
+
 
 ---
 
 ## t-test
 
-Rather than deriving the distribution of the likelihood ratio under the assumption that MODEL R is true, it is easier to work with a related statistic
+Deriving the distribution of the likelihood ratio under the assumption that MODEL R is true is generally difficult. It can be easier to work with a related statistic, in this case
 
-`$$t = \frac{\overline{Y} - \underline{\mu}}{\hat{\sigma}}$$`
+`$$t = \frac{\overline{Y} - \underline{\mu}}{\hat{\sigma}/\sqrt{n}}$$`
 Assuming MODEL R is true, this statistic follows a t-distribution with *degrees of freedom* `\(\text{df} = n-1\)`.
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-14-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-15-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Is there a better model?
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-15-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-16-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 A *mixture model*:
 
-* With probability `\(p = 0.523\)` affected by the anchor `\((\hat{\mu} = 1518, \hat{\sigma} = 715)\)`
-* With probability `\(p = 0.232\)` estimate "average" mountain `\((\hat{\mu} = 5994, \hat{\sigma} = 2480)\)`
-* With probability `\(p = 0.245\)` (roughly) know correct answer `\((\hat{\mu} = 8583, \hat{\sigma} = 361)\)`
+* With probability `\(p = 0.232\)` affected by the anchor `\((\hat{\mu} = 1518, \hat{\sigma} = 715)\)`
+* With probability `\(p = 0.245\)` estimate "average" mountain `\((\hat{\mu} = 5994, \hat{\sigma} = 2480)\)`
+* With probability `\(p = 0.523\)` (roughly) know correct answer `\((\hat{\mu} = 8583, \hat{\sigma} = 361)\)`
 
 ---
 
 ## Does it matter?
 
-It depends...
+That depends...
 
-1. For a model of the Data Generating Process: Yes!
-2. To make inferences about the mean judgement: Probably not...
+1. As a more accurate model of the Data Generating Process: Yes!
+2. To make inferences about the average judgement: Probably not...
 
 --
 
+.pull-left[
 The **Central Limit Theorem**:
 
 The distribution of the sum of n independent variables approaches the Normal distribution as the number of variables approaches infinity `\((n \rightarrow \infty)\)`.
+]
+
+.pull-right[
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-17-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
 
 --
 
 In statistical tests, assumptions such as a Normal distribution matter only for the distribution of the test statistic.
+
 
 ---
 
@@ -351,6 +409,14 @@ In statistical tests, assumptions such as a Normal distribution matter only for 
 `$$\frac{p(\text{DATA}|\text{MODEL R})}{p(\text{DATA}|\text{MODEL G})}$$`
 * **Null-hypothesis significance testing** controls the probability of **Type 1 errors**. The probability of **Type 2 errors** is usually unknown. It consists of determining the probability of a value or more extreme one under the assumption that the null-hypothesis (MODEL R) is true. This is the `\(p\)`-value.
 
+---
+
+## Possible points for discussion
+
+* How can statistics help us learn about the human mind and behaviour?
+* Are statistical models ever "true"?
+* Why is the conventional significance level set at `\(\alpha = .05\)`?
+* Why should we care about the Data Generating Process?
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
