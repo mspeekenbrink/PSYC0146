@@ -351,13 +351,6 @@ Moderation means that the slope of one predictor depends on the value of another
 
 ## Moderation
 
-Moderation is "symmetric" so the relation of the other predictor is moderated as well
-
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" /&gt;
----
-
-## Moderation
-
 The model with moderation is
 `$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \beta_3 \times (X_{1} \times X_{2})_i + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0, \sigma_\epsilon)$$`
 
@@ -369,6 +362,15 @@ For a particular value of `\(X_1\)` (e.g. `\(X_1 = 3\)`), we get
 Similarly, for e.g. `\(X_2 = 5\)`, we get
 `$$\begin{aligned} Y_i &amp;= \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times 5 + \beta_3 \times (X_1 \times 5)_i \\
 &amp;= (\beta_0 + \beta_2 \times 5) + (\beta_1 + \beta_3 \times 5) \times X_{1,i} \end{aligned}$$`
+
+---
+
+## Moderation
+
+Moderation is "symmetric" so the relation of the other predictor is moderated as well
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
 ---
 
 ## Moderation
