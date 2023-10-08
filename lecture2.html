@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Statistics: Data analysis and modelling</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Maarten Speekenbrink" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="mycss.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Statistics: Data analysis and modelling
+]
+.subtitle[
+## Week 2 highlights: Regression and moderation (GLM 1)
+]
+.author[
+### Maarten Speekenbrink
+]
+
+---
+
+
+
+
+
+
+
+
+## The General Linear Model (GLM)
+
+The General Linear Model has the form
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \ldots + \beta_m \times X_{m,i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+--
+
+`\(Y\)` is the **dependent variable**
+
+`\(X_j\)` is a **predictor** or **independent variable**
+
+`\(\beta_0\)` is called the **intercept**
+
+`\(\beta_j\)` `\((j &gt; 0)\)` is called a **slope**
+
+`\(\epsilon_i\)` is called the **error** or **residual**
+
+---
+
+## Simple regression
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Simple regression
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Simple regression as a statistical model
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+The **conditional mean** of `\(Y\)`:
+
+`$$\mu_{Y|X_i} = \beta_0 + \beta_1 \times X_i$$` 
+
+`$$Y_i = \mu_{Y|X_i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Inference in the simple regression model
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+Does `\(X\)` have an effect on `\(Y\)`? If not, then 
+
+`$$\begin{aligned} Y_i &amp;= \beta_0 + 0 \times X_{i} + \epsilon_i &amp;&amp; \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon) \\ &amp;= \beta_0 + \epsilon_i &amp;&amp; \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon) \end{aligned}$$`
+would be the true model. We can test this by model comparison
+
+* __MODEL R__: `\(Y_i = \beta_0 + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)\)` 
+* __MODEL G__: `\(Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)\)`
+
+--
+
+The likelihood ratio `\(\frac{p(\text{DATA}|\text{MODEL R})}{p(\text{DATA}|\text{MODEL G})}\)`
+of _any_ nested GLMs can be shown to be a function of
+
+`$$F = \frac{\frac{\text{SSE}(R) - \text{SSE}(G)}{\text{npar}(G) - \text{npar}(R)}}{\frac{\text{SSE}(G)}{n - \text{npar}(G)}}$$`
+with `\(\text{SSE}(M) = \sum_{i=1}^n (Y_i - \hat{Y}_{M,i})^2\)`
+
+---
+
+## `\(F\)` statistic and distribution
+
+`$$F = \frac{\frac{\text{SSE}(R) - \text{SSE}(G)}{\text{npar}(G) - \text{npar}(R)}}{\frac{\text{SSE}(G)}{n - \text{npar}(G)}}  \quad \quad \quad F \sim \mathbf{F}(\text{npar}(G) - \text{npar}(R), n - \text{npar}(G))$$`
+
+&lt;img src="lecture2_files/figure-html/f-distribution-plot-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## `\(t\)`-statistic and distribution
+
+
+
+`\begin{equation}
+t = \frac{\hat{\beta}_j}{\text{SE}(\hat{\beta}_j)} \quad \quad \quad t \sim \mathbf{T}(n-2)
+\end{equation}`
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Example
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Example
+
+
+```r
+library(sdamr)
+data("speeddate")
+mod &lt;- lm(other_like ~ other_attr, data=speeddate)
+summary(mod)
+```
+
+```
+
+Call:
+lm(formula = other_like ~ other_attr, data = speeddate)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.2637 -0.7071  0.0146  0.7363  7.2104 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  2.15049    0.11964   17.98   &lt;2e-16 ***
+other_attr   0.63915    0.01814   35.23   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.368 on 1529 degrees of freedom
+  (31 observations deleted due to missingness)
+Multiple R-squared:  0.4481,	Adjusted R-squared:  0.4477 
+F-statistic:  1241 on 1 and 1529 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+## Example
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Multiple regression
+
+
+```r
+data("speeddate")
+mod2 &lt;- lm(other_like ~ other_attr + other_intel, data=speeddate)
+summary(mod2)
+```
+
+```
+
+Call:
+lm(formula = other_like ~ other_attr + other_intel, data = speeddate)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.8825 -0.7194  0.0894  0.7258  6.4129 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -0.07328    0.17369  -0.422    0.673    
+other_attr   0.52673    0.01791  29.410   &lt;2e-16 ***
+other_intel  0.39171    0.02324  16.852   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.249 on 1506 degrees of freedom
+  (53 observations deleted due to missingness)
+Multiple R-squared:  0.5345,	Adjusted R-squared:  0.5339 
+F-statistic: 864.6 on 2 and 1506 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+
+```r
+dat &lt;- speeddate |&gt;
+  dplyr::select(other_like, other_attr, other_intel) |&gt;
+  tidyr::drop_na()
+mod1 &lt;- lm(other_like ~ other_attr, data=dat)
+mod2 &lt;- lm(other_like ~ other_attr + other_intel, data=dat)
+summary(mod1)
+```
+
+```
+
+Call:
+lm(formula = other_like ~ other_attr, data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.2705 -0.7293  0.0001  0.7295  7.1766 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  2.18812    0.12017   18.21   &lt;2e-16 ***
+other_attr   0.63530    0.01821   34.88   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.362 on 1507 degrees of freedom
+Multiple R-squared:  0.4467,	Adjusted R-squared:  0.4464 
+F-statistic:  1217 on 1 and 1507 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+
+```r
+summary(mod2)
+```
+
+```
+
+Call:
+lm(formula = other_like ~ other_attr + other_intel, data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.8825 -0.7194  0.0894  0.7258  6.4129 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -0.07328    0.17369  -0.422    0.673    
+other_attr   0.52673    0.01791  29.410   &lt;2e-16 ***
+other_intel  0.39171    0.02324  16.852   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.249 on 1506 degrees of freedom
+Multiple R-squared:  0.5345,	Adjusted R-squared:  0.5339 
+F-statistic: 864.6 on 2 and 1506 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+Model comparison with the `\(F\)` test, testing null-hypothesis `\(\beta_\texttt{intel} = 0\)`
+
+
+```r
+anova(mod1, mod2)
+```
+
+```
+Analysis of Variance Table
+
+Model 1: other_like ~ other_attr
+Model 2: other_like ~ other_attr + other_intel
+  Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+1   1507 2793.9                                  
+2   1506 2350.6  1    443.25 283.98 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+## Assumptions
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \ldots + \beta_m \times X_{m,i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+1. __Normality__: the errors `\(\epsilon_i\)` are Normal-distributed
+2. __Unbiasedness__: the mean of `\(\epsilon_i\)` is 0.
+3. __Homoscedasticity__: the errors `\(\epsilon_i\)` have a constant variance `\(\sigma^2_\epsilon\)`
+4. __Independence__: any error term `\(\epsilon_i\)` is independent of any other `\(\epsilon_j\)` (for all `\(i\)` and `\(j \neq i\)`).
+
+
+---
+
+## Predicted vs residual plot
+
+
+```r
+data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
+  ggplot(aes(x=predicted, y=residual)) + geom_point() + geom_hline(yintercept=0, lty=3)
+```
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-14-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Histogram of residuals
+
+
+```r
+data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
+  ggplot(aes(x=residual)) + geom_histogram()
+```
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-15-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## QQ plot
+
+
+```r
+data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
+  ggplot(aes(sample=residual)) + geom_qq() + stat_qq_line()
+```
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-16-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Moderation
+
+Moderation means that the slope of one predictor depends on the value of another predictor
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-17-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Moderation
+
+Moderation means that the slope of one predictor depends on the value of another predictor
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-18-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Moderation
+
+Moderation is "symmetric" so the relation of the other predictor is moderated as well
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+---
+
+## Moderation
+
+The model with moderation is
+`$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \beta_3 \times (X_{1} \times X_{2})_i + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0, \sigma_\epsilon)$$`
+
+For a particular value of `\(X_1\)` (e.g. `\(X_1 = 3\)`), we get
+
+`$$\begin{aligned} Y_i &amp;= \beta_0 + \beta_1 \times 3 + \beta_2 \times X_{2,i} + \beta_3 \times (3 \times X_{2})_i \\
+&amp;= (\beta_0 + \beta_1 \times 3) + (\beta_2 + \beta_3 \times 3) \times X_{2,i} \end{aligned}$$`
+
+Similarly, for e.g. `\(X_2 = 5\)`, we get
+`$$\begin{aligned} Y_i &amp;= \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times 5 + \beta_3 \times (X_1 \times 5)_i \\
+&amp;= (\beta_0 + \beta_2 \times 5) + (\beta_1 + \beta_3 \times 5) \times X_{1,i} \end{aligned}$$`
+---
+
+## Moderation
+
+
+```
+
+Call:
+lm(formula = other_like ~ other_attr * other_intel, data = speeddate)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.9241 -0.7147  0.0759  0.7249  6.3658 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            -0.791311   0.446842  -1.771   0.0768 .  
+other_attr              0.657284   0.076975   8.539  &lt; 2e-16 ***
+other_intel             0.488173   0.059996   8.137 8.42e-16 ***
+other_attr:other_intel -0.017145   0.009832  -1.744   0.0814 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.248 on 1505 degrees of freedom
+  (53 observations deleted due to missingness)
+Multiple R-squared:  0.5354,	Adjusted R-squared:  0.5345 
+F-statistic: 578.2 on 3 and 1505 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+## Centering
+
+In the model
+`$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \beta_3 \times (X_{1} \times X_{2})_i + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0, \sigma_\epsilon)$$`
+
+* the slope `\(\beta_1\)` is the slope of `\(X_1\)` on `\(Y\)` when `\(X_2 = 0\)`
+* the slope `\(\beta_2\)` is the slope of `\(X_2\)` on `\(Y\)` when `\(X_1 = 0\)`
+
+--
+
+We may rather let these parameters represent the slopes for an *average value* of `\(X_j\)`
+
+This can be obtained by **centering** the predictors:
+
+`$$X'_{j,i} = X_{j,i} - \overline{X}_j$$`
+After centering, `\(X'_{j,i} = 0\)` when `\(X_{j,i} = \overline{X}_j\)`
+
+---
+
+## Centering
+
+
+```
+
+Call:
+lm(formula = other_like ~ center(other_attr) * center(other_intel), 
+    data = speeddate)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.9241 -0.7147  0.0759  0.7249  6.3658 
+
+Coefficients:
+                                        Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)                             6.213392   0.033692 184.417   &lt;2e-16
+center(other_attr)                      0.528357   0.017922  29.480   &lt;2e-16
+center(other_intel)                     0.379998   0.024180  15.715   &lt;2e-16
+center(other_attr):center(other_intel) -0.017145   0.009832  -1.744   0.0814
+                                          
+(Intercept)                            ***
+center(other_attr)                     ***
+center(other_intel)                    ***
+center(other_attr):center(other_intel) .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.248 on 1505 degrees of freedom
+  (53 observations deleted due to missingness)
+Multiple R-squared:  0.5354,	Adjusted R-squared:  0.5345 
+F-statistic: 578.2 on 3 and 1505 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+As a whole, centering does not affect predictive quality of models
+
+```r
+anova(mod3, mod3a)
+```
+
+```
+Analysis of Variance Table
+
+Model 1: other_like ~ other_attr * other_intel
+Model 2: other_like ~ center(other_attr) * center(other_intel)
+  Res.Df    RSS Df   Sum of Sq F Pr(&gt;F)
+1   1505 2345.9                        
+2   1505 2345.9  0 -4.5475e-12         
+```
+
+Model comparison can be used to test multiple parameters simultaneously:
+
+
+```r
+anova(mod1, mod3)
+```
+
+```
+Analysis of Variance Table
+
+Model 1: other_like ~ other_attr
+Model 2: other_like ~ other_attr * other_intel
+  Res.Df    RSS Df Sum of Sq     F    Pr(&gt;F)    
+1   1507 2793.9                                 
+2   1505 2345.9  2    447.99 143.7 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+---
+
+## Other considerations
+
+* Maximum likelihood estimates of the parameters `\(\beta_j\)` are identical to so-called **least-squares** estimates.
+* Nonlinear relations can be captured in the linear model by **polynomial regression**, e.g. `$$Y_i = \beta_0 + \beta_1 \times X_{i} + \beta_2 \times (X^2)_i + \beta_3 \times (X^3)_i + \ldots$$`
+* Correlation between predictors, called **multicollinearity**, may lead to issues in hypothesis testing.
+* **Outliers** may strongly bias the results!
+
+---
+
+## Possible points for discussion
+
+* Are statistical models ever "true"?
+* Why use *linear* models?
+* How do we know whether the assumptions of the model are true?
+* Is it possible for one predictor to moderate the effect of another, but not vice versa?
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
