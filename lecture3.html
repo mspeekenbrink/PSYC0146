@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Statistics: Data analysis and modelling</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Maarten Speekenbrink" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="mycss.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Statistics: Data analysis and modelling
+]
+.subtitle[
+## Week 3 highlights: ANOVA (GLM 2)
+]
+.author[
+### Maarten Speekenbrink
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+
+## The General Linear Model (GLM)
+
+The General Linear Model has the form
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \ldots + \beta_m \times X_{m,i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+`\(Y\)` is the **dependent variable**
+
+`\(X_j\)` is a **predictor** or **independent variable**
+
+`\(\beta_0\)` is called the **intercept**
+
+`\(\beta_j\)` `\((j &gt; 0)\)` is called a **slope**
+
+`\(\epsilon_i\)` is called the **error** or **residual**
+
+--
+
+**Note**: Any error in the measurement of predictors `\(X\)` is not taken into account.
+
+---
+
+## The General Linear Model (GLM)
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \ldots + \beta_m \times X_{m,i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+The predictors `\(X_j\)` can be whatever you like:
+
+* Measured variables
+* Centered variables
+* Transformations of measured variables
+  * `\(\log(X)\)`, `\(\sqrt{X}\)`, `\(\exp{X}\)`, `\(\ldots\)`
+  * `\(X^2\)`, `\(X^3\)`, `\(\ldots\)` (polynomial regression)
+  
+--
+* **Codes for categorical variables**
+
+---
+
+## Example data
+
+Gilder &amp; Heerey (2018) assigned `\(n=400\)` students to:
+- high-power (PH) or low-power (PL) prime
+- experimenter who believed they received high-power (EH) or low-power (EL) prime
+
+Participants performed a reaction time task either approaching or avoiding stimuli.
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Contrast coding
+
+A way to construct metric variables `\(X\)` that allow you to include categorical variables into the GLM:
+
+* Dummy coding
+* Effect coding
+* Helmert coding
+* `\(\ldots\)`
+
+---
+
+## Oneway ANOVA
+
+
+```r
+library(sdamr)
+data("expBelief")
+dat &lt;- expBelief
+dat$condition &lt;- interaction(dat$experimenterBelief, dat$primeCond)
+```
+
+---
+
+## Dummy coding
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \ldots + \beta_m \times X_{m,i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+* The intercept `\(\beta_0\)` equals the mean in the **reference** group: `\(\beta_0 = \mu_1\)`.
+* Each slope `\(\beta_j\)` represents the difference between the mean of a group from the mean of the reference group: `\(\beta_j = \mu_j - \mu_1\)`.
+
+
+
+```r
+contrasts(dat$condition) &lt;- contr.treatment(4)
+contrasts(dat$condition)
+```
+
+```
+      2 3 4
+H.HPP 0 0 0
+L.HPP 1 0 0
+H.LPP 0 1 0
+L.LPP 0 0 1
+```
+
+---
+
+## Dummy coding
+
+
+```r
+mod &lt;- lm(ApproachAdvantage ~ condition, data=dat)
+summary(mod)
+```
+
+```
+
+Call:
+lm(formula = ApproachAdvantage ~ condition, data = dat)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-556.7 -176.3   10.6  169.8  605.6 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    82.12      21.34   3.849 0.000138 ***
+condition2   -109.33      30.25  -3.614 0.000340 ***
+condition3    -30.79      30.25  -1.018 0.309265    
+condition4   -102.49      30.32  -3.380 0.000798 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 214.4 on 396 degrees of freedom
+Multiple R-squared:  0.04565,	Adjusted R-squared:  0.03842 
+F-statistic: 6.314 on 3 and 396 DF,  p-value: 0.0003425
+```
+
+---
+
+## Dummy coding
+
+
+```r
+car::Anova(mod, type=3)
+```
+
+```
+Anova Table (Type III tests)
+
+Response: ApproachAdvantage
+              Sum Sq  Df F value    Pr(&gt;F)    
+(Intercept)   681062   1  14.814 0.0001383 ***
+condition     870858   3   6.314 0.0003425 ***
+Residuals   18206049 396                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+## Effect coding
+
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \ldots + \beta_m \times X_{m,i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+* The intercept `\(\beta_0\)` equals the grand mean (mean of means): `\(\beta_0 = \mu_\cdot = \frac{\mu_1 + \mu_2 + \ldots + \mu_k}{k}\)`.
+* Each slope `\(\beta_j\)` represents the difference between the mean of a group from the grand mean: `\(\beta_j = \mu_j - \mu_\cdot\)`.
+
+
+
+```r
+contrasts(dat$condition) &lt;- contr.sum(4)
+contrasts(dat$condition)
+```
+
+```
+      [,1] [,2] [,3]
+H.HPP    1    0    0
+L.HPP    0    1    0
+H.LPP    0    0    1
+L.LPP   -1   -1   -1
+```
+
+---
+
+## Effect coding
+
+
+```r
+mod &lt;- lm(ApproachAdvantage ~ condition, data=dat)
+summary(mod)
+```
+
+```
+
+Call:
+lm(formula = ApproachAdvantage ~ condition, data = dat)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-556.7 -176.3   10.6  169.8  605.6 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept)    21.46      10.72   2.002  0.04596 * 
+condition1     60.65      18.51   3.277  0.00114 **
+condition2    -48.68      18.57  -2.621  0.00910 **
+condition3     29.86      18.57   1.608  0.10865   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 214.4 on 396 degrees of freedom
+Multiple R-squared:  0.04565,	Adjusted R-squared:  0.03842 
+F-statistic: 6.314 on 3 and 396 DF,  p-value: 0.0003425
+```
+
+---
+
+## Effect coding
+
+
+```r
+car::Anova(mod, type=3)
+```
+
+```
+Anova Table (Type III tests)
+
+Response: ApproachAdvantage
+              Sum Sq  Df F value    Pr(&gt;F)    
+(Intercept)   184285   1  4.0084 0.0459560 *  
+condition     870858   3  6.3140 0.0003425 ***
+Residuals   18206049 396                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+
+## Helmert coding
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \ldots + \beta_m \times X_{m,i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+* The intercept `\(\beta_0\)` equals the grand mean (mean of means): `\(\beta_0 = \mu_\cdot = \frac{\mu_1 + \mu_2 + \ldots + \mu_k}{k}\)`.
+* Each slope `\(\beta_j\)` represents the difference between the mean of a group from the mean of means from earlier groups: `\(\beta_j = \mu_j - \frac{\mu_{j-1} + \mu_{j-2} \ldots \mu_1}{j}\)` (with `\(j&gt;1\)`).
+
+
+```r
+contrasts(dat$condition) &lt;- contr.helmert(4)
+contrasts(dat$condition)
+```
+
+```
+      [,1] [,2] [,3]
+H.HPP   -1   -1   -1
+L.HPP    1   -1   -1
+H.LPP    0    2   -1
+L.LPP    0    0    3
+```
+
+---
+
+## Helmert coding
+
+
+```r
+mod &lt;- lm(ApproachAdvantage ~ condition, data=dat)
+summary(mod)
+```
+
+```
+
+Call:
+lm(formula = ApproachAdvantage ~ condition, data = dat)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-556.7 -176.3   10.6  169.8  605.6 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   21.465     10.721   2.002  0.04596 *  
+condition1   -54.664     15.124  -3.614  0.00034 ***
+condition2     7.956      8.746   0.910  0.36354    
+condition3   -13.945      6.211  -2.245  0.02530 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 214.4 on 396 degrees of freedom
+Multiple R-squared:  0.04565,	Adjusted R-squared:  0.03842 
+F-statistic: 6.314 on 3 and 396 DF,  p-value: 0.0003425
+```
+
+---
+
+## Helmert coding
+
+
+```r
+car::Anova(mod, type=3)
+```
+
+```
+Anova Table (Type III tests)
+
+Response: ApproachAdvantage
+              Sum Sq  Df F value    Pr(&gt;F)    
+(Intercept)   184285   1  4.0084 0.0459560 *  
+condition     870858   3  6.3140 0.0003425 ***
+Residuals   18206049 396                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+## Factorial ANOVA
+
+* Use contrast coding for each factor.
+* Include main effects and interactions (moderation)
+
+
+```r
+dat$experimenterBelief &lt;- factor(dat$experimenterBelief)
+dat$primeCond &lt;- factor(dat$primeCond)
+contrasts(dat$experimenterBelief) &lt;- contr.sum(2)
+contrasts(dat$experimenterBelief)
+```
+
+```
+  [,1]
+H    1
+L   -1
+```
+
+```r
+contrasts(dat$primeCond) &lt;- contr.sum(2)
+contrasts(dat$primeCond)
+```
+
+```
+    [,1]
+HPP    1
+LPP   -1
+```
+
+---
+
+## Factorial ANOVA
+
+
+```
+
+Call:
+lm(formula = ApproachAdvantage ~ experimenterBelief * primeCond, 
+    data = dat)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-556.7 -176.3   10.6  169.8  605.6 
+
+Coefficients:
+                               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                      21.465     10.721   2.002    0.046 *  
+experimenterBelief1              45.255     10.721   4.221 3.02e-05 ***
+primeCond1                        5.988     10.721   0.559    0.577    
+experimenterBelief1:primeCond1    9.409     10.721   0.878    0.381    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 214.4 on 396 degrees of freedom
+Multiple R-squared:  0.04565,	Adjusted R-squared:  0.03842 
+F-statistic: 6.314 on 3 and 396 DF,  p-value: 0.0003425
+```
+
+---
+
+## Factorial ANOVA
+
+
+```
+Anova Table (Type III tests)
+
+Response: ApproachAdvantage
+                               Sum Sq  Df F value    Pr(&gt;F)    
+(Intercept)                    184285   1  4.0084   0.04596 *  
+experimenterBelief             819158   1 17.8175 3.018e-05 ***
+primeCond                       14343   1  0.3120   0.57678    
+experimenterBelief:primeCond    35410   1  0.7702   0.38069    
+Residuals                    18206049 396                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+## Factorial ANOVA
+
+* For factorial designs, effect coding is probably the easiest to interpret.
+* For complex designs, you may need specialized coding. For example, a study investigates learning by people with Parkinson's disease, and matched controls. Both groups are tested twice, with PD patients either on or off their usual medication. The (non-factorial) design has three factors: group (PD, control), time (1, 2), and medication (on, off).
+
+
+|condition      | group| time| medication|
+|:--------------|-----:|----:|----------:|
+|control time 1 |    -1|   -1|          0|
+|control time 2 |    -1|    1|          0|
+|PD time 1 on   |     1|   -1|          1|
+|PD time 1 off  |     1|   -1|         -1|
+|PD time 2 on   |     1|    1|          1|
+|PD time 2 off  |     1|    1|         -1|
+
+---
+
+## Post-hoc testing
+
+In a GLM with only contrast codes, combinations of the parameter estimates reflect group means. You can perform post-hoc tests by contrasting parameter estimates.
+
+
+```r
+emmeans::emmeans(mod, specs = pairwise ~ primeCond:experimenterBelief)
+```
+
+```
+$emmeans
+ primeCond experimenterBelief emmean   SE  df lower.CL upper.CL
+ HPP       H                    82.1 21.3 396    40.17    124.1
+ LPP       H                    51.3 21.4 396     9.17     93.5
+ HPP       L                   -27.2 21.4 396   -69.36     14.9
+ LPP       L                   -20.4 21.5 396   -62.74     22.0
+
+Confidence level used: 0.95 
+
+$contrasts
+ contrast      estimate   SE  df t.ratio p.value
+ HPP H - LPP H    30.79 30.2 396   1.018  0.7390
+ HPP H - HPP L   109.33 30.2 396   3.614  0.0019
+ HPP H - LPP L   102.49 30.3 396   3.380  0.0044
+ LPP H - HPP L    78.53 30.3 396   2.590  0.0487
+ LPP H - LPP L    71.69 30.4 396   2.358  0.0870
+ HPP L - LPP L    -6.84 30.4 396  -0.225  0.9960
+
+P value adjustment: tukey method for comparing a family of 4 estimates 
+```
+
+----
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
