@@ -50,20 +50,19 @@ The General Linear Model has the form
 
 `\(\epsilon_i\)` is called the **error** or **residual**
 
-
 ---
 
 ## ANCOVA
 
 `$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \ldots + \beta_m \times X_{m,i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
 
-* In ANCOVA, the predictors `\(X_j\)` are a mix of contrast-coded and measured variables
+* In ANalysis of COVAriance (ANCOVA), the predictors `\(X_j\)` are a mix of contrast-coded and measured variables
 --
 
 * Measured variables (covariates) are often included to control for pre-existing differences between groups.
 --
 
-* A key consideration is whether the effect of covariates is allowed to differ between groups (interaction between measured and contrast-coded variables).
+* A consideration is whether the effect of covariates is allowed to differ between groups (interaction between measured and contrast-coded variables).
 * __Homogeneity of regression slopes__: Covariates are assumed to have the same effect in all groups.
 --
 
@@ -71,7 +70,73 @@ The General Linear Model has the form
 
 ---
 
-## Homogenous regression slopes
+## Feeling of power
+
+
+
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-4-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## ANOVA
+
+
+```r
+contrasts(dat$primeCond)
+```
+
+```
+   [,1]
+PL -0.5
+PH  0.5
+```
+
+```r
+contrasts(dat$expBelief)
+```
+
+```
+   [,1]
+EL -0.5
+EH  0.5
+```
+
+---
+
+## ANOVA
+
+
+```r
+mod &lt;- lm(powerPOST ~ primeCond*expBelief, data=dat)
+summary(mod)
+```
+
+```
+
+Call:
+lm(formula = powerPOST ~ primeCond * expBelief, data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-42.998 -11.004   0.397  12.253  36.902 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           57.31509    0.77769  73.699   &lt;2e-16 ***
+primeCond1             3.87484    1.55538   2.491   0.0131 *  
+expBelief1            -0.01016    1.55538  -0.007   0.9948    
+primeCond1:expBelief1  3.80235    3.11076   1.222   0.2223    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 15.55 on 396 degrees of freedom
+Multiple R-squared:  0.01915,	Adjusted R-squared:  0.01172 
+F-statistic: 2.577 on 3 and 396 DF,  p-value: 0.05344
+```
+
+---
+
+## ANCOVA with homogenous regression slopes
 
 
 
@@ -109,39 +174,78 @@ F-statistic: 98.58 on 4 and 395 DF,  p-value: &lt; 2.2e-16
 
 ## Homogenous regression slopes
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-5-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-9-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
+## ANCOVA with homogeneous regression slopes
+
+* Covariate(s) allow controlling for pre-existing differences 
+* Effects of contrast codes are *unique* effects which are not accounted for by covariates
+* As usual, intercept is predicted value when all predictors (including covariates) equal 0. Even with sum-to-0 contrasts, this is not the grand mean.
+
+---
+
+Can center covariate
+
+.scrollable[
+
+```
+
+Call:
+lm(formula = powerPOST ~ primeCond * expBelief + center(powerPRE), 
+    data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-41.943  -6.238   1.062   7.518  35.963 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           57.31400    0.55620 103.046  &lt; 2e-16 ***
+primeCond1             4.37877    1.11270   3.935 9.82e-05 ***
+expBelief1            -0.07860    1.11240  -0.071    0.944    
+center(powerPRE)       0.71996    0.03697  19.473  &lt; 2e-16 ***
+primeCond1:expBelief1  1.33357    2.22840   0.598    0.550    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 11.12 on 395 degrees of freedom
+Multiple R-squared:  0.4996,	Adjusted R-squared:  0.4945 
+F-statistic: 98.58 on 4 and 395 DF,  p-value: &lt; 2.2e-16
+```
+]
+---
 
 ## Non-homogeneous regresssion slopes
+
 
 .scrollable[
 
 ```r
-mod2 &lt;- lm(powerPOST ~ primeCond*expBelief*powerPRE, data=dat)
+mod2 &lt;- lm(powerPOST ~ primeCond*expBelief*powerPREc, data=dat)
 summary(mod2)
 ```
 
 ```
 
 Call:
-lm(formula = powerPOST ~ primeCond * expBelief * powerPRE, data = dat)
+lm(formula = powerPOST ~ primeCond * expBelief * powerPREc, data = dat)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
 -40.322  -6.205   1.089   7.323  33.675 
 
 Coefficients:
-                               Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)                    15.94535    2.20193   7.242 2.37e-12 ***
-primeCond1                      6.35803    4.40387   1.444    0.150    
-expBelief1                     -2.76622    4.40387  -0.628    0.530    
-powerPRE                        0.72167    0.03716  19.419  &lt; 2e-16 ***
-primeCond1:expBelief1          -4.10149    8.80774  -0.466    0.642    
-primeCond1:powerPRE            -0.03528    0.07433  -0.475    0.635    
-expBelief1:powerPRE             0.04773    0.07433   0.642    0.521    
-primeCond1:expBelief1:powerPRE  0.09541    0.14865   0.642    0.521    
+                                Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                     57.28624    0.55857 102.559  &lt; 2e-16 ***
+primeCond1                       4.33683    1.11714   3.882 0.000121 ***
+expBelief1                      -0.03189    1.11714  -0.029 0.977243    
+powerPREc                        0.72167    0.03716  19.419  &lt; 2e-16 ***
+primeCond1:expBelief1            1.36434    2.23427   0.611 0.541790    
+primeCond1:powerPREc            -0.03528    0.07433  -0.475 0.635263    
+expBelief1:powerPREc             0.04773    0.07433   0.642 0.521125    
+primeCond1:expBelief1:powerPREc  0.09541    0.14865   0.642 0.521341    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -154,7 +258,7 @@ F-statistic: 56.22 on 7 and 392 DF,  p-value: &lt; 2.2e-16
 
 ## Non-homogeneous regresssion slopes
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-7-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-13-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -169,7 +273,7 @@ anova(mod, mod2)
 Analysis of Variance Table
 
 Model 1: powerPOST ~ primeCond * expBelief + powerPRE
-Model 2: powerPOST ~ primeCond * expBelief * powerPRE
+Model 2: powerPOST ~ primeCond * expBelief * powerPREc
   Res.Df   RSS Df Sum of Sq      F Pr(&gt;F)
 1    395 48876                           
 2    392 48736  3     139.8 0.3748 0.7712
@@ -268,7 +372,7 @@ Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \m
 \beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
 \end{equation}`
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-9-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-15-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -282,7 +386,7 @@ Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \m
 \beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
 \end{equation}`
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-10-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-16-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -296,7 +400,7 @@ Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \m
 \beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
 \end{equation}`
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-17-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -310,23 +414,7 @@ Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \m
 \beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
 \end{equation}`
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-12-1.png" width="90%" style="display: block; margin: auto;" /&gt;
-
-
----
-
-## A random intercepts model
-
-`\begin{equation}
-Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \mathbf{Normal}(0,\sigma_{\epsilon})
-\end{equation}`
-
-`\begin{equation}
-\beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
-\end{equation}`
-
-
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-13-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-18-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -342,13 +430,29 @@ Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \m
 \end{equation}`
 
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-14-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-19-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## A random intercepts model
+
+`\begin{equation}
+Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \mathbf{Normal}(0,\sigma_{\epsilon})
+\end{equation}`
+
+`\begin{equation}
+\beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
+\end{equation}`
+
+
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-20-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Random intercepts and anchoring
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-15-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-21-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -502,7 +606,6 @@ Y_{i,j} &amp;= \beta_0 + \gamma_{0,j} + \epsilon_{i,j} \\
 |swpson   |          7325.29|    73|             7270.62|              2877.71|
 |tilburg  |          3570.77|    48|             3593.86|              -799.05|
 |unipd    |          6702.96|    56|             6647.14|              2254.23|
-
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
