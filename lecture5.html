@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Statistics: Data analysis and modelling</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Maarten Speekenbrink" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="mycss.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Statistics: Data analysis and modelling
+]
+.subtitle[
+## Week 5 highlights: Linear mixed-effects models
+]
+.author[
+### Maarten Speekenbrink
+]
+
+---
+
+
+
+
+
+
+
+
+
+## Linear mixed-effects models
+
+`$$\begin{aligned} Y_{i,k} &amp;= (\beta_0 + \gamma_{0,k}) + (\beta_1 + \gamma_{1,k}) \times X_{1,i,k} + \ldots + (\beta_m + \gamma_{m,k}) \times X_{m,i,k} + \epsilon_{i,k} \\
+&amp; \epsilon_{i,k} \sim \mathbf{Normal}(0,\sigma_{\epsilon}) \\
+&amp; \gamma_{j,k} \sim \mathbf{Normal}(\boldsymbol{0}, \boldsymbol{\Sigma}_\gamma) \end{aligned}$$`
+
+* `\(Y_{i,k}\)` is observation `\(i\)` within **unit of observation** `\(k\)` `\((i=1,\ldots, n_k)\)`
+* `\(\beta_j\)` is a __fixed effect__ `\((j=0, \ldots, m)\)`
+* `\(\gamma_{j,k}\)` is a __random effect__ for parameter `\(j\)` and unit of observation `\(k\)`.
+* `\(\boldsymbol{\Sigma}_\gamma\)` is the __covariance matrix__ of the random effects.
+
+Key intuitions: 
+
+* A linear-mixed effects model allow for a different regression equation for each unit of observation `\(j\)`.
+* We need multiple observations `\(i\)` for each unit of observation `\(j\)` to estimate such a model.
+* Rather than estimating separate models for each subset `\(j\)`, we can estimate a single model over all subsets, assuming the random effects are drawn from a multivariate Normal distribution.
+* The fixed effects `\(\beta_k\)` represent the average effects over units of observation `\(j\)`.
+
+---
+
+## Speed-dating experiment
+
+`\(n=102\)` participants were randomly matched with between 5 and 20 potential partners for a 4 min conversation. They rated how much they liked their speed dating partners, as well as their attractiveness, sincerity, intelligence, fun, and ambition.
+
+
+
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-3-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Speed-dating experiment
+
+`\(n=102\)` participants were randomly matched with between 5 and 20 potential partners for a 4 min conversation. They rated how much they liked their speed dating partners, as well as their attractiveness, sincerity, intelligence, fun, and ambition.
+
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-4-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Linear model
+
+.scrollable[
+
+```r
+mod0 &lt;- lm(like ~ attr*gender + intel*gender + fun*gender +
+             sinc*gender + amb*gender, data=dat)
+summary(mod0)
+```
+
+```
+
+Call:
+lm(formula = like ~ attr * gender + intel * gender + fun * gender + 
+    sinc * gender + amb * gender, data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.7650 -0.6388  0.0567  0.6921  4.8944 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    6.159189   0.031930 192.894  &lt; 2e-16 ***
+attr           0.340174   0.020368  16.702  &lt; 2e-16 ***
+gender1       -0.015645   0.031930  -0.490 0.624222    
+intel          0.144987   0.031937   4.540 6.12e-06 ***
+fun            0.358019   0.022987  15.575  &lt; 2e-16 ***
+sinc           0.130513   0.027762   4.701 2.85e-06 ***
+amb            0.057533   0.024456   2.352 0.018788 *  
+attr:gender1  -0.076551   0.020368  -3.758 0.000178 ***
+gender1:intel  0.026543   0.031937   0.831 0.406054    
+gender1:fun    0.039766   0.022987   1.730 0.083865 .  
+gender1:sinc   0.046410   0.027762   1.672 0.094811 .  
+gender1:amb   -0.001041   0.024456  -0.043 0.966063    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.125 on 1377 degrees of freedom
+  (173 observations deleted due to missingness)
+Multiple R-squared:  0.6321,	Adjusted R-squared:  0.6292 
+F-statistic: 215.1 on 11 and 1377 DF,  p-value: &lt; 2.2e-16
+```
+]
+
+---
+
+## Speed-dating experiment
+
+`\(n=102\)` participants were randomly matched with between 5 and 20 potential partners for a 4 min conversation. They rated how much they liked their speed dating partners, as well as their attractiveness, sincerity, intelligence, fun, and ambition.
+
+Two sources of possible dependency:
+
+* Each participant rates multiple partners
+* Each partner is rated by multiple participants
+
+---
+
+## Crossed random intercepts and slopes
+
+.scrollable[
+
+```
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: like ~ attr * gender + intel * gender + fun * gender + sinc *  
+    gender + amb * gender + (1 + attr + intel + fun + sinc +  
+    amb | iid) + (1 + attr + intel + fun + sinc + amb | pid)
+   Data: data
+
+REML criterion at convergence: 3981.9
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.1257 -0.5445 -0.0016  0.5380  3.2725 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr                         
+ pid      (Intercept) 0.000000 0.00000                               
+          attr        0.017413 0.13196    NaN                        
+          intel       0.027805 0.16675    NaN -0.07                  
+          fun         0.009095 0.09537    NaN -0.23 -0.11            
+          sinc        0.002897 0.05383    NaN -0.25 -0.85 -0.24      
+          amb         0.032409 0.18002    NaN -0.13 -0.88 -0.26  0.99
+ iid      (Intercept) 0.280585 0.52970                               
+          attr        0.050176 0.22400  -0.32                        
+          intel       0.018702 0.13675  -0.27 -0.28                  
+          fun         0.024681 0.15710   0.17 -0.50 -0.02            
+          sinc        0.016227 0.12739   0.17 -0.82  0.67  0.62      
+          amb         0.001247 0.03532  -0.70 -0.35  0.35 -0.15  0.19
+ Residual             0.685581 0.82800                               
+Number of obs: 1389, groups:  pid, 102; iid, 100
+
+Fixed effects:
+                Estimate Std. Error         df t value Pr(&gt;|t|)    
+(Intercept)     6.174507   0.064183  90.023269  96.201  &lt; 2e-16 ***
+attr            0.382933   0.034274 104.065383  11.173  &lt; 2e-16 ***
+gender1         0.044437   0.064183  90.023269   0.692 0.490504    
+intel           0.137029   0.038024 102.144253   3.604 0.000487 ***
+fun             0.340473   0.029717  77.761500  11.457  &lt; 2e-16 ***
+sinc            0.153335   0.029807  94.631263   5.144 1.45e-06 ***
+amb             0.078370   0.030825 102.139522   2.542 0.012510 *  
+attr:gender1   -0.063216   0.034274 104.065382  -1.844 0.067964 .  
+gender1:intel  -0.013631   0.038024 102.144253  -0.358 0.720716    
+gender1:fun    -0.002101   0.029717  77.761500  -0.071 0.943827    
+gender1:sinc    0.069386   0.029807  94.631263   2.328 0.022053 *  
+gender1:amb     0.042789   0.030825 102.139522   1.388 0.168124    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) attr   gendr1 intel  fun    sinc   amb    attr:1 gndr1:n
+attr        -0.211                                                         
+gender1      0.012  0.032                                                  
+intel       -0.088 -0.110 -0.017                                           
+fun          0.036 -0.444 -0.014 -0.053                                    
+sinc         0.067 -0.330  0.043 -0.265  0.073                             
+amb         -0.072 -0.090 -0.075 -0.447 -0.195  0.097                      
+attr:gendr1  0.032  0.029 -0.211 -0.028 -0.013 -0.009  0.011               
+gender1:ntl -0.017 -0.028 -0.088  0.023  0.054 -0.005 -0.056 -0.110        
+gender1:fun -0.014 -0.013  0.036  0.054 -0.002 -0.005 -0.034 -0.444 -0.053 
+gender1:snc  0.043 -0.009  0.067 -0.005 -0.005 -0.013  0.001 -0.330 -0.265 
+gender1:amb -0.075  0.011 -0.072 -0.056 -0.034  0.001  0.064 -0.090 -0.447 
+            gndr1:f gndr1:s
+attr                       
+gender1                    
+intel                      
+fun                        
+sinc                       
+amb                        
+attr:gendr1                
+gender1:ntl                
+gender1:fun                
+gender1:snc  0.073         
+gender1:amb -0.195   0.097 
+optimizer (nloptwrap) convergence code: 0 (OK)
+boundary (singular) fit: see help('isSingular')
+```
+]
+
+---
+
+## (Boundary) singular fit
+
+It is common for complex linear mixed-effects models to result in (almost) **singular fits**. Technically, singularity means that the covariance matrix of the random effects is of less than *full rank*, which indicates that
+* some combinations of the elements of the random-effects vector are perfectly multicollinear
+* in models with a single random effects term, an estimated variance is (near) zero.
+* in models with two random effects terms (e.g. intercept and slope), typically reflected by a perfect (+/- 1) correlation between slope and intercept
+* in models with more than two random effects terms, this can be difficult to spot in the covariance matrix of random effects
+
+--
+
+Singular fits commonly occur in two scenarios:
+* a small number (e.g. &lt;5) of units of observation for the random-effect levels
+* complex random-effects models with many random effects terms
+
+--
+
+Resolving singular fit involve simplifying the model
+* If a variance component is zero, dropping it from the model will have no effect on the estimated quantities.
+* Stepwise elimination of redundant random effects terms based on e.g. likelihood-ratio tests.
+
+---
+
+## Diagnosing singular fit
+
+Multicollinearity for random effects terms can be diagnosed via **Principal Components Analysis** (PCA)
+
+.scrollable[
+
+```r
+lme4::rePCA(mod$full_model)
+```
+
+```
+$pid
+Standard deviations (1, .., p=6):
+[1] 2.944819e-01 1.650213e-01 1.289341e-01 1.197621e-02 6.580377e-04
+[6] 2.374835e-18
+
+Rotation (n x k) = (6 x 6):
+            [,1]          [,2]          [,3]          [,4]          [,5]
+[1,]  0.00000000 -1.110223e-16 -5.551115e-17  1.598114e-16 -6.666607e-16
+[2,] -0.03615081 -9.594490e-01  1.128669e-01 -2.056493e-01 -1.520534e-01
+[3,] -0.65255017  1.327460e-01 -4.322840e-01 -5.496287e-01 -2.599915e-01
+[4,] -0.04498415  2.298948e-01  8.361283e-01 -4.473140e-01 -2.143002e-01
+[5,]  0.21299115  6.813439e-02 -9.625954e-02  2.787333e-01 -9.289964e-01
+[6,]  0.72490178  6.589607e-02 -3.033401e-01 -6.146825e-01  1.803488e-02
+              [,6]
+[1,]  1.000000e+00
+[2,]  2.220446e-16
+[3,] -8.326673e-17
+[4,] -1.665335e-16
+[5,] -7.632783e-16
+[6,] -5.551115e-17
+
+$iid
+Standard deviations (1, .., p=6):
+[1] 0.6506839258 0.3170339448 0.1712765552 0.1341062584 0.0003675832
+[6] 0.0000000000
+
+Rotation (n x k) = (6 x 6):
+            [,1]        [,2]        [,3]        [,4]        [,5]        [,6]
+[1,] -0.98008763 -0.15098074 -0.07538546 -0.07900332 -0.01375742  0.06722563
+[2,]  0.16218091 -0.74276921  0.06277154 -0.60038498 -0.23967413  0.01204917
+[3,]  0.06344120  0.28941324 -0.63573919 -0.54282031  0.35418856  0.29655934
+[4,] -0.06443444  0.37086858  0.75327853 -0.45795271  0.16324521  0.23346621
+[5,] -0.05568802  0.44679512 -0.12666999 -0.31821723 -0.68169995 -0.46395112
+[6,]  0.04298654  0.06759665 -0.05233179  0.16631167 -0.57057312  0.79851799
+
+attr(,"class")
+[1] "prcomplist"
+```
+]
+
+---
+
+## Diagnosing singular fit
+
+
+
+```r
+summary(lme4::rePCA(mod$full_model))
+```
+
+```
+$pid
+Importance of components:
+                         [,1]   [,2]   [,3]    [,4]     [,5]      [,6]
+Standard deviation     0.2945 0.1650 0.1289 0.01198 0.000658 2.375e-18
+Proportion of Variance 0.6634 0.2083 0.1272 0.00110 0.000000 0.000e+00
+Cumulative Proportion  0.6634 0.8717 0.9989 1.00000 1.000000 1.000e+00
+
+$iid
+Importance of components:
+                         [,1]   [,2]    [,3]    [,4]      [,5] [,6]
+Standard deviation     0.6507 0.3170 0.17128 0.13411 0.0003676    0
+Proportion of Variance 0.7412 0.1760 0.05136 0.03148 0.0000000    0
+Cumulative Proportion  0.7412 0.9172 0.96852 1.00000 1.0000000    1
+```
+
+---
+
+## Independent crossed random intercepts and slopes
+
+.scrollable[
+
+```r
+mod2 &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
+                     sinc*gender + amb*gender + 
+                     (1 + attr + intel + fun + sinc + amb||iid) + 
+                     (1 + attr + intel + fun + sinc + amb||pid), 
+                   data=dat)
+summary(mod2)
+```
+
+```
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: like ~ attr * gender + intel * gender + fun * gender + sinc *  
+    gender + amb * gender + (1 + attr + intel + fun + sinc +  
+    amb || iid) + (1 + attr + intel + fun + sinc + amb || pid)
+   Data: data
+
+REML criterion at convergence: 4044.7
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.1068 -0.5228 -0.0033  0.5370  4.3933 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ pid      amb         0.012338 0.11108 
+ pid.1    sinc        0.000000 0.00000 
+ pid.2    fun         0.002717 0.05212 
+ pid.3    intel       0.003459 0.05882 
+ pid.4    attr        0.010553 0.10273 
+ pid.5    (Intercept) 0.007185 0.08476 
+ iid      amb         0.000000 0.00000 
+ iid.1    sinc        0.015868 0.12597 
+ iid.2    fun         0.018249 0.13509 
+ iid.3    intel       0.027825 0.16681 
+ iid.4    attr        0.033656 0.18346 
+ iid.5    (Intercept) 0.270343 0.51995 
+ Residual             0.730754 0.85484 
+Number of obs: 1389, groups:  pid, 102; iid, 100
+
+Fixed effects:
+                Estimate Std. Error         df t value Pr(&gt;|t|)    
+(Intercept)     6.187864   0.064053  95.745101  96.606  &lt; 2e-16 ***
+attr            0.370993   0.030322 118.739126  12.235  &lt; 2e-16 ***
+gender1         0.024112   0.064053  95.745101   0.376 0.707427    
+intel           0.140460   0.036658 110.364585   3.832 0.000212 ***
+fun             0.331120   0.027449 109.180052  12.063  &lt; 2e-16 ***
+sinc            0.156770   0.030389  71.776512   5.159 2.12e-06 ***
+amb             0.097212   0.026950 205.798399   3.607 0.000389 ***
+attr:gender1   -0.065904   0.030322 118.739126  -2.174 0.031728 *  
+gender1:intel   0.003673   0.036658 110.364585   0.100 0.920370    
+gender1:fun    -0.004733   0.027449 109.180052  -0.172 0.863411    
+gender1:sinc    0.069587   0.030389  71.776512   2.290 0.024972 *  
+gender1:amb     0.043821   0.026950 205.798399   1.626 0.105475    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) attr   gendr1 intel  fun    sinc   amb    attr:1 gndr1:n
+attr        -0.019                                                         
+gender1      0.010  0.056                                                  
+intel        0.001 -0.036 -0.023                                           
+fun         -0.050 -0.264 -0.023 -0.037                                    
+sinc         0.001 -0.050  0.036 -0.357 -0.096                             
+amb          0.007 -0.046 -0.088 -0.233 -0.158 -0.046                      
+attr:gendr1  0.056  0.014 -0.019 -0.025 -0.013  0.003  0.012               
+gender1:ntl -0.023 -0.025  0.001  0.040  0.055 -0.027 -0.059 -0.036        
+gender1:fun -0.023 -0.013 -0.050  0.055 -0.004 -0.013 -0.042 -0.264 -0.037 
+gender1:snc  0.036  0.003  0.001 -0.027 -0.013  0.002  0.001 -0.050 -0.357 
+gender1:amb -0.088  0.012  0.007 -0.059 -0.042  0.001  0.078 -0.046 -0.233 
+            gndr1:f gndr1:s
+attr                       
+gender1                    
+intel                      
+fun                        
+sinc                       
+amb                        
+attr:gendr1                
+gender1:ntl                
+gender1:fun                
+gender1:snc -0.096         
+gender1:amb -0.158  -0.046 
+optimizer (nloptwrap) convergence code: 0 (OK)
+boundary (singular) fit: see help('isSingular')
+```
+]
+
+---
+
+
+```r
+summary(lme4::rePCA(mod2$full_model))
+```
+
+```
+$pid
+Importance of components:
+                         [,1]   [,2]    [,3]    [,4]    [,5] [,6]
+Standard deviation     0.1299 0.1202 0.09916 0.06880 0.06097    0
+Proportion of Variance 0.3403 0.2911 0.19819 0.09543 0.07494    0
+Cumulative Proportion  0.3403 0.6314 0.82963 0.92506 1.00000    1
+
+$iid
+Importance of components:
+                         [,1]    [,2]    [,3]    [,4]    [,5] [,6]
+Standard deviation     0.6082 0.21461 0.19513 0.15803 0.14736    0
+Proportion of Variance 0.7388 0.09197 0.07604 0.04987 0.04336    0
+Cumulative Proportion  0.7388 0.83073 0.90677 0.95664 1.00000    1
+```
+
+---
+
+## Removing redundant slopes
+
+.scrollable[
+
+```r
+mod3 &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
+                     sinc*gender + amb*gender + 
+                     (1 + attr + intel + fun + sinc||iid) + 
+                     (1 + attr + intel + fun + amb||pid), 
+                   data=dat)
+summary(mod3)
+```
+
+```
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: like ~ attr * gender + intel * gender + fun * gender + sinc *  
+    gender + amb * gender + (1 + attr + intel + fun + sinc ||  
+    iid) + (1 + attr + intel + fun + amb || pid)
+   Data: data
+
+REML criterion at convergence: 4044.7
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.1067 -0.5228 -0.0034  0.5370  4.3936 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ pid      amb         0.012336 0.11107 
+ pid.1    fun         0.002715 0.05211 
+ pid.2    intel       0.003458 0.05880 
+ pid.3    attr        0.010550 0.10271 
+ pid.4    (Intercept) 0.007196 0.08483 
+ iid      sinc        0.015852 0.12591 
+ iid.1    fun         0.018254 0.13511 
+ iid.2    intel       0.027833 0.16683 
+ iid.3    attr        0.033651 0.18344 
+ iid.4    (Intercept) 0.270330 0.51993 
+ Residual             0.730771 0.85485 
+Number of obs: 1389, groups:  pid, 102; iid, 100
+
+Fixed effects:
+                Estimate Std. Error         df t value Pr(&gt;|t|)    
+(Intercept)     6.187859   0.064052  95.753966  96.607  &lt; 2e-16 ***
+attr            0.370991   0.030321 118.746608  12.236  &lt; 2e-16 ***
+gender1         0.024112   0.064052  95.753966   0.376 0.707421    
+intel           0.140455   0.036659 110.361767   3.831 0.000212 ***
+fun             0.331118   0.027450 109.169666  12.063  &lt; 2e-16 ***
+sinc            0.156778   0.030386  71.759160   5.160 2.11e-06 ***
+amb             0.097210   0.026949 205.820330   3.607 0.000389 ***
+attr:gender1   -0.065902   0.030321 118.746608  -2.174 0.031727 *  
+gender1:intel   0.003672   0.036659 110.361767   0.100 0.920389    
+gender1:fun    -0.004737   0.027450 109.169666  -0.173 0.863300    
+gender1:sinc    0.069592   0.030386  71.759160   2.290 0.024948 *  
+gender1:amb     0.043819   0.026949 205.820330   1.626 0.105481    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) attr   gendr1 intel  fun    sinc   amb    attr:1 gndr1:n
+attr        -0.019                                                         
+gender1      0.010  0.056                                                  
+intel        0.001 -0.036 -0.023                                           
+fun         -0.050 -0.264 -0.023 -0.037                                    
+sinc         0.001 -0.050  0.036 -0.357 -0.096                             
+amb          0.007 -0.046 -0.088 -0.233 -0.158 -0.046                      
+attr:gendr1  0.056  0.014 -0.019 -0.025 -0.013  0.003  0.012               
+gender1:ntl -0.023 -0.025  0.001  0.040  0.055 -0.027 -0.059 -0.036        
+gender1:fun -0.023 -0.013 -0.050  0.055 -0.004 -0.013 -0.042 -0.264 -0.037 
+gender1:snc  0.036  0.003  0.001 -0.027 -0.013  0.002  0.001 -0.050 -0.357 
+gender1:amb -0.088  0.012  0.007 -0.059 -0.042  0.001  0.078 -0.046 -0.233 
+            gndr1:f gndr1:s
+attr                       
+gender1                    
+intel                      
+fun                        
+sinc                       
+amb                        
+attr:gendr1                
+gender1:ntl                
+gender1:fun                
+gender1:snc -0.096         
+gender1:amb -0.158  -0.046 
+```
+]
+
+---
+
+
+```r
+summary(lme4::rePCA(mod3$full_model))
+```
+
+```
+$pid
+Importance of components:
+                         [,1]   [,2]    [,3]    [,4]    [,5]
+Standard deviation     0.1299 0.1202 0.09923 0.06879 0.06095
+Proportion of Variance 0.3403 0.2910 0.19847 0.09538 0.07489
+Cumulative Proportion  0.3403 0.6313 0.82973 0.92511 1.00000
+
+$iid
+Importance of components:
+                         [,1]    [,2]    [,3]    [,4]    [,5]
+Standard deviation     0.6082 0.21459 0.19516 0.15805 0.14728
+Proportion of Variance 0.7388 0.09196 0.07606 0.04989 0.04332
+Cumulative Proportion  0.7388 0.83073 0.90679 0.95668 1.00000
+```
+
+---
+
+
+
+## Fixed and random slopes for sincerity
+
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-10-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Fixed and random slopes for attractiveness
+
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Testing random effects for partner
+
+
+```r
+modr &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
+                     sinc*gender + amb*gender + 
+                     (1 + attr + intel + fun + sinc||iid) + 
+                     (1|pid), 
+                   data=dat)
+
+anova(modr, mod3)
+```
+
+```
+Data: data
+Models:
+modr: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 | pid)
+mod3: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
+     npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)   
+modr   19 4100.1 4199.5 -2031.0   4062.1                        
+mod3   23 4090.7 4211.2 -2022.4   4044.7 17.318  4   0.001676 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+## Testing random effects for participants
+
+
+```r
+modr &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
+                     sinc*gender + amb*gender + 
+                     (1|iid) + 
+                     (1 + attr + intel + fun + amb||pid), 
+                   data=dat)
+
+anova(modr, mod3)
+```
+
+```
+Data: data
+Models:
+modr: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 | iid) + (1 + attr + intel + fun + amb || pid)
+mod3: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
+     npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
+modr   19 4160.1 4259.6 -2061.1   4122.1                         
+mod3   23 4090.7 4211.2 -2022.4   4044.7 77.398  4  6.195e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+## Testing random effects for both
+
+
+```r
+modr &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
+                     sinc*gender + amb*gender + 
+                     (1|iid) + 
+                     (1|pid), 
+                   data=dat)
+
+anova(modr, mod3)
+```
+
+```
+Data: data
+Models:
+modr: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 | iid) + (1 | pid)
+mod3: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
+     npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
+modr   15 4167.4 4246.0 -2068.7   4137.4                         
+mod3   23 4090.7 4211.2 -2022.4   4044.7 92.697  8  &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+## Choosing random-effects structure
+
+* Theory
+* Practical constraints
+* Maximal structure
+* Optimal structure
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
