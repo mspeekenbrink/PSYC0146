@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Statistics: Data analysis and modelling</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="mycss.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Statistics: Data analysis and modelling
+]
+.subtitle[
+## Week 6: Generalized linear models
+]
+
+---
+
+
+
+
+
+
+### Binary dependent variables
+
+&lt;img src="lecture6_files/figure-html/unnamed-chunk-1-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### With a linear model
+
+&lt;img src="lecture6_files/figure-html/unnamed-chunk-2-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+`$$\texttt{correct}_i = -1.377 + 0.015 \times \texttt{IQ}_i$$`
+
+---
+
+### With a linear model
+
+&lt;img src="lecture6_files/figure-html/unnamed-chunk-3-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+`$$\texttt{correct}_i = -1.377 + 0.015 \times \texttt{IQ}_i$$`
+
+---
+
+### Logistic regression
+
+**Key idea**: 
+
+* Transform the predictions of the linear model so they are *always* between 0 and 1.
+* Transformed predictions equal the predicted probability of a correct response  
+`$$p(\texttt{correct}_i) = \frac{\exp \left( \beta_0 + \beta_1 \times \texttt{IQ}_i \right)}{1+\exp \left( \beta_0 + \beta_1 \times \texttt{IQ}_i \right)}$$`
+
+--
+
+&lt;img src="lecture6_files/figure-html/unnamed-chunk-4-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Logistic regression
+
+The function `\(h(\cdot) = \frac{\exp (\beta_0 + \beta_1 \times X)}{1+\exp(\beta_0 + \beta_1 \times X)}\)` is called the **logistic** function.
+
+&lt;img src="lecture6_files/figure-html/unnamed-chunk-5-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### A latent-variable justification
+
+The shape of the logistic function may seem somewhat arbitrary, but can be given a justification in terms of an underlying latent variable
+
+
+.pull-left[
+&lt;img src="lecture6_files/figure-html/unnamed-chunk-6-1.svg" width="95%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="lecture6_files/figure-html/unnamed-chunk-7-1.svg" width="95%" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+(this is actually called Probit regression, but very similar to logistic regression)
+
+---
+
+### Logistic regression
+
+The predictions the linear component in logistic regression are predictions of "log odds":
+
+`$$\log \left( \frac{p(\text{correct})}{1-p(\text{correct})} \right) = \beta_0 + \beta_1 \times \texttt{IQ}_i$$`
+&lt;img src="lecture6_files/figure-html/unnamed-chunk-8-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Assumptions
+
+* The conditional probabilities are a logistic function of the predictors  
+  `$$\theta = p(Y=1|X_1, \ldots, X_m) = \frac{\exp\left(\beta_0 + \beta_1 \times X_1 + \ldots + \beta_m \times X_m\right)}{1 + \exp\left(\beta_0 + \beta_1 \times X_1 + \ldots + \beta_m \times X_m\right)}$$`
+* The dependent variable follows a Bernoulli distribution  
+  `$$p(Y = k) = \theta^k \times (1-\theta)^{1-k}$$`
+  for `\(k=0, 1\)`
+* The observations are independent
+
+---
+
+### Parameter inference
+
+* Similar to General Linear Model:
+  * `\(H_0: \beta_j = 0\)`
+  * `\(H_a: \beta_j \neq 0\)`
+* Wald test (not so good)
+  * Like a `\(t\)`-test for parameters in the GLM
+  * `\(z = \frac{\hat{\beta_j}}{\text{SE}(\beta_j)}\)`
+  * Approximately standard-Normal-distributed
+* Model comparison (better):
+  * Compare MODEL G to MODEL R without predictor of interest (i.e. fixing `\(\beta_j = 0\)`)  
+`$$\begin{aligned}
+G^2 &amp;= -2 \log \left(\text{likelihood-ratio}\right) \\
+&amp;= -2 \log \left( \frac{p(\text{DATA}|\text{MODEL R})}{p(\text{DATA}|\text{MODEL G})} \right) \\ 
+&amp;= -2 \log p(\text{DATA}|\text{MODEL R}) - (-2 \log p(\text{DATA}|\text{MODEL G}))
+\end{aligned}$$`
+  approximately Chi-squared distributed with `\(\text{df} = \text{npar}(G) - \text{npar}(R)\)`
+
+---
+
+### Example: Metacognition
+
+Participants completed `\(n=378\)` trials to judge the orientation of briefly (200 ms) presented stimuli on varying low-contrast displays. They were asked to rate their confidence in the correctness of their judgements.
+
+&lt;img src="lecture6_files/figure-html/metacognition-confidence-correct-plot-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+### Example: Metacognition
+
+Results for Participant 1
+
+
+|                             | `\(\hat{\beta}\)`| `\(\text{SE}(\hat{\beta})\)`|  `\(z\)`| `\(p(\geq \lvert z \rvert)\)`| `\(G^2\)`| `\(\text{df}\)`| `\(p(\geq \lvert G^2 \rvert)\)`|
+|:----------------------------|-------------:|------------------------:|----:|-------------------------:|-----:|-----------:|---------------------------:|
+|Intercept                    |         1.851|                    0.234| 7.92|                    &lt; .001| 94.43|           1|                      &lt; .001|
+|Confidence                   |         0.038|                    0.007| 5.11|                    &lt; .001| 29.82|           1|                      &lt; .001|
+|Contrast                     |         0.503|                    0.108| 4.65|                    &lt; .001| 24.04|           1|                      &lt; .001|
+|Confidence `\(\times\)` Contrast |         0.008|                    0.003| 2.52|                      .012|  6.65|           1|                        .010|
+
+&lt;img src="lecture6_files/figure-html/metacognition-data-and-logistic-fit-plot-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Overall model fit
+
+* To test whether the model fits well, MODEL G can be compared to a **saturated** MODEL S, which predicts the data *perfectly*.
+* A saturated model uses up to `\(n\)` parameters to model `\(n\)` observations
+* The likelihood ratio of the comparison is called the **residual deviance**
+`$$D_R = -2 \log \frac{p(\text{DATA}|\text{MODEL G})}{p(\text{DATA}|\text{MODEL S})}$$`
+* Under the null-hypothesis that MODEL G is as good as MODEL S, `\(D_R\)` is approximately Chi-squared distributed with `\(\text{df} = \text{npar}(S) - \text{npar}(G) = n - \text{npar}(G)\)`
+
+--
+
+The result for the logistic regression model for Participant 1 is `\(D_R = 273.664\)`, `\(\text{df} = 378 - 4 = 374\)`, `\(p = 1.00\)`.
+
+
+---
+
+### Generalized linear models
+
+* The ideas and techniques of logistic regression can be generalized to allow modelling of a wide-variety of data. This leads to **generalized linear models**.
+--
+
+* Generalized linear models are linear models of transformed conditional means
+`$$g(\mu_{Y|X_1,\ldots,X_m}) = \beta_0 + \beta_1 \times X_1 + \ldots + \beta_m \times X_m$$`
+* The transformation function `\(g\)` is called the **link function**, e.g. the *logit link*  
+  `$$\log \left(\frac{\mu_{Y|X_1,\ldots,X_m}}{1-\mu_{Y|X_1,\ldots,X_m}}\right) = \beta_0 + \beta_1 \times X_1 + \ldots + \beta_m \times X_m$$`
+--
+
+* The inverse transformation is 
+`$$\mu_{Y|X_1,\ldots,X_m} = h(\beta_0 + \beta_1 \times X_1 + \ldots + \beta_m \times X_m)$$`
+and `\(h\)` is called the **inverse-link function**, e.g. the logistic function
+`$$\mu_{Y|X_1,\ldots,X_m} = \frac{\exp\left(\beta_0 + \beta_1 \times X_1 + \ldots + \beta_m \times X_m\right)}{1 + \exp\left(\beta_0 + \beta_1 \times X_1 + \ldots + \beta_m \times X_m\right)}$$`
+
+---
+
+### Generalized linear models In R
+
+.scrollable[
+
+```r
+data("metacognition")
+dat &lt;- subset(metacognition, id == 2) |&gt;
+  mutate(confidence_c = center(confidence),
+         contrast_c = center(contrast))
+mod &lt;- glm(correct~confidence_c*contrast_c, data=dat,
+           family=binomial(link = "logit"))
+# Wald tests
+summary(mod)
+```
+
+```
+
+Call:
+glm(formula = correct ~ confidence_c * contrast_c, family = binomial(link = "logit"), 
+    data = dat)
+
+Coefficients:
+                        Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)              1.87085    0.25336    7.38  1.5e-13 ***
+confidence_c             0.02072    0.00514    4.03  5.6e-05 ***
+contrast_c               0.38396    0.12144    3.16   0.0016 ** 
+confidence_c:contrast_c  0.00524    0.00246    2.13   0.0332 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 362.25  on 377  degrees of freedom
+Residual deviance: 281.01  on 374  degrees of freedom
+AIC: 289
+
+Number of Fisher Scoring iterations: 6
+```
+
+```r
+# Model comparison tests
+car::Anova(mod, type=3)
+```
+
+```
+Analysis of Deviance Table (Type III tests)
+
+Response: correct
+                        LR Chisq Df Pr(&gt;Chisq)    
+confidence_c               19.71  1      9e-06 ***
+contrast_c                  8.66  1     0.0033 ** 
+confidence_c:contrast_c     4.24  1     0.0394 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+# p-value for overall model test
+1-pchisq(deviance(mod), df=nrow(dat) - 4)
+```
+
+```
+[1] 1
+```
+]
+
+---
+
+### Generalized linear models In R
+
+.scrollable[
+
+```r
+dat$pred &lt;- predict(mod, type="response")
+dat |&gt;
+  ggplot(aes(x=confidence, y=pred)) + geom_line() +
+  geom_point(aes(y=correct), alpha=.5) + facet_wrap(~contrast) +
+  ylab("(probability) correct")
+```
+
+&lt;img src="lecture6_files/figure-html/unnamed-chunk-10-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+]
+---
+
+### Probit regression
+
+.scrollable[
+
+```r
+data("metacognition")
+dat &lt;- subset(metacognition, id == 2) |&gt;
+  mutate(confidence_c = center(confidence),
+         contrast_c = center(contrast))
+mod &lt;- glm(correct~confidence_c*contrast_c, data=dat,
+           family=binomial(link = "probit"))
+# Wald tests
+summary(mod)
+```
+
+```
+
+Call:
+glm(formula = correct ~ confidence_c * contrast_c, family = binomial(link = "probit"), 
+    data = dat)
+
+Coefficients:
+                        Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)              1.05722    0.13132    8.05  8.2e-16 ***
+confidence_c             0.01139    0.00267    4.27  2.0e-05 ***
+contrast_c               0.19214    0.06802    2.82   0.0047 ** 
+confidence_c:contrast_c  0.00258    0.00138    1.87   0.0615 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 362.25  on 377  degrees of freedom
+Residual deviance: 279.87  on 374  degrees of freedom
+AIC: 287.9
+
+Number of Fisher Scoring iterations: 7
+```
+
+```r
+# Model comparison tests
+car::Anova(mod, type=3)
+```
+
+```
+Analysis of Deviance Table (Type III tests)
+
+Response: correct
+                        LR Chisq Df Pr(&gt;Chisq)    
+confidence_c               20.14  1    7.2e-06 ***
+contrast_c                  8.73  1     0.0031 ** 
+confidence_c:contrast_c     3.65  1     0.0560 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+# p-value for overall model test
+1-pchisq(deviance(mod), df=nrow(dat) - 4)
+```
+
+```
+[1] 1
+```
+]
+
+---
+
+### Poisson regression
+
+* Poisson regression is used for **count data** (e.g., counting the number of hand gestures during a conversation). The maximum count should not be predetermined. 
+* Count data may be assumed to follow a Poisson distribution  
+  `$$p(Y=k) = \frac{\lambda^k \exp (-\lambda)}{k!}$$`
+  for `\(k=0,1,\ldots\)`. Parameter `\(\lambda\)` is equal to the mean
+* The usual link function in Poisson regression is the *log link* function
+`$$\log \left(\mu_{Y|X_1,\ldots,X_m}\right) = \beta_0 + \beta_1 \times X_1 + \ldots + \beta_m \times X_m$$`
+* The inverse link function is the *exponential function*
+`$$\lambda = \mu_{Y|X_1,\ldots,X_m} = \exp \left( \beta_0 + \beta_1 \times X_1 + \ldots + \beta_m \times X_m \right)$$`
+
+---
+
+### Example: Hand gestures
+
+
+```r
+data("gestures")
+gestures %&gt;%
+  ggplot(aes(x=gestures)) + geom_histogram(bins=10, colour="black") + 
+  facet_grid(language~context) + xlab("Number of gestures")
+```
+
+&lt;img src="lecture6_files/figure-html/gestures-histogram-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Example: Hand gestures
+
+.scrollable[
+
+```r
+contrasts(gestures$context) &lt;- c(1,-1)
+contrasts(gestures$context)
+```
+
+```
+       [,1]
+friend    1
+prof     -1
+```
+
+```r
+contrasts(gestures$language) &lt;- c(1,-1)
+contrasts(gestures$language)
+```
+
+```
+        [,1]
+Catalan    1
+Korean    -1
+```
+
+```r
+contrasts(gestures$gender) &lt;- c(1,-1)
+contrasts(gestures$gender)
+```
+
+```
+  [,1]
+F    1
+M   -1
+```
+
+```r
+# duration of chats is variable
+# need to account for this with an "offset"
+gestures$log_dur &lt;- log(gestures$dur)
+pois_mod &lt;- glm(gestures ~ context*language*gender, data=gestures, family=poisson(), offset=log_dur)
+summary(pois_mod)
+```
+
+```
+
+Call:
+glm(formula = gestures ~ context * language * gender, family = poisson(), 
+    data = gestures, offset = log_dur)
+
+Coefficients:
+                           Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)                 -0.9655     0.0198  -48.70   &lt;2e-16 ***
+context1                     0.0459     0.0198    2.32   0.0205 *  
+language1                    0.0288     0.0198    1.45   0.1468    
+gender1                      0.0622     0.0198    3.14   0.0017 ** 
+context1:language1          -0.0361     0.0198   -1.82   0.0688 .  
+context1:gender1            -0.0260     0.0198   -1.31   0.1901    
+language1:gender1           -0.0417     0.0198   -2.10   0.0354 *  
+context1:language1:gender1   0.0372     0.0198    1.88   0.0603 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 326.95  on 53  degrees of freedom
+Residual deviance: 303.96  on 46  degrees of freedom
+AIC: 623.1
+
+Number of Fisher Scoring iterations: 4
+```
+
+```r
+# model comparison tests
+car::Anova(pois_mod, type=3)
+```
+
+```
+Analysis of Deviance Table (Type III tests)
+
+Response: gestures
+                        LR Chisq Df Pr(&gt;Chisq)   
+context                     5.39  1     0.0202 * 
+language                    2.11  1     0.1462   
+gender                      9.88  1     0.0017 **
+context:language            3.32  1     0.0684 . 
+context:gender              1.72  1     0.1899   
+language:gender             4.44  1     0.0351 * 
+context:language:gender     3.53  1     0.0602 . 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+# model fit
+1-pchisq(deviance(pois_mod), df = nrow(gestures) - 8)
+```
+
+```
+[1] 0
+```
+
+---
+
+### Overdispersion
+
+
+```r
+bw &lt;- 1 # binwidth
+n_obs &lt;- length(residuals(pois_mod, type="pearson")) # number of observations
+# create plot
+data.frame(residual = residuals(pois_mod, type="pearson")) |&gt;
+ggplot(aes(x=residual)) + geom_histogram(binwidth=bw, colour="black") + 
+  stat_function(fun=function(x) dnorm(x) * bw * n_obs, colour="red") + 
+  xlab("Standarized Pearson residual") + ylab("Frequency")
+```
+
+&lt;img src="lecture6_files/figure-html/unnamed-chunk-12-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Quasi-Poisson regression
+
+.scrollable[
+
+```r
+qpois_mod &lt;-  glm(gestures ~ context*language*gender, data=gestures, family=quasipoisson(), offset=log_dur)
+summary(qpois_mod)
+```
+
+```
+
+Call:
+glm(formula = gestures ~ context * language * gender, family = quasipoisson(), 
+    data = gestures, offset = log_dur)
+
+Coefficients:
+                           Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                 -0.9655     0.0482  -20.03   &lt;2e-16 ***
+context1                     0.0459     0.0482    0.95     0.35    
+language1                    0.0288     0.0482    0.60     0.55    
+gender1                      0.0622     0.0482    1.29     0.20    
+context1:language1          -0.0361     0.0482   -0.75     0.46    
+context1:gender1            -0.0260     0.0482   -0.54     0.59    
+language1:gender1           -0.0417     0.0482   -0.87     0.39    
+context1:language1:gender1   0.0372     0.0482    0.77     0.44    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for quasipoisson family taken to be 5.91)
+
+    Null deviance: 326.95  on 53  degrees of freedom
+Residual deviance: 303.96  on 46  degrees of freedom
+AIC: NA
+
+Number of Fisher Scoring iterations: 4
+```
+
+```r
+car::Anova(qpois_mod, type=3, test.statistic="F", error.estimate="dispersion")
+```
+
+```
+Analysis of Deviance Table (Type III tests)
+
+Response: gestures
+Error estimate based on estimated dispersion 
+
+                        Sum Sq Df F values Pr(&gt;F)
+context                    5.4  1     0.91   0.34
+language                   2.1  1     0.36   0.55
+gender                     9.9  1     1.67   0.20
+context:language           3.3  1     0.56   0.46
+context:gender             1.7  1     0.29   0.59
+language:gender            4.4  1     0.75   0.39
+context:language:gender    3.5  1     0.60   0.44
+Residuals                272.0 46                
+```
+]
+
+---
+
+### Log-linear models
+
+* Log-linear models can be seen as an extension of Poisson regression, modelling counts in the cells of **multiway-contingency tables**
+* Cells in this table are defined by combinations of categorical variables (e.g. "newspaper read" and "political party voted for")
+* Loglinear models contain contrast-coded parameters for main effects and interactions of the categorical variables, e.g.
+`$$\log (\mu_{i,j}) = \lambda + \lambda_i^{(A)} + \lambda_j^{(B)} + \lambda_{i,j}^{(A,B)}$$`
+--
+
+* A main objective in log-linear modelling is to compare models with different parametrizations to test for **dependencies** between the categorical variables. E.g., a model of independence would be 
+`$$\log (\mu_{i,j}) = \lambda + \lambda_i^{(A)} + \lambda_j^{(B)}$$`
+
+---
+
+### Generalized linear mixed-effects model
+
+* It is possible to extend generalized linear models further by including random effects.
+* This follows same ideas as for linear mixed-effects models, e.g. random effects are assumed to follow a (multivariate) Normal distribution
+* Estimation is (even) more complex than for linear mixed-effects models
+
+---
+
+### Summary
+
+* Generalized linear models form a common framework to model the relations between predictors `\(X_j\)` and dependent variables `\(Y\)`, where `\(Y\)` can have a variety of (conditional) distributions (including a Normal distribution).
+* A generalized linear model consists of three components:
+  * A *structural part*: `\(\beta_0 + \beta_1 \times X_1 + \ldots + \beta_m \times X_m\)`
+  * A *random part* (the conditional distribution of `\(Y\)` for given values of `\(X_1,\ldots,X_m\)`)
+  * A *link function* which relates the structural and random part
+* It is often fine to revert to the *canonical link function*
+--
+
+* Estimation and inference follows the same principles.
+* The residual deviance takes the role of the Sum of Squared Error in the GLM
+* Likelihood-ratio tests take the role of the `\(F\)`-test in the GLM
+--
+
+* For many distributions covered in generalized linear models, there is no separate parameter for the (error) variance, as the variance is often directly related to the mean.
+* With real data, there is often more variation than assumed, a problem called **overdispersion**
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
