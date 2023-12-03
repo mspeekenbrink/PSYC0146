@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Statistics: Data analysis and modelling</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="mycss.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Statistics: Data analysis and modelling
+]
+.subtitle[
+## Week 9: Bayesian estimation
+]
+
+---
+
+
+
+
+
+
+### Monty Hall
+
+&gt; Suppose you're on a game show, and you're given the choice of three doors: Behind one door is a car; behind the others, goats. You pick a door, say No. 1, and the host, who knows what's behind the doors, opens another door, say No. 3, which has a goat. He then says to you, "Do you want to pick door No. 2?" Is it to your advantage to switch your choice?
+
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Monty_open_door.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Bayes' theorem
+
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Thomas_Bayes.gif" width="20%" style="display: block; margin: auto;" /&gt;
+
+Posterior probability
+
+`$$\begin{aligned}
+p(H|E) &amp;= \frac{p(E|H) p(H)}{p(E|H)p(H) + p(E|\lnot H) p(\lnot H)} \\
+&amp;= \frac{p(E \land H)}{p(E \land H) + p(E \land \neg H)} \\
+\frac{p(E \land H)}{p(E)}
+\end{aligned}$$`
+
+* `\(H\)` is a hypothesis (e.g. "car is behind door 1")
+* `\(E\)` is evidence (e.g. "there is a goat behind door 3")
+
+---
+
+### Monty Hall
+
+Let `\(D \in \{1,2,3\}\)` denote the door with the car and `\(O\)` the door opened. The prior probability is `\(p(D=1) = p(D=2) = p(D=3) = \frac{1}{3}\)`
+
+Conditional probabilities of `\(O=3\)` are:
+
+`$$\begin{aligned}
+p(O = 3|D=1) &amp;= \tfrac{1}{2} \\
+p(O = 3|D=2) &amp;= 1 \\
+p(O = 3|D=3) &amp;= 0
+\end{aligned}$$`
+
+So posterior probabilities are
+`$$\begin{aligned}
+p(D = 1|O=3) &amp;= \frac{\frac{1}{2} \times \tfrac{1}{3}}{\frac{1}{2} \times \tfrac{1}{3} + 0 \times \tfrac{1}{3} + 1 \times \tfrac{1}{3}} = \tfrac{1}{3} \\
+p(D = 2|O=3) &amp;= \frac{1 \times \frac{1}{3}}{\frac{1}{2} \times \frac{1}{3} + 0 \times \frac{1}{3} + 1 \times \frac{1}{3}} = \tfrac{2}{3} \\
+p(D = 3|O=3) &amp;= 0
+\end{aligned}$$`
+
+--
+
+So, yes: switching is advantageous!
+
+---
+
+### Bayes' theorem for parameters
+
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Thomas_Bayes.gif" width="20%" style="display: block; margin: auto;" /&gt;
+
+`$$\begin{aligned}
+p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta) p(\theta)}{p(\text{data})} 
+\end{aligned}$$`
+
+---
+
+### Bayes' theorem for parameters
+
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Thomas_Bayes.gif" width="20%" style="display: block; margin: auto;" /&gt;
+
+`$$\begin{aligned}
+p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta) p(\theta)}{p(\text{data})} \\
+&amp;= \frac{p(\text{data}|\theta)}{p(\text{data})} \times  p(\theta) \\
+\text{posterior} &amp;= \text{normalized likelihood} \times \text{prior}
+\end{aligned}$$`
+
+---
+
+### Paul the Octopus (uniform prior)
+
+`\(k=12\)` correct predictions out of `\(n=14\)`; `\(\theta\)` = probability of a correct prediction.
+
+`$$\begin{aligned}
+p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta)}{p(\text{data})} \times  p(\theta)
+\end{aligned}$$`
+
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-5-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Paul the Octopus (uniform prior)
+
+`\(k=12\)` correct predictions out of `\(n=14\)`; `\(\theta\)` = probability of a correct prediction.
+
+`$$\begin{aligned}
+p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta)}{p(\text{data})} \times  p(\theta)
+\end{aligned}$$`
+
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-6-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Paul the Octopus (uniform prior)
+
+`\(k=12\)` correct predictions out of `\(n=14\)`; `\(\theta\)` = probability of a correct prediction.
+
+`$$\begin{aligned}
+p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta)}{p(\text{data})} \times  p(\theta)
+\end{aligned}$$`
+
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-7-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Paul the Octopus (Beta(12,2) prior)
+
+`\(k=12\)` correct predictions out of `\(n=14\)`; `\(\theta\)` = probability of a correct prediction.
+
+`$$\begin{aligned}
+p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta)}{p(\text{data})} \times  p(\theta)
+\end{aligned}$$`
+
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-8-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Paul the Octopus (Beta(12,2) prior)
+
+`\(k=12\)` correct predictions out of `\(n=14\)`; `\(\theta\)` = probability of a correct prediction.
+
+`$$\begin{aligned}
+p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta)}{p(\text{data})} \times  p(\theta)
+\end{aligned}$$`
+
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-9-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Paul the Octopus (Beta(12,2) prior)
+
+`\(k=12\)` correct predictions out of `\(n=14\)`; `\(\theta\)` = probability of a correct prediction.
+
+`$$\begin{aligned}
+p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta)}{p(\text{data})} \times  p(\theta)
+\end{aligned}$$`
+
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-10-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Paul the Octopus (Beta(12,2) prior)
+
+`\(k=12\)` correct predictions out of `\(n=14\)`; `\(\theta\)` = probability of a correct prediction.
+
+`$$\begin{aligned}
+p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta)}{p(\text{data})} \times  p(\theta)
+\end{aligned}$$`
+
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-11-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Paul the Octopus (Beta(12,2) prior)
+
+`\(k=12\)` correct predictions out of `\(n=14\)`; `\(\theta\)` = probability of a correct prediction.
+
+`$$\begin{aligned}
+p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta)}{p(\text{data})} \times  p(\theta)
+\end{aligned}$$`
+
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-12-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Markov Chain Monte Carlo (MCMC)
+
+It is usually not possible to calculate the posterior distribution `\(p(\theta|\text{data})\)` analytically. But it may be possible to *sample* from the posterior distribution:
+`$$\tilde{\theta} \sim p(\theta|\text{data})$$`
+Such samples form an "empirical" estimate of the posterior distribution.
+
+Markov Chain Monte Carlo algorithms are a clever way to sample from the posterior. They draw samples **sequentially**, with dependence between each consecutive sample `\(\tilde{\theta}_j\)` and the immediately preceding one `\((\tilde{\theta}_{j-1})\)`. When run for long enough, it is guaranteed the algorithm draws samples according to the posterior distribution.
+
+The most widely used forms of MCMC are: Metropolis-Hastings, Gibbs sampling, and Hamiltonian Monte Carlo. 
+
+---
+
+### Multiple regression
+
+`$$\texttt{trump_votes}_i = \beta_0 + \beta_1 \times \texttt{hate_groups}_i + \beta_2 \times \texttt{education}_i + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+with priors
+
+`$$\begin{aligned} \beta_0 &amp;\sim \mathbf{Normal}(0, 100) \\
+\beta_1  &amp;\sim \mathbf{Normal}(0, 5) \\
+\beta_2  &amp;\sim \mathbf{Normal}(0, 5) \\
+\sigma_\epsilon  &amp;\sim \mathbf{half-Normal}(0, 10) \\
+\end{aligned}$$`
+
+Run four parallel Hamiltonian MCMC chains for 2000 iterations. Discard first 1000 samples of each as **burn-in**.
+---
+
+### Multiple regression with brms
+
+.scrollable[
+
+```r
+library(sdamr)
+data("trump2016")
+dat &lt;- subset(trump2016,state != "District of Columbia")
+
+library(brms)
+brms::get_prior(percent_Trump_votes ~ hate_groups_per_million + percent_bachelors_degree_or_higher,
+                 data=dat)
+```
+
+```
+                    prior     class                               coef group
+                   (flat)         b                                         
+                   (flat)         b            hate_groups_per_million      
+                   (flat)         b percent_bachelors_degree_or_higher      
+ student_t(3, 49.3, 11.9) Intercept                                         
+    student_t(3, 0, 11.9)     sigma                                         
+ resp dpar nlpar lb ub       source
+                            default
+                       (vectorized)
+                       (vectorized)
+                            default
+                  0         default
+```
+]
+
+---
+
+### Multiple regression with brms
+
+.scrollable[
+
+```r
+mod &lt;- brms::brm(percent_Trump_votes ~ hate_groups_per_million + percent_bachelors_degree_or_higher,
+                 data=dat, 
+                 prior = c(prior(normal(0, 100), class = Intercept),
+                prior(normal(0, 5), class = b, coef = "hate_groups_per_million"),
+                prior(normal(0, 5), class = b, coef = "percent_bachelors_degree_or_higher"),
+                prior(normal(0, 10), class = sigma)),
+                sample_prior = TRUE,
+                seed=101,
+                chains=4,
+                iter=2000,
+                warmup=1000)
+```
+
+```
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 2.1e-05 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.21 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 0.038 seconds (Warm-up)
+Chain 1:                0.032 seconds (Sampling)
+Chain 1:                0.07 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 5e-06 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 0.039 seconds (Warm-up)
+Chain 2:                0.032 seconds (Sampling)
+Chain 2:                0.071 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 5e-06 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 0.036 seconds (Warm-up)
+Chain 3:                0.026 seconds (Sampling)
+Chain 3:                0.062 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 5e-06 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 0.037 seconds (Warm-up)
+Chain 4:                0.033 seconds (Sampling)
+Chain 4:                0.07 seconds (Total)
+Chain 4: 
+```
+]
+
+---
+
+
+### Multiple regression with brms
+
+
+
+```r
+plot(mod)
+```
+
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-14-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Autocorrelation
+
+
+```r
+brms::mcmc_plot(mod, type="acf_bar")
+```
+
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-15-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Prior and posterior samples
+
+&lt;img src="lecture9_files/figure-html/brms-multiple-regression-model-prior-samples-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Posterior summary
+
+.scrollable[
+
+```r
+summary(mod)
+```
+
+```
+ Family: gaussian 
+  Links: mu = identity; sigma = identity 
+Formula: percent_Trump_votes ~ hate_groups_per_million + percent_bachelors_degree_or_higher 
+   Data: dat (Number of observations: 50) 
+  Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+         total post-warmup draws = 4000
+
+Population-Level Effects: 
+                                   Estimate Est.Error l-95% CI u-95% CI Rhat
+Intercept                             82.09      6.35    69.54    94.70 1.00
+hate_groups_per_million                1.29      0.51     0.27     2.31 1.00
+percent_bachelors_degree_or_higher    -1.22      0.19    -1.60    -0.84 1.00
+                                   Bulk_ESS Tail_ESS
+Intercept                              3916     2909
+hate_groups_per_million                3853     3015
+percent_bachelors_degree_or_higher     4075     3276
+
+Family Specific Parameters: 
+      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sigma     6.80      0.71     5.59     8.41 1.00     3728     2911
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+]
+
+---
+
+### Posterior summary
+
+
+|              |  mean|   SD| lower 95% HDI| upper 95% HDI| `\(\hat{R}\)`|  ESS|
+|:-------------|-----:|----:|-------------:|-------------:|---------:|----:|
+|Intercept     | 82.09| 6.35|         69.54|         94.70|         1| 3916|
+|Hate_groups   |  1.29| 0.51|          0.27|          2.31|         1| 3853|
+|Education     | -1.22| 0.19|         -1.60|         -0.84|         1| 4075|
+|sigma_epsilon |  6.80| 0.71|          5.59|          8.41|         1| 3728|
+
+`\(\hat{R}\)` is a measure of convergence, defined as the ratio of between and within chain variance. After convergence, `\(\hat{R} = 1\)`.
+
+Effective sample size (ESS) is an a measure of the loss of information due to dependencies in the sampled parameters. If samples are independent, ESS would equal the number of samples.
+
+---
+
+### Effect of prior distributions
+
+`$$\texttt{trump_votes}_i = \beta_0 + \beta_1 \times \texttt{hate_groups}_i + \beta_2 \times \texttt{education}_i + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+`$$\begin{aligned} \beta_0 &amp;\sim \mathbf{Normal}(0, 1) \\
+\beta_1  &amp;\sim \mathbf{Normal}(0, 1) \\
+\beta_2  &amp;\sim \mathbf{Normal}(0, 1) \\
+\sigma_\epsilon  &amp;\sim \mathbf{half-Normal}(0, 1) \\
+\end{aligned}$$`
+
+---
+
+### Effect of prior distributions
+
+.scrollable[
+
+```r
+mod2 &lt;- brms::brm(formula = percent_Trump_votes ~ hate_groups_per_million + percent_bachelors_degree_or_higher,data=dat, seed=101, sample_prior = TRUE, prior = c(prior(normal(0, 1), class = Intercept),
+                prior(normal(0, 1), class = b, coef = "hate_groups_per_million"),
+                prior(normal(0, 1), class = b, coef = "percent_bachelors_degree_or_higher"),
+                prior(normal(0, 1), class = sigma)))
+```
+
+```
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 1.9e-05 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.19 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 0.047 seconds (Warm-up)
+Chain 1:                0.031 seconds (Sampling)
+Chain 1:                0.078 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 7e-06 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 0.047 seconds (Warm-up)
+Chain 2:                0.03 seconds (Sampling)
+Chain 2:                0.077 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 7e-06 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 0.055 seconds (Warm-up)
+Chain 3:                0.03 seconds (Sampling)
+Chain 3:                0.085 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 6e-06 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 0.05 seconds (Warm-up)
+Chain 4:                0.031 seconds (Sampling)
+Chain 4:                0.081 seconds (Total)
+Chain 4: 
+```
+]
+
+---
+
+### Effect of prior distributions
+
+.scrollable[
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-17-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+### Autocorrelation
+
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-18-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Prior and posterior samples
+
+&lt;img src="lecture9_files/figure-html/brms-multiple-regression-model-prior-samples-2-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Posterior summary
+
+
+|              |  mean|    SD| lower 95% HDI| upper 95% HDI| `\(\hat{R}\)`|  ESS|
+|:-------------|-----:|-----:|-------------:|-------------:|---------:|----:|
+|Intercept     | 37.97| 13.05|         11.73|         63.20|         1| 3709|
+|Hate_groups   |  0.56|  0.80|         -1.02|          2.10|         1| 3798|
+|Education     | -1.08|  0.41|         -1.89|         -0.24|         1| 3854|
+|sigma_epsilon | 16.73|  0.52|         15.72|         17.78|         1| 3270|
+
+Earlier model
+
+
+|              |  mean|   SD| lower 95% HDI| upper 95% HDI| `\(\hat{R}\)`|  ESS|
+|:-------------|-----:|----:|-------------:|-------------:|---------:|----:|
+|Intercept     | 82.09| 6.35|         69.54|         94.70|         1| 3916|
+|Hate_groups   |  1.29| 0.51|          0.27|          2.31|         1| 3853|
+|Education     | -1.22| 0.19|         -1.60|         -0.84|         1| 4075|
+|sigma_epsilon |  6.80| 0.71|          5.59|          8.41|         1| 3728|
+
+---
+
+## Informative vs non-informative priors
+
+Key to Bayesian analysis is updating prior belief in light of data to posterior belief.
+
+Informative priors (e.g. priors with relatively small variance) restrict the posterior distribution.
+
+Non-informative or weakly informative priors allow the posterior distribution to be (mostly) determined by the data.
+
+---
+
+## Multiple regression with default priors in brms
+
+`$$\texttt{trump_votes}_i = \beta_0 + \beta_1 \times \texttt{hate_groups}_i + \beta_2 \times \texttt{education}_i + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+`$$\begin{aligned} \beta_0 &amp;\sim \mathbf{t}(\text{df}=3, \mu=49.3, \sigma=11.9) \\
+\beta_1  &amp;\sim \mathbf{uniform}(-\infty, \infty) \\
+\beta_2  &amp;\sim \mathbf{uniform}(-\infty, \infty) \\
+\sigma_\epsilon  &amp;\sim \mathbf{half-t}(\text{df}=3, \mu=0, \sigma=11.9) \\
+\end{aligned}$$`
+
+--
+
+Parameters of Student-t distributions are partly based on data.
+
+---
+
+## Multiple regression with default priors in brms
+
+.scrollable[
+
+```r
+mod3 &lt;- brms::brm(percent_Trump_votes ~ hate_groups_per_million + percent_bachelors_degree_or_higher,
+                  data=dat, seed=101, sample_prior = TRUE)
+```
+
+```
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 1.5e-05 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 0.04 seconds (Warm-up)
+Chain 1:                0.031 seconds (Sampling)
+Chain 1:                0.071 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 6e-06 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 0.041 seconds (Warm-up)
+Chain 2:                0.035 seconds (Sampling)
+Chain 2:                0.076 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 6e-06 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 0.039 seconds (Warm-up)
+Chain 3:                0.031 seconds (Sampling)
+Chain 3:                0.07 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 6e-06 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 0.041 seconds (Warm-up)
+Chain 4:                0.035 seconds (Sampling)
+Chain 4:                0.076 seconds (Total)
+Chain 4: 
+```
+]
+
+---
+
+### Prior and posterior samples
+
+&lt;img src="lecture9_files/figure-html/brms-multiple-regression-model-prior-samples-3-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Posterior summary
+
+.scrollable[
+
+```r
+summary(mod3)
+```
+
+```
+ Family: gaussian 
+  Links: mu = identity; sigma = identity 
+Formula: percent_Trump_votes ~ hate_groups_per_million + percent_bachelors_degree_or_higher 
+   Data: dat (Number of observations: 50) 
+  Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+         total post-warmup draws = 4000
+
+Population-Level Effects: 
+                                   Estimate Est.Error l-95% CI u-95% CI Rhat
+Intercept                             82.07      6.26    69.72    94.54 1.00
+hate_groups_per_million                1.32      0.53     0.26     2.35 1.00
+percent_bachelors_degree_or_higher    -1.22      0.19    -1.60    -0.86 1.00
+                                   Bulk_ESS Tail_ESS
+Intercept                              3239     2802
+hate_groups_per_million                3773     2936
+percent_bachelors_degree_or_higher     3483     2982
+
+Family Specific Parameters: 
+      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sigma     6.79      0.72     5.57     8.40 1.00     3764     2862
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+]
+
+---
+
+### Frequentist analysis
+
+.scrollable[
+
+```r
+summary(lm(percent_Trump_votes ~ hate_groups_per_million + percent_bachelors_degree_or_higher, data=dat))
+```
+
+```
+
+Call:
+lm(formula = percent_Trump_votes ~ hate_groups_per_million + 
+    percent_bachelors_degree_or_higher, data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-13.727  -4.062   0.043   2.894  15.836 
+
+Coefficients:
+                                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                          81.994      6.155   13.32   &lt;2e-16 ***
+hate_groups_per_million               1.314      0.510    2.58    0.013 *  
+percent_bachelors_degree_or_higher   -1.219      0.184   -6.63    3e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.64 on 47 degrees of freedom
+Multiple R-squared:  0.585,	Adjusted R-squared:  0.567 
+F-statistic: 33.1 on 2 and 47 DF,  p-value: 1.09e-09
+```
+]
+
+---
+
+class: center, middle, inverse
+
+# Discussion
+
+## What are the relative advantages of the Frequentist vs Bayesian approaches?
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
