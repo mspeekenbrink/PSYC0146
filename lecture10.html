@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Statistics: Data analysis and modelling</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="mycss.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Statistics: Data analysis and modelling
+]
+.subtitle[
+## Week 10: Bayesian hypothesis testing
+]
+
+---
+
+
+
+
+
+
+
+### The Bayes factor
+
+The Bayes Factor is a measure of the relative evidence for one model over another:
+
+`$$\text{BF}_{1,2} = \frac{p(\text{data}|\text{MODEL 1})}{p(\text{data}|\text{MODEL 2})}$$`
+--
+
+It reflects how much we should shift our belief in models given data:
+
+`$$\begin{array}{ccccc}
+\frac{p(\text{MODEL 1}|\text{data})}{p(\text{MODEL 2}|\text{data})} &amp; = &amp; \frac{p(\text{data}|\text{MODEL 1})}{p(\text{data}|\text{MODEL 2})} &amp; \times &amp; \frac{p(\text{MODEL 1})}{p(\text{MODEL 2})} \\
+\Uparrow &amp;  &amp; \Uparrow &amp;  &amp; \Uparrow \\
+\text{posterior odds} &amp; = &amp; \text{Bayes factor} &amp; \times &amp; \text{prior odds}
+\end{array}$$`
+
+--
+
+Evidence for a model here concerns the **marginal likelihood**, which depends on the prior distribution over parameter values:
+
+`$$\begin{aligned} p(\text{data}|\text{MODEL}) &amp;= \text{marginal likelihood (MODEL)} \\
+&amp;= \int_\theta p(\text{data}|\theta) p(\theta|\text{MODEL})\end{aligned}$$`
+
+--
+
+(this is `\(p(\text{data})\)` in the previous lecture)
+
+---
+
+### The Bayes Factor
+
+* The Bayes Factor `$$\text{BF}_{1,2} = \frac{p(\text{data}|\text{MODEL 1})}{p(\text{data}|\text{MODEL 2})}$$` is like a *likelihood ratio*, comparing the likelihood of one model over another.
+
+--
+
+* One of these models can fix a parameter to a specific value, as in a null-hypothesis.
+
+--
+
+* In contrast to a Frequentist Null-Hypothesis Significance Test (NHST), we can also calculate the likelihood of the alternative hypothesis, as this is also given a *prior distribution*
+
+--
+
+* Rather than being entirely unspecific about the alternative hypothesis, we should consider what values of the parameter under consideration are more or less likely.
+
+---
+
+### Paul the Octopus
+
+`$$k=12 \text{ correct predictions out of } n = 14 \quad \quad \theta = p(\text{correct})$$`
+--
+
+`$$\text{MODEL 0}\!: \theta = \tfrac{1}{2} \quad \quad \quad \text{MODEL 1}\!: \theta \sim \mathbf{Beta}(12,2)$$`
+
+--
+
+&lt;img src="lecture10_files/figure-html/unnamed-chunk-1-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+--
+
+`$$\text{BF}_{1,0} = \frac{0.202}{0.006 } = 36.409$$`
+
+---
+
+### Interpreting the Bayes factor
+
+`\(\text{BF}_{1,2}\)` | `\(\log \text{BF}_{1,2}\)` | Interpretation 
+--------:|--------------:|---------------
+&amp;gt; 100  | &amp;gt; 4.61  | Extreme evidence for MODEL 1 
+30 &amp;mdash; 100 | 3.4 &amp;mdash;  4.61  | Very strong evidence for MODEL 1 
+10 &amp;mdash; 30 | 2.3 &amp;mdash; 3.4 | Strong evidence for MODEL 1
+3 &amp;mdash; 10 | 1.1 &amp;mdash; 2.3 | Moderate evidence for MODEL 1
+1 &amp;mdash; 3 | 0 &amp;mdash; 1.1 | Anecdotal evidence for MODEL 1
+1 | 0 | No evidence 
+1/3 &amp;mdash; 1 | -1.1 &amp;mdash; 0 | Anecdotal evidence for MODEL 2
+1/10 &amp;mdash; 1/3 | -2.3 &amp;mdash; -1.1 | Moderate evidence for MODEL 2
+1/30 &amp;mdash; 1/10 | -3.4 &amp;mdash; -2.3 | Strong evidence for MODEL 2
+1/100 &amp;mdash; 1/30 | -4.61 &amp;mdash; -3.4 | Very strong evidence for MODEL 2
+&amp;lt; 1/100 | &amp;lt; -4.61  | Extreme evidence for MODEL 2
+
+---
+
+### Different prior, different Bayes Factor!
+
+`$$k=12 \text{ correct predictions out of } n = 14 \quad \quad \theta = p(\text{correct})$$`
+
+`$$\text{MODEL 0}\!: \theta = \tfrac{1}{2} \quad \quad \quad \text{MODEL 1}\!: \theta \sim \mathbf{Beta}(1,1)$$`
+
+&lt;img src="lecture10_files/figure-html/unnamed-chunk-2-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+--
+
+`$$\text{BF}_{1,0} = \frac{0.067}{0.006 } = 12.003$$`
+
+---
+
+### Does Tetris reduce intrusive memories?
+
+&lt;img src="lecture10_files/figure-html/compute-bayesian-t-test-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### A "default" Bayesian t-test
+
+`$$\begin{align}
+Y_i &amp;= \beta_0 + \beta_1 \times X_{1,i} + \epsilon_i \quad \quad \epsilon_i \sim \textbf{Normal}(0, \sigma_\epsilon) \\
+X_{1i} &amp;= \pm \tfrac{1}{2}
+\end{align}$$`
+
+--
+
+`$$\begin{align}
+H_0\!: &amp; \quad \beta_1 = 0 \\
+H_1\!: &amp; \quad \beta_1 \neq 0 \\
+\end{align}$$`
+
+--
+
+.pull-left[
+`$$\begin{align}
+\text{Cohen's } d &amp;= \frac{\mu_1 - \mu_2}{\sigma_\epsilon} \\
+&amp;= \frac{\beta_1}{\sigma_\epsilon}
+\end{align}$$`
+
+`$$\text{MODEL 0}\!: p\left(\text{Cohen's } d = 0\right) = 1$$`
+`$$\text{MODEL 1}\!: \text{Cohen's } d \sim \mathbf{Cauchy}(r)$$`
+where `\(r\)` is a *scaling factor*
+]
+
+.pull-right[
+
+&lt;img src="lecture10_files/figure-html/unnamed-chunk-3-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+### Does Tetris reduce intrusive memories?
+
+&lt;img src="lecture10_files/figure-html/compute-bayesian-t-test-2-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+With scaling factor `\(r=1\)`:
+
+`$$\text{BF}_{1,0} = 17.225$$`
+
+
+---
+
+### Using the BayesFactor package
+
+.scrollable[
+
+```r
+library(sdamr)
+data("tetris2015")
+dat &lt;- subset(tetris2015, 
+              Condition %in% c("Tetris_Reactivation","Reactivation"))
+dat$Condition &lt;- droplevels(dat$Condition)
+library(BayesFactor)
+ttestBF(formula=Days_One_to_Seven_Number_of_Intrusions ~ Condition, 
+        data=dat, 
+        r=1)
+```
+
+```
+Bayes factor analysis
+--------------
+[1] Alt., r=1 : 17.2 ±0%
+
+Against denominator:
+  Null, mu1-mu2 = 0 
+---
+Bayes factor type: BFindepSample, JZS
+```
+]
+
+---
+
+Different prior, different Bayes Factor!
+
+
+```r
+ttestBF(formula=Days_One_to_Seven_Number_of_Intrusions ~ Condition, 
+        data=dat, 
+        r=.1)
+```
+
+```
+Bayes factor analysis
+--------------
+[1] Alt., r=0.1 : 5.29 ±0%
+
+Against denominator:
+  Null, mu1-mu2 = 0 
+---
+Bayes factor type: BFindepSample, JZS
+```
+
+---
+
+### Different prior, different Bayes Factor!
+
+
+```r
+ttestBF(formula=Days_One_to_Seven_Number_of_Intrusions ~ Condition, 
+        data=dat, 
+        r=10)
+```
+
+```
+Bayes factor analysis
+--------------
+[1] Alt., r=10 : 3.6 ±0%
+
+Against denominator:
+  Null, mu1-mu2 = 0 
+---
+Bayes factor type: BFindepSample, JZS
+```
+
+---
+
+### Does Tetris reduce intrusive memories?
+
+Results depend on the prior distribution in MODEL 1:
+
+.pull-left[
+&lt;img src="lecture10_files/figure-html/bayesian-t-tests-different-rscale-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+&lt;img src="lecture10_files/figure-html/unnamed-chunk-6-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+### The role of the prior
+
+* For **estimation**, the use of non-informative ("flat") or weakly-informative ("almost flat") priors is generally good.
+* For **hypothesis testing** via Bayes Factors, the prior needs more careful consideration. Uninformative or weakly informative priors are often *not* a good idea.
+  * The prior is part of the model that is compared to another model. 
+  * The prior is, in a sense, the hypothesis to be tested. 
+  * The prior should therefore capture plausible (but not implausible) parameter values.
+  * "Default" priors can be useful in the absence of a better alternative.
+  * Consider a robustness check to assess the influence of the choice of prior when there is no clear choice.
+  
+---
+
+class: center, middle, inverse
+
+# Discussion
+
+## What are the relative advantages and disadvantages of Bayes Factors over `\(p\)`-values?
+  
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
