@@ -4,7 +4,7 @@
     <title>Statistics: Data analysis and modelling</title>
     <meta charset="utf-8" />
     <meta name="author" content="Maarten Speekenbrink" />
-    <script src="libs/header-attrs-2.23/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="mycss.css" type="text/css" />
   </head>
@@ -62,8 +62,8 @@ The General Linear Model has the form
 * Measured variables (covariates) are often included to control for pre-existing differences between groups.
 --
 
-* A consideration is whether the effect of covariates is allowed to differ between groups (interaction between measured and contrast-coded variables).
-* __Homogeneity of regression slopes__: Covariates are assumed to have the same effect in all groups.
+* A consideration is whether the effect of covariates is allowed to differ between groups (an interaction between measured and contrast-coded variables).
+* __Homogeneity of regression slopes__: Covariates are assumed to have the *same* effect in all groups.
 --
 
 * Group differences may be difficult to interpret when effect of covariates differs between groups.
@@ -81,7 +81,7 @@ The General Linear Model has the form
 ## ANOVA
 
 
-```r
+``` r
 contrasts(dat$primeCond)
 ```
 
@@ -91,7 +91,7 @@ PL -0.5
 PH  0.5
 ```
 
-```r
+``` r
 contrasts(dat$expBelief)
 ```
 
@@ -106,7 +106,7 @@ EH  0.5
 ## ANOVA
 
 
-```r
+``` r
 mod &lt;- lm(powerPOST ~ primeCond*expBelief, data=dat)
 summary(mod)
 ```
@@ -141,7 +141,7 @@ F-statistic: 2.577 on 3 and 396 DF,  p-value: 0.05344
 
 
 
-```r
+``` r
 mod &lt;- lm(powerPOST ~ primeCond*expBelief + powerPRE, data=dat)
 summary(mod)
 ```
@@ -222,7 +222,7 @@ F-statistic: 98.58 on 4 and 395 DF,  p-value: &lt; 2.2e-16
 
 .scrollable[
 
-```r
+``` r
 mod2 &lt;- lm(powerPOST ~ primeCond*expBelief*powerPREc, data=dat)
 summary(mod2)
 ```
@@ -265,7 +265,7 @@ F-statistic: 56.22 on 7 and 392 DF,  p-value: &lt; 2.2e-16
 ## Testing homogeneity of regression slopes
 
 
-```r
+``` r
 anova(mod, mod2)
 ```
 
@@ -316,10 +316,10 @@ where `\(i = 1, \ldots, n_j\)` denotes the `\(i\)`-th observation for unit/group
 
 Key intuitions: 
 
-* A linear-mixed effects model allow for a different regression equation for each unit of observation `\(j\)`.
+* A linear-mixed effects model allows for effectively a different regression equation for each unit of observation `\(j\)`.
 * We need multiple observations `\(i\)` for each unit of observation `\(j\)` to estimate such a model.
 * Rather than estimating separate models for each subset `\(j\)`, we can estimate a single model over all subsets, assuming the random effects are drawn from a multivariate Normal distribution.
-* The fixed effects `\(\beta_k\)` represent the average effects over units of observation `\(j\)`.
+* Each fixed effect `\(\beta_k\)` can be viewed as the average effect over all possible units of observation `\(j\)`.
 
 ---
 
@@ -459,7 +459,7 @@ Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \m
 ## Random intercepts and anchoring
 
 
-```r
+``` r
 modg &lt;- afex::mixed(everest_meters ~ 1 + (1|referrer), data=dat, 
                    test_intercept = TRUE)
 modg
@@ -481,7 +481,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '+' 0.1 ' ' 1
 ## Random intercepts and anchoring
 
 
-```r
+``` r
 summary(modg)
 ```
 
@@ -528,7 +528,7 @@ vs unbiased estimate
 ## Fixed and random effects
 
 
-```r
+``` r
 lme4::fixef(modg$full_model)
 ```
 
@@ -537,7 +537,7 @@ lme4::fixef(modg$full_model)
    4392.911 
 ```
 
-```r
+``` r
 lme4::ranef(modg$full_model)
 ```
 
@@ -564,7 +564,7 @@ with conditional variances for "referrer"
 Estimated random intercepts: `\(\hat{\beta}_{0,j} = \hat{\beta}_0 + \hat{\gamma}_{0,j}\)`
 
 
-```r
+``` r
 lme4::fixef(modg$full_model) + lme4::ranef(modg$full_model)$referrer
 ```
 
