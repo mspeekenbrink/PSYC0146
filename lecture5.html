@@ -248,7 +248,7 @@ Resolving singular fit involve simplifying the model
 
 Multicollinearity for random effects terms can be diagnosed via **Principal Components Analysis** (PCA)
 
-.scrollable[
+.scrollable2[
 
 ``` r
 lme4::rePCA(mod$full_model)
@@ -317,6 +317,8 @@ Cumulative Proportion  0.7362 0.9144 0.96751 1.00000 1.000e+00 1.000e+00
 ---
 
 ## Independent crossed random intercepts and slopes
+
+Removing correlations between random effects is generally the first step in model simplification
 
 .scrollable2[
 
@@ -432,9 +434,41 @@ Cumulative Proportion  0.7388 0.83077 0.90679 0.95665 1.00000 1.000e+00
 
 ---
 
-## Removing redundant slopes
+## Removing redundant random effects
 
-.scrollable[
+Removing random effects with small variance is generally the next step in model simplification
+
+.scrollable2[
+
+``` r
+lme4::VarCorr(mod2$full_model)
+```
+
+```
+ Groups   Name        Std.Dev.  
+ pid      amb         1.1108e-01
+ pid.1    sinc        8.8931e-06
+ pid.2    fun         5.2107e-02
+ pid.3    intel       5.8792e-02
+ pid.4    attr        1.0273e-01
+ pid.5    (Intercept) 8.4774e-02
+ iid      amb         6.2367e-05
+ iid.1    sinc        1.2595e-01
+ iid.2    fun         1.3508e-01
+ iid.3    intel       1.6680e-01
+ iid.4    attr        1.8345e-01
+ iid.5    (Intercept) 5.1998e-01
+ Residual             8.5485e-01
+```
+]
+
+---
+
+## Removing redundant random effects
+
+Removing random effects with small variance is generally the next step in model simplification
+
+.scrollable2[
 
 ``` r
 mod3 &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
@@ -544,8 +578,6 @@ Cumulative Proportion  0.7388 0.83078 0.90681 0.95666 1.00000
 
 ---
 
-
-
 ## Fixed and random slopes for sincerity
 
 &lt;img src="lecture5_files/figure-html/unnamed-chunk-10-1.png" width="90%" style="display: block; margin: auto;" /&gt;
@@ -569,17 +601,17 @@ modr &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender +
                      (1|pid), 
                    data=dat)
 
-anova(modr, mod3)
+anova(modr$full_model, mod3$full_model)
 ```
 
 ```
 Data: data
 Models:
-modr: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 | pid)
-mod3: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
-     npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)   
-modr   19 4100.1 4199.5 -2031.0   4062.1                        
-mod3   23 4090.7 4211.2 -2022.4   4044.7 17.318  4   0.001676 **
+modr$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 | pid)
+mod3$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
+                npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)   
+modr$full_model   19 4039.1 4138.6 -2000.6   4001.1                        
+mod3$full_model   23 4030.8 4151.3 -1992.4   3984.8 16.313  4   0.002626 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -596,17 +628,17 @@ modr &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender +
                      (1 + attr + intel + fun + amb||pid), 
                    data=dat)
 
-anova(modr, mod3)
+anova(modr$full_model, mod3$full_model)
 ```
 
 ```
 Data: data
 Models:
-modr: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 | iid) + (1 + attr + intel + fun + amb || pid)
-mod3: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
-     npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
-modr   19 4160.1 4259.6 -2061.1   4122.1                         
-mod3   23 4090.7 4211.2 -2022.4   4044.7 77.398  4  6.195e-16 ***
+modr$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 | iid) + (1 + attr + intel + fun + amb || pid)
+mod3$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
+                npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
+modr$full_model   19 4096.4 4195.9 -2029.2   4058.4                         
+mod3$full_model   23 4030.8 4151.3 -1992.4   3984.8 73.615  4  3.911e-15 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -623,17 +655,17 @@ modr &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender +
                      (1|pid), 
                    data=dat)
 
-anova(modr, mod3)
+anova(modr$full_model, mod3$full_model)
 ```
 
 ```
 Data: data
 Models:
-modr: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 | iid) + (1 | pid)
-mod3: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
-     npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
-modr   15 4167.4 4246.0 -2068.7   4137.4                         
-mod3   23 4090.7 4211.2 -2022.4   4044.7 92.697  8  &lt; 2.2e-16 ***
+modr$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 | iid) + (1 | pid)
+mod3$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
+                npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
+modr$full_model   15 4102.0 4180.5 -2036.0   4072.0                         
+mod3$full_model   23 4030.8 4151.3 -1992.4   3984.8 87.173  8  1.741e-15 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -645,152 +677,272 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 1. Theory
 2. Practical constraints
 3. "Maximal" structure
-4. "Optimal" structure
+4. "Optimal" parsimonious structure
 
 ---
 
-.scrollable[
+## Automatic detection of maximal feasible model
+
+1. Search forward for model without convergence issues 
+
+.scrollable2[
 
 
 ``` r
 library(buildmer)
-buildmer(like ~ attr*gender + intel*gender + fun*gender + 
+mod4 &lt;- buildmer(like ~ attr*gender + intel*gender + fun*gender + 
                      sinc*gender + amb*gender + 
                      (1 + attr + intel + fun + sinc + amb|iid) + 
                      (1 + attr + intel + fun + sinc + amb|pid), 
-                   data=dat)
+                   data=dat,
+                   buildmerControl=buildmerControl(direction='order'))
+```
+]
+
+---
+
+## Automatic detection of maximal feasible model
+
+1. Search *forward* for model without convergence issues 
+
+.scrollable2[
+
+
+``` r
+summary(mod4)
 ```
 
 ```
-   grouping         term              block         score Iteration
-1      &lt;NA&gt;            1            NA NA 1            NA         1
-7      &lt;NA&gt;          fun          NA NA fun -493.97344236         1
-2      &lt;NA&gt;         attr         NA NA attr -161.43395918         1
-11     &lt;NA&gt;          amb          NA NA amb  -68.97285378         1
-5      &lt;NA&gt;        intel        NA NA intel  -36.04107659         1
-9      &lt;NA&gt;         sinc         NA NA sinc  -13.05691034         1
-3      &lt;NA&gt;       gender       NA NA gender   -0.63430277         1
-10     &lt;NA&gt;  gender:sinc  NA NA gender:sinc   -4.36403634         1
-4      &lt;NA&gt;  attr:gender  NA NA attr:gender   -6.47115342         1
-8      &lt;NA&gt;   gender:fun   NA NA gender:fun   -2.92940188         1
-6      &lt;NA&gt; gender:intel NA NA gender:intel   -0.96513420         1
-12     &lt;NA&gt;   gender:amb   NA NA gender:amb   -0.03468532         1
-13      iid            1           NA iid 1  -60.14782245         1
-14      iid         attr        NA iid attr  -22.47555706         1
-16      iid          fun         NA iid fun  -13.80530281         1
-15      iid        intel       NA iid intel   -8.55943188         1
-19      pid            1           NA pid 1   -2.57923460         1
-24      pid          amb         NA pid amb   -4.79606624         1
-            LRT
-1            NA
-7            NA
-2            NA
-11           NA
-5            NA
-9            NA
-3            NA
-10 2.257634e-03
-4  4.902992e-02
-8  8.682273e-01
-6  8.004679e-01
-12 9.180860e-02
-13           NA
-14          NaN
-16 5.901490e-06
-15 6.266924e-05
-19           NA
-24 8.262185e-03
-   grouping         term              block         score Iteration
-1      &lt;NA&gt;            1            NA NA 1            NA         2
-7      &lt;NA&gt;          fun          NA NA fun -493.97344236         2
-2      &lt;NA&gt;         attr         NA NA attr -161.43395918         2
-11     &lt;NA&gt;          amb          NA NA amb  -68.97285378         2
-5      &lt;NA&gt;        intel        NA NA intel  -36.04107659         2
-9      &lt;NA&gt;         sinc         NA NA sinc  -13.05691034         2
-3      &lt;NA&gt;       gender       NA NA gender   -0.63430277         2
-10     &lt;NA&gt;  gender:sinc  NA NA gender:sinc   -4.36403634         2
-4      &lt;NA&gt;  attr:gender  NA NA attr:gender   -6.47115342         2
-6      &lt;NA&gt; gender:intel NA NA gender:intel   -0.96513420         2
-12     &lt;NA&gt;   gender:amb   NA NA gender:amb   -0.03468532         2
-13      iid            1           NA iid 1  -60.14782245         2
-14      iid         attr        NA iid attr  -22.47555706         2
-16      iid          fun         NA iid fun  -13.80530281         2
-15      iid        intel       NA iid intel   -8.55943188         2
-19      pid            1           NA pid 1   -2.57923460         2
-24      pid          amb         NA pid amb   -4.79606624         2
-            LRT
-1            NA
-7            NA
-2            NA
-11           NA
-5            NA
-9            NA
-3            NA
-10 2.270120e-03
-4           NaN
-6  8.069275e-01
-12 9.260483e-02
-13           NA
-14          NaN
-16 7.464892e-06
-15 6.231033e-05
-19           NA
-24 8.405190e-03
-   grouping        term             block         score Iteration          LRT
-1      &lt;NA&gt;           1           NA NA 1            NA         3           NA
-7      &lt;NA&gt;         fun         NA NA fun -493.97344236         3           NA
-2      &lt;NA&gt;        attr        NA NA attr -161.43395918         3           NA
-11     &lt;NA&gt;         amb         NA NA amb  -68.97285378         3           NA
-5      &lt;NA&gt;       intel       NA NA intel  -36.04107659         3           NA
-9      &lt;NA&gt;        sinc        NA NA sinc  -13.05691034         3           NA
-3      &lt;NA&gt;      gender      NA NA gender   -0.63430277         3           NA
-10     &lt;NA&gt; gender:sinc NA NA gender:sinc   -4.36403634         3 1.431603e-03
-4      &lt;NA&gt; attr:gender NA NA attr:gender   -6.47115342         3 1.218491e-02
-12     &lt;NA&gt;  gender:amb  NA NA gender:amb   -0.03468532         3 9.496922e-02
-13      iid           1          NA iid 1  -60.14782245         3           NA
-14      iid        attr       NA iid attr  -22.47555706         3          NaN
-16      iid         fun        NA iid fun  -13.80530281         3 7.396870e-06
-15      iid       intel      NA iid intel   -8.55943188         3 7.588048e-05
-19      pid           1          NA pid 1   -2.57923460         3           NA
-24      pid         amb        NA pid amb   -4.79606624         3          NaN
-   grouping        term             block        score Iteration          LRT
-1      &lt;NA&gt;           1           NA NA 1           NA         4           NA
-7      &lt;NA&gt;         fun         NA NA fun -493.9734424         4           NA
-2      &lt;NA&gt;        attr        NA NA attr -161.4339592         4           NA
-11     &lt;NA&gt;         amb         NA NA amb  -68.9728538         4 1.206132e-17
-5      &lt;NA&gt;       intel       NA NA intel  -36.0410766         4           NA
-9      &lt;NA&gt;        sinc        NA NA sinc  -13.0569103         4           NA
-3      &lt;NA&gt;      gender      NA NA gender   -0.6343028         4           NA
-10     &lt;NA&gt; gender:sinc NA NA gender:sinc   -4.3640363         4 1.343040e-04
-4      &lt;NA&gt; attr:gender NA NA attr:gender   -6.4711534         4 2.007941e-02
-13      iid           1          NA iid 1  -60.1478224         4           NA
-14      iid        attr       NA iid attr  -22.4755571         4 6.064284e-12
-16      iid         fun        NA iid fun  -13.8053028         4 1.806500e-05
-15      iid       intel      NA iid intel   -8.5594319         4 3.332969e-04
+Linear mixed model fit by REML
+(p-values based on Wald z-scores) ['lmerMod']
+Formula: like ~ 1 + fun + attr + amb + intel + sinc + gender + sinc:gender +  
+    attr:gender + fun:gender + intel:gender + amb:gender + (1 +  
+    attr + fun + intel | iid) + (1 + amb | pid)
+   Data: dat
+
+REML criterion at convergence: 4032.3
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.0851 -0.5338  0.0068  0.5470  5.1359 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr             
+ pid      (Intercept) 0.01586  0.1259                    
+          amb         0.01021  0.1010   0.42             
+ iid      (Intercept) 0.28373  0.5327                    
+          attr        0.04552  0.2134   -0.38            
+          fun         0.02829  0.1682    0.12 -0.54      
+          intel       0.04083  0.2021   -0.15 -0.43  0.26
+ Residual             0.76988  0.8774                    
+Number of obs: 1389, groups:  pid, 102; iid, 100
+
+Fixed effects:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    6.155446   0.064995  94.706  &lt; 2e-16 ***
+fun            0.332265   0.029107  11.415  &lt; 2e-16 ***
+attr           0.377353   0.031111  12.129  &lt; 2e-16 ***
+amb            0.087049   0.026142   3.330 0.000869 ***
+intel          0.131700   0.037847   3.480 0.000502 ***
+sinc           0.167774   0.025880   6.483 9.01e-11 ***
+gender1        0.029536   0.064995   0.454 0.649515    
+sinc:gender1   0.079699   0.025880   3.080 0.002073 ** 
+attr:gender1  -0.061830   0.031111  -1.987 0.046880 *  
+fun:gender1   -0.005839   0.029107  -0.201 0.841009    
+intel:gender1 -0.010017   0.037847  -0.265 0.791274    
+amb:gender1    0.044535   0.026142   1.704 0.088467 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) fun    attr   amb    intel  sinc   gendr1 snc:g1 attr:1
+fun          0.020                                                        
+attr        -0.248 -0.500                                                 
+amb          0.039 -0.163 -0.038                                          
+intel       -0.076  0.070 -0.224 -0.228                                   
+sinc        -0.001 -0.099 -0.049 -0.045 -0.372                            
+gender1      0.006 -0.012  0.048 -0.084 -0.016  0.023                     
+sinc:gendr1  0.023 -0.003  0.000  0.015 -0.028 -0.021 -0.001              
+attr:gendr1  0.048 -0.021  0.031  0.020 -0.035  0.000 -0.248 -0.049       
+fun:gender1 -0.012  0.010 -0.021 -0.048  0.055 -0.003  0.020 -0.099 -0.500
+intel:gndr1 -0.016  0.055 -0.035 -0.062  0.036 -0.028 -0.076 -0.372 -0.224
+amb:gender1 -0.084 -0.048  0.020  0.074 -0.062  0.015  0.039 -0.045 -0.038
+            fn:gn1 intl:1
+fun                      
+attr                     
+amb                      
+intel                    
+sinc                     
+gender1                  
+sinc:gendr1              
+attr:gendr1              
+fun:gender1              
+intel:gndr1  0.070       
+amb:gender1 -0.163 -0.228
+```
+]
+
+
+---
+
+## Automatic detection of maximal feasible model
+
+2. Search *backward* by eliminating redundant effects 
+
+.scrollable2[
+
+
+``` r
+f &lt;- formula(mod4@model)
+mod4 &lt;- buildmer(f, 
+                   data=dat,
+                   buildmerControl=buildmerControl(direction='backward'))
 ```
 
 ```
-Linear mixed model fit by REML ['lmerModLmerTest']
+   grouping         term              block Iteration          LRT
+1      &lt;NA&gt;            1            NA NA 1         1           NA
+2      &lt;NA&gt;          fun          NA NA fun         1           NA
+3      &lt;NA&gt;         attr         NA NA attr         1           NA
+4      &lt;NA&gt;          amb          NA NA amb         1           NA
+5      &lt;NA&gt;        intel        NA NA intel         1           NA
+6      &lt;NA&gt;         sinc         NA NA sinc         1           NA
+7      &lt;NA&gt;       gender       NA NA gender         1           NA
+8      &lt;NA&gt;  sinc:gender  NA NA sinc:gender         1 2.257634e-03
+9      &lt;NA&gt;  attr:gender  NA NA attr:gender         1 4.902992e-02
+10     &lt;NA&gt;   fun:gender   NA NA fun:gender         1 8.682273e-01
+11     &lt;NA&gt; intel:gender NA NA intel:gender         1 8.004679e-01
+12     &lt;NA&gt;   amb:gender   NA NA amb:gender         1 9.180860e-02
+13      iid            1           NA iid 1         1           NA
+14      iid         attr        NA iid attr         1          NaN
+15      iid          fun         NA iid fun         1 5.901490e-06
+16      iid        intel       NA iid intel         1 6.266924e-05
+17      pid            1           NA pid 1         1           NA
+18      pid          amb         NA pid amb         1 8.262185e-03
+   grouping         term              block Iteration          LRT
+1      &lt;NA&gt;            1            NA NA 1         2           NA
+2      &lt;NA&gt;          fun          NA NA fun         2           NA
+3      &lt;NA&gt;         attr         NA NA attr         2           NA
+4      &lt;NA&gt;          amb          NA NA amb         2           NA
+5      &lt;NA&gt;        intel        NA NA intel         2           NA
+6      &lt;NA&gt;         sinc         NA NA sinc         2           NA
+7      &lt;NA&gt;       gender       NA NA gender         2           NA
+8      &lt;NA&gt;  sinc:gender  NA NA sinc:gender         2 2.270120e-03
+9      &lt;NA&gt;  attr:gender  NA NA attr:gender         2          NaN
+11     &lt;NA&gt; intel:gender NA NA intel:gender         2 8.069275e-01
+12     &lt;NA&gt;   amb:gender   NA NA amb:gender         2 9.260483e-02
+13      iid            1           NA iid 1         2           NA
+14      iid         attr        NA iid attr         2          NaN
+15      iid          fun         NA iid fun         2 7.464892e-06
+16      iid        intel       NA iid intel         2 6.231033e-05
+17      pid            1           NA pid 1         2           NA
+18      pid          amb         NA pid amb         2 8.405190e-03
+   grouping        term             block Iteration          LRT
+1      &lt;NA&gt;           1           NA NA 1         3           NA
+2      &lt;NA&gt;         fun         NA NA fun         3           NA
+3      &lt;NA&gt;        attr        NA NA attr         3           NA
+4      &lt;NA&gt;         amb         NA NA amb         3           NA
+5      &lt;NA&gt;       intel       NA NA intel         3           NA
+6      &lt;NA&gt;        sinc        NA NA sinc         3           NA
+7      &lt;NA&gt;      gender      NA NA gender         3           NA
+8      &lt;NA&gt; sinc:gender NA NA sinc:gender         3 1.431603e-03
+9      &lt;NA&gt; attr:gender NA NA attr:gender         3 1.218491e-02
+12     &lt;NA&gt;  amb:gender  NA NA amb:gender         3 9.496922e-02
+13      iid           1          NA iid 1         3           NA
+14      iid        attr       NA iid attr         3          NaN
+15      iid         fun        NA iid fun         3 7.396870e-06
+16      iid       intel      NA iid intel         3 7.588048e-05
+17      pid           1          NA pid 1         3           NA
+18      pid         amb        NA pid amb         3          NaN
+   grouping        term             block Iteration          LRT
+1      &lt;NA&gt;           1           NA NA 1         4           NA
+2      &lt;NA&gt;         fun         NA NA fun         4           NA
+3      &lt;NA&gt;        attr        NA NA attr         4           NA
+4      &lt;NA&gt;         amb         NA NA amb         4 1.206132e-17
+5      &lt;NA&gt;       intel       NA NA intel         4           NA
+6      &lt;NA&gt;        sinc        NA NA sinc         4           NA
+7      &lt;NA&gt;      gender      NA NA gender         4           NA
+8      &lt;NA&gt; sinc:gender NA NA sinc:gender         4 1.343040e-04
+9      &lt;NA&gt; attr:gender NA NA attr:gender         4 2.007941e-02
+13      iid           1          NA iid 1         4           NA
+14      iid        attr       NA iid attr         4 6.064284e-12
+15      iid         fun        NA iid fun         4 1.806500e-05
+16      iid       intel      NA iid intel         4 3.332969e-04
+```
+]
+
+---
+
+## Automatic detection of maximal feasible model
+
+2. Search backward by eliminating redundant effects 
+
+.scrollable2[
+
+
+``` r
+summary(mod4)
+```
+
+```
+Linear mixed model fit by REML
+(p-values based on Wald z-scores) ['lmerMod']
 Formula: like ~ 1 + fun + attr + amb + intel + sinc + gender + sinc:gender +  
     attr:gender + (1 + attr + fun + intel | iid)
    Data: dat
-REML criterion at convergence: 4030.72
-Random effects:
- Groups   Name        Std.Dev. Corr             
- iid      (Intercept) 0.5281                    
-          attr        0.2123   -0.40            
-          fun         0.1607    0.16 -0.57      
-          intel       0.1928   -0.14 -0.39  0.25
- Residual             0.9053                    
-Number of obs: 1389, groups:  iid, 100
-Fixed Effects:
- (Intercept)           fun          attr           amb         intel  
-     6.16604       0.33922       0.37747       0.07929       0.13728  
-        sinc       gender1  sinc:gender1  attr:gender1  
-     0.16646       0.02390       0.08990      -0.05853  
-```
 
+REML criterion at convergence: 4030.7
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.3327 -0.5494  0.0074  0.5583  5.2082 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr             
+ iid      (Intercept) 0.27891  0.5281                    
+          attr        0.04508  0.2123   -0.40            
+          fun         0.02581  0.1607    0.16 -0.57      
+          intel       0.03716  0.1928   -0.14 -0.39  0.25
+ Residual             0.81955  0.9053                    
+Number of obs: 1389, groups:  iid, 100
+
+Fixed effects:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   6.16604    0.06296  97.930  &lt; 2e-16 ***
+fun           0.33922    0.02825  12.009  &lt; 2e-16 ***
+attr          0.37747    0.03063  12.324  &lt; 2e-16 ***
+amb           0.07929    0.02354   3.368 0.000757 ***
+intel         0.13728    0.03702   3.709 0.000208 ***
+sinc          0.16646    0.02582   6.447 1.14e-10 ***
+gender1       0.02390    0.06312   0.379 0.704890    
+sinc:gender1  0.08990    0.02339   3.844 0.000121 ***
+attr:gender1 -0.05853    0.02498  -2.343 0.019122 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) fun    attr   amb    intel  sinc   gendr1 snc:g1
+fun          0.040                                                 
+attr        -0.271 -0.520                                          
+amb          0.014 -0.181 -0.045                                   
+intel       -0.075  0.065 -0.205 -0.249                            
+sinc         0.003 -0.099 -0.041 -0.045 -0.385                     
+gender1      0.005 -0.009  0.045 -0.100 -0.015  0.023              
+sinc:gendr1  0.001  0.009 -0.010 -0.002 -0.020 -0.035 -0.024       
+attr:gendr1  0.021 -0.014  0.013 -0.006 -0.011 -0.004 -0.320 -0.255
+```
 ]
+
+---
+
+## Summary
+
+1. Linear mixed-effects models are very flexible. It may be difficult to *a priori* exclude random effects.
+2. A "maximal" random effects structure is straightforward in principle, and provides conservative tests for fixed effects. But it may lead to overly complex models.
+3. For a given data set or experimental design, there are practical constraints on whether random effects can be estimated
+4. Finding the "most maximal" model that can be estimated is not easy, and involves subjective decisions.
+5. One strategy is to first eliminate correlations between random effects, then remove (if necessary) random effects with small variance.
+6. Automatic model building should be used with caution!
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
