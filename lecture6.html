@@ -3,7 +3,7 @@
   <head>
     <title>Statistics: Data analysis and modelling</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="mycss.css" type="text/css" />
   </head>
@@ -192,9 +192,9 @@ and `\(h\)` is called the **inverse-link function**, e.g. the logistic function
 
 ### Generalized linear models In R
 
-.scrollable[
+.scrollable2[
 
-``` r
+```r
 data("metacognition")
 dat &lt;- subset(metacognition, id == 2) |&gt;
   mutate(confidence_c = center(confidence),
@@ -229,7 +229,7 @@ AIC: 289
 Number of Fisher Scoring iterations: 6
 ```
 
-``` r
+```r
 # Model comparison tests
 car::Anova(mod, type=3)
 ```
@@ -246,7 +246,7 @@ confidence_c:contrast_c     4.24  1     0.0394 *
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-``` r
+```r
 # p-value for overall model test
 1-pchisq(deviance(mod), df=nrow(dat) - 4)
 ```
@@ -260,9 +260,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ### Generalized linear models In R
 
-.scrollable[
+.scrollable2[
 
-``` r
+```r
 dat$pred &lt;- predict(mod, type="response")
 dat |&gt;
   ggplot(aes(x=confidence, y=pred)) + geom_line() +
@@ -276,9 +276,9 @@ dat |&gt;
 
 ### Probit regression
 
-.scrollable[
+.scrollable2[
 
-``` r
+```r
 data("metacognition")
 dat &lt;- subset(metacognition, id == 2) |&gt;
   mutate(confidence_c = center(confidence),
@@ -313,7 +313,7 @@ AIC: 287.9
 Number of Fisher Scoring iterations: 7
 ```
 
-``` r
+```r
 # Model comparison tests
 car::Anova(mod, type=3)
 ```
@@ -330,7 +330,7 @@ confidence_c:contrast_c     3.65  1     0.0560 .
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-``` r
+```r
 # p-value for overall model test
 1-pchisq(deviance(mod), df=nrow(dat) - 4)
 ```
@@ -358,7 +358,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ### Example: Hand gestures
 
 
-``` r
+```r
 data("gestures")
 gestures %&gt;%
   ggplot(aes(x=gestures)) + geom_histogram(bins=10, colour="black") + 
@@ -371,9 +371,9 @@ gestures %&gt;%
 
 ### Example: Hand gestures
 
-.scrollable[
+.scrollable2[
 
-``` r
+```r
 contrasts(gestures$context) &lt;- c(1,-1)
 contrasts(gestures$context)
 ```
@@ -384,7 +384,7 @@ friend    1
 prof     -1
 ```
 
-``` r
+```r
 contrasts(gestures$language) &lt;- c(1,-1)
 contrasts(gestures$language)
 ```
@@ -395,7 +395,7 @@ Catalan    1
 Korean    -1
 ```
 
-``` r
+```r
 contrasts(gestures$gender) &lt;- c(1,-1)
 contrasts(gestures$gender)
 ```
@@ -406,7 +406,7 @@ F    1
 M   -1
 ```
 
-``` r
+```r
 # duration of chats is variable
 # need to account for this with an "offset"
 gestures$log_dur &lt;- log(gestures$dur)
@@ -442,7 +442,7 @@ AIC: 623.1
 Number of Fisher Scoring iterations: 4
 ```
 
-``` r
+```r
 # model comparison tests
 car::Anova(pois_mod, type=3)
 ```
@@ -463,7 +463,7 @@ context:language:gender     3.53  1     0.0602 .
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-``` r
+```r
 # model fit
 1-pchisq(deviance(pois_mod), df = nrow(gestures) - 8)
 ```
@@ -478,7 +478,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ### Overdispersion
 
 
-``` r
+```r
 bw &lt;- 1 # binwidth
 n_obs &lt;- length(residuals(pois_mod, type="pearson")) # number of observations
 # create plot
@@ -494,9 +494,9 @@ ggplot(aes(x=residual)) + geom_histogram(binwidth=bw, colour="black") +
 
 ### Quasi-Poisson regression
 
-.scrollable[
+.scrollable2[
 
-``` r
+```r
 qpois_mod &lt;-  glm(gestures ~ context*language*gender, data=gestures, family=quasipoisson(), offset=log_dur)
 summary(qpois_mod)
 ```
@@ -529,7 +529,7 @@ AIC: NA
 Number of Fisher Scoring iterations: 4
 ```
 
-``` r
+```r
 car::Anova(qpois_mod, type=3, test.statistic="F", error.estimate="dispersion")
 ```
 
