@@ -16,6 +16,13 @@
   overflow-x: auto;
 }
 
+.scrollable2 {
+  height: 70%;
+  overflow-y: scroll;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 .small {
   font-size: .5rem;
 }
