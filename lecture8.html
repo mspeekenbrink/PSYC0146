@@ -3,7 +3,7 @@
   <head>
     <title>Statistics: Data analysis and modelling</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="mycss.css" type="text/css" />
   </head>
@@ -57,9 +57,9 @@ To identify the latent variable:
 
 ### Confirmatory factor analysis (CFA)
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 mod_spec &lt;- '
 E =~ i1 + i16 + i31 + i46 + i6 + i21 + i36 + i51 + i11 + i26 + i41 + i56
 '
@@ -68,7 +68,7 @@ summary(BFI2_extr, fit.measures=TRUE)
 ```
 
 ```
-lavaan 0.6.16 ended normally after 23 iterations
+lavaan 0.6-18 ended normally after 23 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -159,7 +159,7 @@ Variances:
 ### Confirmatory factor analysis (CFA)
 
 
-```r
+``` r
 semPlot::semCors(BFI2_extr)
 ```
 
@@ -170,9 +170,9 @@ semPlot::semCors(BFI2_extr)
 
 ### Confirmatory factor analysis (CFA)
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 lavaan::modificationIndices(BFI2_extr, sort=TRUE, standardized = FALSE)
 ```
 
@@ -259,9 +259,9 @@ Participants can have a tendency to agree (or disagree) with statements, irrespe
 
 ### Accounting for acquiesence
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 mod_spec &lt;- '
 E =~ i1 + i16 + i31 + i46 + i6 + i21 + i36 + i51 + i11 + i26 + i41 + i56
 Acq =~ 1*i1 + 1*i16 + 1*i31 + 1*i46 + 1*i6 + 1*i21 + 1*i36 + 1*i51 + 1*i11 + 1*i26 + 1*i41 + 1*i56
@@ -271,7 +271,7 @@ summary(BFI2_extr_acq, fit.measures=TRUE)
 ```
 
 ```
-lavaan 0.6.16 ended normally after 36 iterations
+lavaan 0.6-18 ended normally after 36 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -381,7 +381,7 @@ Variances:
 ### Accounting for acquiesence
 
 
-```r
+``` r
 semPlot::semCors(BFI2_extr_acq)
 ```
 
@@ -392,9 +392,9 @@ semPlot::semCors(BFI2_extr_acq)
 
 ### Accounting for acquiesence
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 lavaan::modificationIndices(BFI2_extr_acq, sort=TRUE, standardized = FALSE)
 ```
 
@@ -493,9 +493,9 @@ Extraversion is assumed to consist of three facets: sociability (Es), assertiven
 
 ### A hierarchical factor model
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 mod_spec &lt;- '
 E =~ 1*Es + Ea + Ee
 Es =~ 1*i1 + i16 + i31 + i46 
@@ -509,7 +509,7 @@ summary(BFI2_extr_hier_acq, fit.measures=TRUE)
 ```
 
 ```
-lavaan 0.6.16 ended normally after 67 iterations
+lavaan 0.6-18 ended normally after 67 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -628,7 +628,7 @@ Variances:
 ### A hierarchical factor model
 
 
-```r
+``` r
 semPlot::semCors(BFI2_extr_hier_acq)
 ```
 
@@ -639,9 +639,9 @@ semPlot::semCors(BFI2_extr_hier_acq)
 
 ### A hierarchical factor model
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 lavaan::modificationIndices(BFI2_extr_hier_acq, sort=TRUE, standardized = FALSE)
 ```
 
@@ -781,9 +781,9 @@ lavaan::modificationIndices(BFI2_extr_hier_acq, sort=TRUE, standardized = FALSE)
 
 ### Full hierarchical factor model
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 mod_spec &lt;- '
 E =~ Es + Ea + Ee
 Es =~ i1 + i16 + i31 + i46 
@@ -817,7 +817,7 @@ summary(BFI2_cfa_hier, fit.measures=TRUE)
 ```
 
 ```
-lavaan 0.6.16 ended normally after 102 iterations
+lavaan 0.6-18 ended normally after 102 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -1141,9 +1141,9 @@ Variances:
 
 ### Full hierarchical factor model
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 lavaan::modificationIndices(BFI2_cfa_hier, sort=TRUE, standardized = FALSE)
 ```
 
@@ -4306,9 +4306,9 @@ lavaan::modificationIndices(BFI2_cfa_hier, sort=TRUE, standardized = FALSE)
 
 ### Full hierarchical factor model with dependence between factors
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 mod_spec &lt;- '
 E =~ Es + Ea + Ee
 Es =~ i1 + i16 + i31 + i46 
@@ -4348,7 +4348,7 @@ summary(BFI2_cfa_hier_dep, fit.measures=TRUE)
 ```
 
 ```
-lavaan 0.6.16 ended normally after 102 iterations
+lavaan 0.6-18 ended normally after 102 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -4677,7 +4677,7 @@ Variances:
 ### Full hierarchical factor model with dependence between factors
 
 
-```r
+``` r
 anova(BFI2_cfa_hier, BFI2_cfa_hier_dep)
 ```
 
@@ -4733,9 +4733,9 @@ In **PCA**, components `\(\text{PC}_j\)`, `\(j=1,\ldots,q\)`, are linear functio
 
 ### Principal components analysis
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 psych::pca(dat, nfactors = 60, rotate="none")
 ```
 
@@ -5164,9 +5164,9 @@ Fit based upon off diagonal values = 1
 
 ### Determining the number of components
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 psych::fa.parallel(dat, fa="pc")
 ```
 
@@ -5196,9 +5196,9 @@ Y_{P,i} &amp;= \lambda_{P,1} \times \eta_{1,i} + \lambda_{P,2} \times \eta_{2,i}
 
 ### Exploratory factor analysis
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 psych::fa(dat, nfactors = 59, rotate="none", fm="ml")
 ```
 
@@ -5676,16 +5676,16 @@ Minimum correlation of possible factor scores     -0.76 -0.81 -0.82 -0.88 -0.99
 
 ### Determining the number of factors
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 psych::fa.parallel(dat, fa="fa", fm="ml")
 ```
 
 &lt;img src="lecture8_files/figure-html/unnamed-chunk-23-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
 
 ```
-Parallel analysis suggests that the number of factors =  10  and the number of components =  NA 
+Parallel analysis suggests that the number of factors =  9  and the number of components =  NA 
 ```
 ]
 
@@ -5693,9 +5693,9 @@ Parallel analysis suggests that the number of factors =  10  and the number of c
 
 ### Exploratory factor analysis
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 psych::fa(dat, nfactors = 10, rotate="none", fm="ml")
 ```
 
@@ -5877,9 +5877,9 @@ Two classes of rotation methods:
 
 ### Varimax rotation
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 bfi_fa_varimax &lt;- psych::fa(dat, nfactors = 10, rotate="varimax", fm="ml")
 loadings(bfi_fa_varimax)
 ```
@@ -5960,9 +5960,9 @@ Cumulative Var 0.09 0.169 0.243 0.306 0.348 0.383 0.413 0.436 0.454 0.468
 
 ### Promax rotation
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 bfi_fa_promax &lt;- psych::fa(dat, nfactors = 10, rotate="promax", fm="ml")
 loadings(bfi_fa_promax)
 ```
@@ -6051,9 +6051,9 @@ Two-factor attractiveness in the speed-date data
 ### General Structural Equation Models
 
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 library(sdamr)
 data("speeddate")
 
@@ -6072,7 +6072,7 @@ summary(fmod_fs, fit.measures=TRUE)
 ```
 
 ```
-lavaan 0.6.16 ended normally after 46 iterations
+lavaan 0.6-18 ended normally after 46 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -6202,9 +6202,9 @@ Two-factor attractiveness with a simpler structure:
 
 ### General Structural Equation Models 
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 mod_fs2 &lt;- '
 d_frivolous =~ date_attr + date_fun
 d_serious =~ date_sinc + date_intel + date_amb
@@ -6224,7 +6224,7 @@ summary(fmod_fs2)
 ```
 
 ```
-lavaan 0.6.16 ended normally after 37 iterations
+lavaan 0.6-18 ended normally after 37 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -6319,9 +6319,9 @@ One-factor attractiveness
 
 ### General Structural Equation Models
 
-.scrollable[
+.scrollable2[
 
-```r
+``` r
 mod_fs3 &lt;- '
 d_overall =~ date_attr + date_fun + date_sinc + date_intel + date_amb
 
@@ -6338,7 +6338,7 @@ summary(fmod_fs3, fit.measures=TRUE)
 ```
 
 ```
-lavaan 0.6.16 ended normally after 27 iterations
+lavaan 0.6-18 ended normally after 27 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -6442,7 +6442,7 @@ Variances:
 ---
 
 
-```r
+``` r
 anova(fmod_fs2, fmod_fs)
 ```
 
@@ -6457,7 +6457,7 @@ fmod_fs2 50 51332 51476   326       66.3 0.0717       9      8e-11 ***
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-```r
+``` r
 anova(fmod_fs3, fmod_fs)
 ```
 
