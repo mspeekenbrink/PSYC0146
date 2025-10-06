@@ -4,7 +4,7 @@
     <title>Statistics: Data analysis and modelling</title>
     <meta charset="utf-8" />
     <meta name="author" content="Maarten Speekenbrink" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="mycss.css" type="text/css" />
   </head>
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Statistics: Data analysis and modelling
 ]
 .subtitle[
-## Week 2 highlights: Regression and moderation (GLM 1)
+## Week 2: Regression and moderation (GLM 1)
 ]
 .author[
 ### Maarten Speekenbrink
@@ -38,13 +38,13 @@ The General Linear Model has the form
 `$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \ldots + \beta_m \times X_{m,i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
 --
 
-`\(Y\)` is the **dependent variable**
+`\(Y\)` is the **dependent variable**, with index `\(i = 1, \ldots, n\)` denoting observed values.
 
-`\(X_j\)` is a **predictor** or **independent variable**
+`\(X_j\)` is a **predictor** or **independent variable**.
 
-`\(\beta_0\)` is called the **intercept**
+`\(\beta_0\)` is called the **intercept**. It is the predicted value of `\(Y\)` when *all* `\(X_j = 0\)`.
 
-`\(\beta_j\)` `\((j &gt; 0)\)` is called a **slope**
+`\(\beta_j\)` `\((j &gt; 0)\)` is called a **slope**. It indicates the increase or decrease in `\(Y\)` for every one-unit increase in `\(X_j\)`.
 
 `\(\epsilon_i\)` is called the **error** or **residual**
 
@@ -66,6 +66,14 @@ The General Linear Model has the form
 
 ---
 
+## Simple regression
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
 ## Simple regression as a statistical model
 
 `$$Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
@@ -76,7 +84,7 @@ The **conditional mean** of `\(Y\)`:
 
 `$$Y_i = \mu_{Y|X_i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -93,6 +101,23 @@ would be the true model. We can test this by model comparison
 * __MODEL G__: `\(Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)\)`
 
 --
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+## Inference in the simple regression model
+
+`$$Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
+
+Does `\(X\)` have an effect on `\(Y\)`? If not, then 
+
+`$$\begin{aligned} Y_i &amp;= \beta_0 + 0 \times X_{i} + \epsilon_i &amp;&amp; \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon) \\ &amp;= \beta_0 + \epsilon_i &amp;&amp; \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon) \end{aligned}$$`
+would be the true model. We can test this by model comparison
+
+* __MODEL R__: `\(Y_i = \beta_0 + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)\)` 
+* __MODEL G__: `\(Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)\)`
 
 The likelihood ratio `\(\frac{p(\text{DATA}|\text{MODEL R})}{p(\text{DATA}|\text{MODEL G})}\)`
 of _any_ nested GLMs can be shown to be a function of
@@ -118,20 +143,20 @@ with `\(\text{SSE}(M) = \sum_{i=1}^n (Y_i - \hat{Y}_{M,i})^2\)`
 t = \frac{\hat{\beta}_j}{\text{SE}(\hat{\beta}_j)} \quad \quad \quad t \sim \mathbf{T}(n-2)
 \end{equation}`
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Example
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Example
 
 
-```r
+``` r
 library(sdamr)
 data("speeddate")
 mod &lt;- lm(other_like ~ other_attr, data=speeddate)
@@ -164,14 +189,14 @@ F-statistic:  1241 on 1 and 1529 DF,  p-value: &lt; 2.2e-16
 
 ## Example
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-11-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Multiple regression
 
 
-```r
+``` r
 data("speeddate")
 mod2 &lt;- lm(other_like ~ other_attr + other_intel, data=speeddate)
 summary(mod2)
@@ -203,7 +228,7 @@ F-statistic: 864.6 on 2 and 1506 DF,  p-value: &lt; 2.2e-16
 ---
 
 
-```r
+``` r
 dat &lt;- speeddate |&gt;
   dplyr::select(other_like, other_attr, other_intel) |&gt;
   tidyr::drop_na()
@@ -236,7 +261,7 @@ F-statistic:  1217 on 1 and 1507 DF,  p-value: &lt; 2.2e-16
 ---
 
 
-```r
+``` r
 summary(mod2)
 ```
 
@@ -267,7 +292,7 @@ F-statistic: 864.6 on 2 and 1506 DF,  p-value: &lt; 2.2e-16
 Model comparison with the `\(F\)` test, testing null-hypothesis `\(\beta_\texttt{intel} = 0\)`
 
 
-```r
+``` r
 anova(mod1, mod2)
 ```
 
@@ -300,44 +325,36 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## Predicted vs residual plot
 
 
-```r
+``` r
 data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
   ggplot(aes(x=predicted, y=residual)) + geom_point() + geom_hline(yintercept=0, lty=3)
-```
-
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-14-1.png" width="80%" style="display: block; margin: auto;" /&gt;
-
----
-
-## Histogram of residuals
-
-
-```r
-data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
-  ggplot(aes(x=residual)) + geom_histogram()
-```
-
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-15-1.png" width="80%" style="display: block; margin: auto;" /&gt;
-
----
-
-## QQ plot
-
-
-```r
-data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
-  ggplot(aes(sample=residual)) + geom_qq() + stat_qq_line()
 ```
 
 &lt;img src="lecture2_files/figure-html/unnamed-chunk-16-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-## Moderation
+## Histogram of residuals
 
-Moderation means that the slope of one predictor depends on the value of another predictor
+
+``` r
+data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
+  ggplot(aes(x=residual)) + geom_histogram()
+```
 
 &lt;img src="lecture2_files/figure-html/unnamed-chunk-17-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## QQ plot
+
+
+``` r
+data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
+  ggplot(aes(sample=residual)) + geom_qq() + stat_qq_line()
+```
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-18-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -345,7 +362,15 @@ Moderation means that the slope of one predictor depends on the value of another
 
 Moderation means that the slope of one predictor depends on the value of another predictor
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-18-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Moderation
+
+Moderation means that the slope of one predictor depends on the value of another predictor
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-20-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -369,7 +394,7 @@ Similarly, for e.g. `\(X_2 = 5\)`, we get
 
 Moderation is "symmetric" so the relation of the other predictor is moderated as well
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-21-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -458,7 +483,7 @@ F-statistic: 578.2 on 3 and 1505 DF,  p-value: &lt; 2.2e-16
 
 As a whole, centering does not affect predictive quality of models
 
-```r
+``` r
 anova(mod3, mod3a)
 ```
 
@@ -475,7 +500,7 @@ Model 2: other_like ~ center(other_attr) * center(other_intel)
 Model comparison can be used to test multiple parameters simultaneously:
 
 
-```r
+``` r
 anova(mod1, mod3)
 ```
 
@@ -512,9 +537,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script src="macros.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
