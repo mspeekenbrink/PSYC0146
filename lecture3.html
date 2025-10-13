@@ -4,7 +4,7 @@
     <title>Statistics: Data analysis and modelling</title>
     <meta charset="utf-8" />
     <meta name="author" content="Maarten Speekenbrink" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="mycss.css" type="text/css" />
   </head>
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Statistics: Data analysis and modelling
 ]
 .subtitle[
-## Week 3 highlights: ANOVA (GLM 2)
+## Week 3: ANOVA (GLM 2)
 ]
 .author[
 ### Maarten Speekenbrink
@@ -36,8 +36,6 @@ class: center, middle, inverse, title-slide
 
 ## The General Linear Model (GLM)
 
-The General Linear Model has the form
-
 `$$Y_i = \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times X_{2,i} + \ldots + \beta_m \times X_{m,i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
 
 `\(Y\)` is the **dependent variable**
@@ -50,9 +48,9 @@ The General Linear Model has the form
 
 `\(\epsilon_i\)` is called the **error** or **residual**
 
---
-
+&lt;!--
 **Note**: Any error in the measurement of predictors `\(X\)` is not taken into account.
+--&gt;
 
 ---
 
@@ -69,7 +67,8 @@ The predictors `\(X_j\)` can be whatever you like:
   * `\(X^2\)`, `\(X^3\)`, `\(\ldots\)` (polynomial regression)
   
 --
-* **Codes for categorical variables**
+
+* **Contrast-coded predictors for categorical variables**
 
 ---
 
@@ -97,6 +96,16 @@ Y_{j,i} = \mu_j + \epsilon_{j,i} \quad \quad \epsilon_{j,i} \sim \textbf{Normal}
 
 ---
 
+# The ANOVA model
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+`\begin{equation}
+Y_{i} = \beta_0 + \beta_1 X_{1,i} + \ldots + \beta_{j-1} X_{j-1,i} + \epsilon_{i} \quad \quad \epsilon_{i} \sim \textbf{Normal}(0, \sigma_\epsilon)
+\end{equation}`
+
+---
+
 ## Contrast coding
 
 A way to construct metric variables `\(X\)` that allow you to include categorical variables into the GLM:
@@ -106,16 +115,309 @@ A way to construct metric variables `\(X\)` that allow you to include categorica
 * Helmert coding
 * `\(\ldots\)`
 
+--
+
+Any scheme is fine in principle as long as it instantiates the ANOVA model
+
+--
+
+But some contrast codes allow directly testing hypotheses of interest...
+
 ---
 
-## Oneway ANOVA
+## Contrast coding
+
+The ANOVA model is
+`\begin{equation}
+Y_{j,i} = \mu_j + \epsilon_{j,i} \quad \quad \epsilon_{j,i} \sim \textbf{Normal}(0, \sigma_\epsilon)
+\end{equation}`
+
+We know the sample mean is the best estimate of the true DGP mean. So we would like our linear model to predict sample means:
+
+`$$\hat{Y}_{j,i} = \hat{\mu}_j = \overline{Y}_j$$`
+We would like our linear model
+
+`\begin{equation}
+Y_{i} = \beta_0 + \beta_1 X_{1,i} + \ldots + \beta_{j-1} X_{j-1,i} + \epsilon_{i} \quad \quad \epsilon_{i} \sim \textbf{Normal}(0, \sigma_\epsilon)
+\end{equation}`
+
+to do the same
+
+---
+
+## Guess the score
+
+.pull-left[
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+## Guess the score
+
+.pull-left[
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+It's one of the persons...
+
+]
+
+.pull-right[
+
+`$$\beta_0 = \frac{A + B + C + D}{4}$$`
+
+]
+
+---
+
+## Guess the score
+
+.pull-left[
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-8-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+They are in the "low" group...
+
+]
+
+.pull-right[
+
+`$$\beta_0 = \frac{A + B + C + D}{4}$$`
+
+`$$\beta_1 = \frac{A + B}{2} - \beta_0$$`
+
+]
+
+---
+
+## Guess the score
+
+.pull-left[
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+They are in the "high" group...
+
+]
+
+.pull-right[
+
+`$$\beta_0 = \frac{A + B + C + D}{4}$$`
+
+`$$\beta_1 = \frac{A + B}{2} - \beta_0 = \beta_0 - \frac{C + D}{2}$$`
+
+]
+
+---
+
+## Guess the score
+
+.pull-left[
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+It's the first person in the "low" group...
+
+]
+
+.pull-right[
+
+`$$\beta_0 = \frac{A + B + C + D}{4}$$`
+
+`$$\beta_1 = \frac{A + B}{2} - \beta_0 = \beta_0 - \frac{C + D}{2}$$`
+
+`$$\beta_2 = A - (\beta_0 + \beta_1)$$`
+
+]
+
+---
+
+## Guess the score
+
+.pull-left[
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+It's the first person in the "high" group...
+
+]
+
+.pull-right[
+
+`$$\beta_0 = \frac{A + B + C + D}{4}$$`
+
+`$$\beta_1 = \frac{A + B}{2} - \beta_0 = -\left(\frac{C + D}{2} - \beta_0 \right)$$`
+
+`$$\beta_2 = A - (\beta_0 + \beta_1)$$`
+
+`$$\beta_3 = C - (\beta_0 - \beta_1)$$`
+
+]
+
+---
+
+## Guess the score
+
+.pull-left[
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-12-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+`$$\beta_0 = \frac{A + B + C + D}{4}$$`
+
+`$$\beta_1 = \frac{A + B}{2} - \beta_0 = -\left(\frac{C + D}{2} - \beta_0 \right)$$`
+
+`$$\beta_2 = A - (\beta_0 + \beta_1)$$`
+
+`$$\beta_3 = C - (\beta_0 - \beta_1)$$`
+
+A: `\(\beta_0 + \beta_1 + \beta_2\)`
+
+B: `\(\beta_0 + \beta_1 - \beta_2\)`
+
+C: `\(\beta_0 - \beta_1 + \beta_3\)`
+
+D: `\(\beta_0 - \beta_1 - \beta_3\)`
+
+]
+
+---
+
+## Guess the score
+
+.pull-left[
+
+A: `\(\beta_0 + \beta_1 + \beta_2\)`
+
+B: `\(\beta_0 + \beta_1 - \beta_2\)`
+
+C: `\(\beta_0 - \beta_1 + \beta_3\)`
+
+D: `\(\beta_0 - \beta_1 - \beta_3\)`
+
+]
+
+.pull-right[
 
 
-```r
+|   | c1| c2| c3|
+|:--|--:|--:|--:|
+|A  |  1|  1|  0|
+|B  |  1| -1|  0|
+|C  | -1|  0|  1|
+|D  | -1|  0| -1|
+]
+
+---
+
+## Guess the score
+
+
+```
+
+Call:
+lm(formula = score ~ c1 + c2 + c3, data = data.frame(person = c("A", 
+    "B", "C", "D"), group = c("low", "low", "high", "high"), 
+    score = c(2, 1, 5, 3), c1 = c(1, 1, -1, -1), c2 = c(1, -1, 
+        0, 0), c3 = c(0, 0, 1, -1)))
+
+Coefficients:
+(Intercept)           c1           c2           c3  
+       2.75        -1.25         0.50         1.00  
+```
+
+---
+
+## Back to our example data
+
+Gilder &amp; Heerey (2018) assigned `\(n=400\)` students to:
+- high-power (PH) or low-power (PL) prime
+- experimenter who believed they received high-power (EH) or low-power (EL) prime
+
+Participants performed a reaction time task either approaching or avoiding stimuli.
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-15-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Oneway ANOVA with custom contrast
+
+
+``` r
 library(sdamr)
 data("expBelief")
 dat &lt;- expBelief
 dat$condition &lt;- interaction(dat$experimenterBelief, dat$primeCond)
+contrasts(dat$condition) &lt;- cbind(c(1,1,-1,-1), c(1, -1, 0, 0), c(0, 0, 1, -1))
+contrasts(dat$condition)
+```
+
+```
+      [,1] [,2] [,3]
+H.HPP    1    1    0
+L.HPP    1   -1    0
+H.LPP   -1    0    1
+L.LPP   -1    0   -1
+```
+
+---
+
+## Oneway ANOVA with custom contrast
+
+
+``` r
+mod &lt;- lm(ApproachAdvantage ~ condition, data=dat)
+summary(mod)
+```
+
+```
+
+Call:
+lm(formula = ApproachAdvantage ~ condition, data = dat)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-556.7 -176.3   10.6  169.8  605.6 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   21.465     10.721   2.002  0.04596 *  
+condition1     5.988     10.721   0.559  0.57678    
+condition2    54.664     15.124   3.614  0.00034 ***
+condition3    35.846     15.200   2.358  0.01884 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 214.4 on 396 degrees of freedom
+Multiple R-squared:  0.04565,	Adjusted R-squared:  0.03842 
+F-statistic: 6.314 on 3 and 396 DF,  p-value: 0.0003425
+```
+
+---
+
+## Oneway ANOVA with custom contrast
+
+
+``` r
+car::Anova(mod, type=3)
+```
+
+```
+Anova Table (Type III tests)
+
+Response: ApproachAdvantage
+              Sum Sq  Df F value    Pr(&gt;F)    
+(Intercept)   184285   1  4.0084 0.0459560 *  
+condition     870858   3  6.3140 0.0003425 ***
+Residuals   18206049 396                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ---
@@ -129,7 +431,7 @@ dat$condition &lt;- interaction(dat$experimenterBelief, dat$primeCond)
 
 
 
-```r
+``` r
 contrasts(dat$condition) &lt;- contr.treatment(4)
 contrasts(dat$condition)
 ```
@@ -147,7 +449,7 @@ L.LPP 0 0 1
 ## Dummy coding
 
 
-```r
+``` r
 mod &lt;- lm(ApproachAdvantage ~ condition, data=dat)
 summary(mod)
 ```
@@ -180,7 +482,7 @@ F-statistic: 6.314 on 3 and 396 DF,  p-value: 0.0003425
 ## Dummy coding
 
 
-```r
+``` r
 car::Anova(mod, type=3)
 ```
 
@@ -208,7 +510,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 
 
-```r
+``` r
 contrasts(dat$condition) &lt;- contr.sum(4)
 contrasts(dat$condition)
 ```
@@ -226,7 +528,7 @@ L.LPP   -1   -1   -1
 ## Effect coding
 
 
-```r
+``` r
 mod &lt;- lm(ApproachAdvantage ~ condition, data=dat)
 summary(mod)
 ```
@@ -259,7 +561,7 @@ F-statistic: 6.314 on 3 and 396 DF,  p-value: 0.0003425
 ## Effect coding
 
 
-```r
+``` r
 car::Anova(mod, type=3)
 ```
 
@@ -286,7 +588,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 * Each slope `\(\beta_j\)` represents the difference between the mean of a group from the mean of means from earlier groups: `\(\beta_j = \mu_j - \frac{\mu_{j-1} + \mu_{j-2} \ldots \mu_1}{j}\)` (with `\(j&gt;1\)`).
 
 
-```r
+``` r
 contrasts(dat$condition) &lt;- contr.helmert(4)
 contrasts(dat$condition)
 ```
@@ -304,7 +606,7 @@ L.LPP    0    0    3
 ## Helmert coding
 
 
-```r
+``` r
 mod &lt;- lm(ApproachAdvantage ~ condition, data=dat)
 summary(mod)
 ```
@@ -337,7 +639,7 @@ F-statistic: 6.314 on 3 and 396 DF,  p-value: 0.0003425
 ## Helmert coding
 
 
-```r
+``` r
 car::Anova(mod, type=3)
 ```
 
@@ -361,7 +663,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 * Include main effects and interactions (moderation)
 
 
-```r
+``` r
 dat$experimenterBelief &lt;- factor(dat$experimenterBelief)
 dat$primeCond &lt;- factor(dat$primeCond)
 contrasts(dat$experimenterBelief) &lt;- contr.sum(2)
@@ -374,7 +676,7 @@ H    1
 L   -1
 ```
 
-```r
+``` r
 contrasts(dat$primeCond) &lt;- contr.sum(2)
 contrasts(dat$primeCond)
 ```
@@ -437,18 +739,19 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ## Factorial ANOVA
 
-* For factorial designs, effect coding is probably the easiest to interpret.
+* Don't use dummy coding for factorial designs
+* If you have specific hypotheses to test, you may need to use a custom orthogonal contrast. Otherwise, effect coding is probably the easiest to interpret.
 * For complex designs, you may need specialized coding. For example, a study investigates learning by people with Parkinson's disease, and matched controls. Both groups are tested twice, with PD patients either on or off their usual medication. The (non-factorial) design has three factors: group (PD, control), time (1, 2), and medication (on, off).
 
 
-|condition      | group| time| medication|
-|:--------------|-----:|----:|----------:|
-|control time 1 |    -1|   -1|          0|
-|control time 2 |    -1|    1|          0|
-|PD time 1 on   |     1|   -1|          1|
-|PD time 1 off  |     1|   -1|         -1|
-|PD time 2 on   |     1|    1|          1|
-|PD time 2 off  |     1|    1|         -1|
+|condition      | group| time| medication| grp.time| med.time|
+|:--------------|-----:|----:|----------:|--------:|--------:|
+|control time 1 |    -1|   -1|          0|        1|        0|
+|control time 2 |    -1|    1|          0|       -1|        0|
+|PD time 1 on   |     1|   -1|          1|       -1|       -1|
+|PD time 1 off  |     1|   -1|         -1|       -1|        1|
+|PD time 2 on   |     1|    1|          1|        1|        1|
+|PD time 2 off  |     1|    1|         -1|        1|       -1|
 
 ---
 
@@ -457,7 +760,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 In a GLM with only contrast codes, combinations of the parameter estimates reflect group means. You can perform post-hoc tests by contrasting parameter estimates.
 
 
-```r
+``` r
 emmeans::emmeans(mod, specs = pairwise ~ primeCond:experimenterBelief)
 ```
 
@@ -483,15 +786,116 @@ $contrasts
 P value adjustment: tukey method for comparing a family of 4 estimates 
 ```
 
-----
+---
+
+## Custom comparisons with `emmeans`
+
+
+``` r
+mmeans &lt;- emmeans::emmeans(mod, specs = ~  primeCond:experimenterBelief)
+mmeans
+```
+
+```
+ primeCond experimenterBelief emmean   SE  df lower.CL upper.CL
+ HPP       H                    82.1 21.3 396    40.17    124.1
+ LPP       H                    51.3 21.4 396     9.17     93.5
+ HPP       L                   -27.2 21.4 396   -69.36     14.9
+ LPP       L                   -20.4 21.5 396   -62.74     22.0
+
+Confidence level used: 0.95 
+```
+
+---
+
+## Custom comparisons with `emmeans`
+
+
+``` r
+emmeans::contrast(mmeans, method = list(
+  "prime" = c(1, -1, 1, -1),
+  "belief" = c(1, 1, -1, -1),
+  "prime:belief" = c(1, -1, -1, 1),
+  "prime_at_H" = c(1, -1, 0, 0),
+  "prime_at_L" = c(0, 0, 1, -1),
+  "belief_at_HPP" = c(1, 0, -1, 0),
+  "belief_at_LPP" = c(1, 0, -1, 0))
+)
+```
+
+```
+ contrast      estimate   SE  df t.ratio p.value
+ prime            23.95 42.9 396   0.559  0.5768
+ belief          181.02 42.9 396   4.221  &lt;.0001
+ prime:belief     37.64 42.9 396   0.878  0.3807
+ prime_at_H       30.79 30.2 396   1.018  0.3093
+ prime_at_L       -6.84 30.4 396  -0.225  0.8221
+ belief_at_HPP   109.33 30.2 396   3.614  0.0003
+ belief_at_LPP   109.33 30.2 396   3.614  0.0003
+```
+
+---
+
+## Custom comparisons with `emmeans`
+
+
+``` r
+emmeans::contrast(mmeans, method = list(
+  "prime" = c(1, -1, 1, -1),
+  "belief" = c(1, 1, -1, -1),
+  "prime:belief" = c(1, -1, -1, 1),
+  "prime_at_H" = c(1, -1, 0, 0),
+  "prime_at_L" = c(0, 0, 1, -1),
+  "belief_at_HPP" = c(1, 0, -1, 0),
+  "belief_at_LPP" = c(1, 0, -1, 0)),
+  adjust="Holm"
+)
+```
+
+```
+ contrast      estimate   SE  df t.ratio p.value
+ prime            23.95 42.9 396   0.559  1.0000
+ belief          181.02 42.9 396   4.221  0.0002
+ prime:belief     37.64 42.9 396   0.878  1.0000
+ prime_at_H       30.79 30.2 396   1.018  1.0000
+ prime_at_L       -6.84 30.4 396  -0.225  1.0000
+ belief_at_HPP   109.33 30.2 396   3.614  0.0020
+ belief_at_LPP   109.33 30.2 396   3.614  0.0020
+
+P value adjustment: holm method for 7 tests 
+```
+
+---
+
+## Effect size measures
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-36-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Effect size measures
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-37-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+`$$\begin{aligned} \hat{\eta}^2(A) &amp;= \frac{SS(A)}{SS(total)} \\
+&amp;= \frac{SS(A)}{SS(A) + SS(B) + O + SSE}\end{aligned}$$`
+
+---
+
+## Effect size measures
+
+&lt;img src="lecture3_files/figure-html/unnamed-chunk-38-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+`$$\begin{aligned} \hat{\eta}_p^2(A) &amp;= \frac{SS(A)}{SS(A) + SSE} \end{aligned}$$`
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script src="macros.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
