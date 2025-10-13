@@ -692,6 +692,11 @@ LPP   -1
 ## Factorial ANOVA
 
 
+``` r
+mod &lt;- lm(ApproachAdvantage ~ experimenterBelief*primeCond, data=dat)
+summary(mod)
+```
+
 ```
 
 Call:
@@ -720,6 +725,10 @@ F-statistic: 6.314 on 3 and 396 DF,  p-value: 0.0003425
 
 ## Factorial ANOVA
 
+
+``` r
+car::Anova(mod, type=3)
+```
 
 ```
 Anova Table (Type III tests)
