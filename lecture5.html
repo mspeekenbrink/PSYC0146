@@ -4,7 +4,7 @@
     <title>Statistics: Data analysis and modelling</title>
     <meta charset="utf-8" />
     <meta name="author" content="Maarten Speekenbrink" />
-    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="mycss.css" type="text/css" />
   </head>
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Statistics: Data analysis and modelling
 ]
 .subtitle[
-## Week 5 highlights: Linear mixed-effects models
+## Week 5: Linear mixed-effects models
 ]
 .author[
 ### Maarten Speekenbrink
@@ -52,21 +52,385 @@ Key intuitions:
 
 ---
 
-## Speed-dating experiment
+## Tobacco prevention and cessation
 
-`\(n=102\)` participants were randomly matched with between 5 and 20 potential partners for a 4 minute conversation. They rated how much they liked their speed dating partners, as well as their attractiveness, sincerity, intelligence, fun, and ambition.
+A sample of `\(n=1600\)` seventh-grade pupils in 135 classrooms from 28 schools in Los Angeles in a 2 (classroom curriculum: yes, no) by 2 (television intervention: yes, no) factorial design. Each student completed the Tobacco and Health Knowledge Scale (THKS) scale twice: once before, and once after the intervention.
 
 
+``` r
+dat &lt;- read.csv("../data/TVSFP.csv")
+dat$CC &lt;- factor(paste0("CC:",dat$CC))
+dat$TV &lt;- factor(paste0("TV:",dat$TV))
+contrasts(dat$CC) &lt;- c(-.5,.5)
+contrasts(dat$TV) &lt;- c(-.5,.5)
+```
 
-&lt;img src="lecture5_files/figure-html/unnamed-chunk-3-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+---
+
+## Random intercepts model
+
+.scrollable[
+
+``` r
+mod &lt;- afex::mixed(postTHKS ~ preTHKS + CC*TV + (1|classroom), 
+                   data=dat, check_contrasts = FALSE)
+summary(mod)
+```
+
+```
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: postTHKS ~ preTHKS + CC * TV + (1 | classroom)
+   Data: data
+
+REML criterion at convergence: 5377.8
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.6100 -0.7106 -0.0169  0.6852  3.2220 
+
+Random effects:
+ Groups    Name        Variance Std.Dev.
+ classroom (Intercept) 0.09505  0.3083  
+ Residual              1.60359  1.2663  
+Number of obs: 1600, groups:  classroom, 135
+
+Fixed effects:
+              Estimate Std. Error         df t value Pr(&gt;|t|)    
+(Intercept)    2.00554    0.06787  549.32617  29.551  &lt; 2e-16 ***
+preTHKS        0.31080    0.02584 1594.53286  12.029  &lt; 2e-16 ***
+CC1            0.49656    0.08554  106.76394   5.805 6.68e-08 ***
+TV1            0.02121    0.08551  106.64751   0.248    0.805    
+CC1:TV1       -0.27150    0.17098  106.54420  -1.588    0.115    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+        (Intr) prTHKS CC1    TV1   
+preTHKS -0.777                     
+CC1     -0.005  0.033              
+TV1     -0.015  0.021 -0.011       
+CC1:TV1 -0.003 -0.006  0.001  0.032
+```
+]
+
+---
+
+## Random intercepts model
+
+`$$\begin{aligned} Y_{j,k} &amp;= (\beta_0 + \gamma_{0,k}) + \beta_\texttt{pre}\texttt{preTHKS} + \beta_\texttt{CC} \texttt{CC}_{i,k} + \beta_\texttt{TV} \texttt{TV}_{i,k} + \beta_\texttt{CT} (\texttt{CC} \times \texttt{TV})_{i,k} + \epsilon_{i,k} \\
+&amp; \epsilon_{i,k} \sim \mathbf{Normal}(0,\sigma_{\epsilon}) \\
+&amp; \gamma_{0,k} \sim \mathbf{Normal}(0, \sigma_{\gamma_0}) \end{aligned}$$`
+
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Random intercepts model
+
+`$$\begin{aligned} Y_{j,k} &amp;= (\beta_0 + \gamma_{0,k}) + \beta_\texttt{pre}\texttt{preTHKS} + \beta_\texttt{CC} \texttt{CC}_{i,k} + \beta_\texttt{TV} \texttt{TV}_{i,k} + \beta_\texttt{CT} (\texttt{CC} \times \texttt{TV})_{i,k} + \epsilon_{i,k} \\
+&amp; \epsilon_{i,k} \sim \mathbf{Normal}(0,\sigma_{\epsilon}) \\
+&amp; \gamma_{0,k} \sim \mathbf{Normal}(0, \sigma_{\gamma_0}) \end{aligned}$$`
+
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Random intercepts model
+
+`$$\begin{aligned} Y_{j,k} &amp;= (\beta_0 + \gamma_{0,k}) + \beta_\texttt{pre}\texttt{preTHKS} + \beta_\texttt{CC} \texttt{CC}_{i,k} + \beta_\texttt{TV} \texttt{TV}_{i,k} + \beta_\texttt{CT} (\texttt{CC} \times \texttt{TV})_{i,k} + \epsilon_{i,k} \\
+&amp; \epsilon_{i,k} \sim \mathbf{Normal}(0,\sigma_{\epsilon}) \\
+&amp; \gamma_{0,k} \sim \mathbf{Normal}(0, \sigma_{\gamma_0}) \end{aligned}$$`
+
+Variability in intercepts could reflect variability in the effect of the manipulations (`\(\texttt{CC}\)` and `\(\texttt{TV}\)`).
+
+--
+
+`$$\begin{aligned} Y_{j,k} &amp;= \beta_0 + \beta_\texttt{pre}\texttt{preTHKS} + (\beta_\texttt{CC} + \gamma_\texttt{CC}) \texttt{CC}_{i,k} + (\beta_\texttt{TV} + \gamma_\texttt{TV}) \texttt{TV}_{i,k} \\
+&amp;+ (\beta_\texttt{CT} + \gamma_\texttt{CT}) (\texttt{CC} \times \texttt{TV})_{i,k} + \epsilon_{i,k} \\
+&amp; \epsilon_{i,k} \sim \mathbf{Normal}(0,\sigma_{\epsilon}) \\
+&amp; \gamma_{j,k} \sim \mathbf{Normal}(\boldsymbol{0}, \boldsymbol{\Sigma}_\gamma) \end{aligned}$$`
+
+
+---
+
+## Random slopes model?
+
+`$$\begin{aligned} Y_{j,k} &amp;= \beta_0 + \beta_\texttt{pre}\texttt{preTHKS} + (\beta_\texttt{CC} + \gamma_\texttt{CC}) \texttt{CC}_{i,k} + (\beta_\texttt{TV} + \gamma_\texttt{TV}) \texttt{TV}_{i,k} \\
+&amp;+ (\beta_\texttt{CT} + \gamma_\texttt{CT}) (\texttt{CC} \times \texttt{TV})_{i,k} + \epsilon_{i,k} \\
+&amp; \epsilon_{i,k} \sim \mathbf{Normal}(0,\sigma_{\epsilon}) \\
+&amp; \gamma_{j,k} \sim \mathbf{Normal}(\boldsymbol{0}, \boldsymbol{\Sigma}_\gamma) \end{aligned}$$`
+
+.scrollable[
+
+``` r
+mod2 &lt;- afex::mixed(postTHKS ~ preTHKS + CC*TV + (0 + CC*TV|classroom), 
+                   data=dat, check_contrasts = FALSE)
+```
+
+```
+Warning: Model failed to converge with 5 negative eigenvalues: -4.4e-04
+-1.6e-03 -4.8e-03 -8.3e-03 -3.5e+01
+```
+
+``` r
+summary(mod2)
+```
+
+```
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: postTHKS ~ preTHKS + CC * TV + (0 + CC * TV | classroom)
+   Data: data
+
+REML criterion at convergence: 5377
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.6166 -0.7085 -0.0073  0.6913  3.2127 
+
+Random effects:
+ Groups    Name     Variance Std.Dev. Corr             
+ classroom CCCC:no  0.000000 0.00000                   
+           CCCC:yes 0.007507 0.08664    NaN            
+           TV1      0.064353 0.25368    NaN -0.15      
+           CC1:TV1  1.168657 1.08104    NaN  0.45 -0.40
+ Residual           1.604411 1.26665                   
+Number of obs: 1600, groups:  classroom, 135
+
+Fixed effects:
+              Estimate Std. Error         df t value Pr(&gt;|t|)    
+(Intercept)    2.00326    0.06770  542.33006  29.590  &lt; 2e-16 ***
+preTHKS        0.31174    0.02582 1585.33326  12.074  &lt; 2e-16 ***
+CC1            0.50457    0.08497  103.05609   5.938 3.93e-08 ***
+TV1            0.01495    0.08496  103.06591   0.176    0.861    
+CC1:TV1       -0.27107    0.16987  102.91774  -1.596    0.114    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+        (Intr) prTHKS CC1    TV1   
+preTHKS -0.779                     
+CC1     -0.071  0.030              
+TV1      0.010  0.023  0.031       
+CC1:TV1  0.022 -0.004  0.044 -0.076
+optimizer (nloptwrap) convergence code: 0 (OK)
+boundary (singular) fit: see help('isSingular')
+```
+]
+
+---
+
+## Random slopes model (attempt 2)?
+
+`$$\begin{aligned} Y_{j,k} &amp;= \beta_0 + \beta_\texttt{pre}\texttt{preTHKS} + (\beta_\texttt{CC} + \gamma_\texttt{CC}) \texttt{CC}_{i,k} + (\beta_\texttt{TV} + \gamma_\texttt{TV}) \texttt{TV}_{i,k} \\
+&amp;+ (\beta_\texttt{CT} + \gamma_\texttt{CT}) (\texttt{CC} \times \texttt{TV})_{i,k} + \epsilon_{i,k} \\
+&amp; \epsilon_{i,k} \sim \mathbf{Normal}(0,\sigma_{\epsilon}) \\
+&amp; \gamma_{j,k} \sim \mathbf{Normal}(\boldsymbol{0}, \boldsymbol{\Sigma}_\gamma) \end{aligned}$$`
+
+.scrollable[
+
+``` r
+mod2 &lt;- afex::mixed(postTHKS ~ preTHKS + CC*TV + (0 + CC*TV||classroom), 
+                   data=dat, check_contrasts = FALSE, expand_re = TRUE)
+```
+
+```
+Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
+unable to evaluate scaled gradient
+```
+
+```
+Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
+Model failed to converge: degenerate Hessian with 2 negative eigenvalues
+```
+
+```
+Warning: Model failed to converge with 1 negative eigenvalue: -3.2e-03
+```
+
+``` r
+summary(mod2)
+```
+
+```
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: 
+postTHKS ~ preTHKS + CC * TV + (0 + re1.CCCC_by_no + re1.CCCC_by_yes +  
+    re1.TV1 + re1.CC1_by_TV1 || classroom)
+   Data: data
+
+REML criterion at convergence: 5377.2
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.6294 -0.7073 -0.0136  0.6871  3.2132 
+
+Random effects:
+ Groups      Name            Variance  Std.Dev.
+ classroom   re1.CCCC_by_no  4.637e-02 0.215347
+ classroom.1 re1.CCCC_by_yes 2.631e-07 0.000513
+ classroom.2 re1.TV1         1.234e-02 0.111079
+ classroom.3 re1.CC1_by_TV1  1.073e+00 1.035672
+ Residual                    1.604e+00 1.266566
+Number of obs: 1600, groups:  classroom, 135
+
+Fixed effects:
+              Estimate Std. Error         df t value Pr(&gt;|t|)    
+(Intercept)    2.00392    0.06773  548.41191  29.585  &lt; 2e-16 ***
+preTHKS        0.31118    0.02583 1594.28640  12.046  &lt; 2e-16 ***
+CC1            0.50361    0.08508  105.04249   5.919 4.11e-08 ***
+TV1            0.01710    0.08506  104.99332   0.201    0.841    
+CC1:TV1       -0.26663    0.17009  104.87530  -1.568    0.120    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+        (Intr) prTHKS CC1    TV1   
+preTHKS -0.778                     
+CC1     -0.070  0.031              
+TV1     -0.015  0.022 -0.011       
+CC1:TV1 -0.003 -0.006  0.002 -0.074
+optimizer (nloptwrap) convergence code: 0 (OK)
+unable to evaluate scaled gradient
+Model failed to converge: degenerate  Hessian with 2 negative eigenvalues
+```
+]
+
+
+---
+
+## Random slopes model (attempt 3)?
+
+`$$\begin{aligned} Y_{j,k} &amp;= \beta_0 + \beta_\texttt{pre}\texttt{preTHKS} + (\beta_\texttt{CC} + \gamma_\texttt{CC}) \texttt{CC}_{i,k} + (\beta_\texttt{TV} + \gamma_\texttt{TV}) \texttt{TV}_{i,k} \\
+&amp;+ (\beta_\texttt{CT} + \gamma_\texttt{CT}) (\texttt{CC} \times \texttt{TV})_{i,k} + \epsilon_{i,k} \\
+&amp; \epsilon_{i,k} \sim \mathbf{Normal}(0,\sigma_{\epsilon}) \\
+&amp; \gamma_{j,k} \sim \mathbf{Normal}(\boldsymbol{0}, \boldsymbol{\Sigma}_\gamma) \end{aligned}$$`
+
+.scrollable[
+
+``` r
+dat$CCn &lt;- ifelse(dat$CC == "CC:yes", 0.5, -0.5)
+dat$TVn &lt;- ifelse(dat$TV == "TV:yes", 0.5, -0.5)
+mod2n &lt;- afex::mixed(postTHKS ~ preTHKS + CCn*TVn + (0 + CCn*TVn||classroom), 
+                   data=dat, check_contrasts = FALSE, expand_re = TRUE)
+```
+
+```
+Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
+unable to evaluate scaled gradient
+```
+
+```
+Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
+Model failed to converge: degenerate Hessian with 2 negative eigenvalues
+```
+
+```
+Warning: Model failed to converge with 2 negative eigenvalues: -2.1e-03
+-4.5e-03
+```
+
+``` r
+summary(mod2n)
+```
+
+```
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: 
+postTHKS ~ preTHKS + CCn * TVn + (0 + re1.CCn + re1.TVn + re1.CCn_by_TVn ||  
+    classroom)
+   Data: data
+
+REML criterion at convergence: 5377.8
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.6100 -0.7106 -0.0169  0.6852  3.2220 
+
+Random effects:
+ Groups      Name           Variance Std.Dev.
+ classroom   re1.CCn        0.005065 0.07117 
+ classroom.1 re1.TVn        0.138241 0.37181 
+ classroom.2 re1.CCn_by_TVn 0.947605 0.97345 
+ Residual                   1.603595 1.26633 
+Number of obs: 1600, groups:  classroom, 135
+
+Fixed effects:
+              Estimate Std. Error         df t value Pr(&gt;|t|)    
+(Intercept)    2.00554    0.06787  549.33341  29.551  &lt; 2e-16 ***
+preTHKS        0.31080    0.02584 1594.53288  12.029  &lt; 2e-16 ***
+CCn            0.49656    0.08554  106.76424   5.805 6.68e-08 ***
+TVn            0.02121    0.08551  106.64780   0.248    0.805    
+CCn:TVn       -0.27151    0.17098  106.54449  -1.588    0.115    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+        (Intr) prTHKS CCn    TVn   
+preTHKS -0.777                     
+CCn     -0.005  0.033              
+TVn     -0.015  0.021 -0.011       
+CCn:TVn -0.003 -0.006  0.001  0.032
+optimizer (nloptwrap) convergence code: 0 (OK)
+unable to evaluate scaled gradient
+Model failed to converge: degenerate  Hessian with 2 negative eigenvalues
+```
+]
+
+---
+
+## Why can't we estimate this random slopes model?
+
+`$$\begin{aligned} Y_{j,k} &amp;= \beta_0 + \beta_\texttt{pre}\texttt{preTHKS} + (\beta_\texttt{CC} + \gamma_\texttt{CC}) \texttt{CC}_{i,k} + (\beta_\texttt{TV} + \gamma_\texttt{TV}) \texttt{TV}_{i,k} \\
+&amp;+ (\beta_\texttt{CT} + \gamma_\texttt{CT}) (\texttt{CC} \times \texttt{TV})_{i,k} + \epsilon_{i,k} \\
+&amp; \epsilon_{i,k} \sim \mathbf{Normal}(0,\sigma_{\epsilon}) \\
+&amp; \gamma_{j,k} \sim \mathbf{Normal}(\boldsymbol{0}, \boldsymbol{\Sigma}_\gamma) \end{aligned}$$`
+
+--
+
+Each school is randomly assigned to **one** condition
+
+--
+
+Could you estimate the effect of e.g. `\(\texttt{CC}\)` in one classroom?
+
+--
+
+
+``` r
+anova(mod$full_model, mod2n$full_model)
+```
+
+```
+Data: data
+Models:
+mod$full_model: postTHKS ~ preTHKS + CC * TV + (1 | classroom)
+mod2n$full_model: postTHKS ~ preTHKS + CCn * TVn + (0 + re1.CCn + re1.TVn + re1.CCn_by_TVn || classroom)
+                 npar  AIC    BIC logLik -2*log(L) Chisq Df Pr(&gt;Chisq)
+mod$full_model      7 5374 5411.6  -2680      5360                    
+mod2n$full_model    9 5378 5426.4  -2680      5360     0  2          1
+```
 
 ---
 
 ## Speed-dating experiment
 
-`\(n=102\)` participants were randomly matched with between 5 and 20 potential partners for a 4 minute conversation. They rated how much they liked their speed dating partners, as well as their attractiveness, sincerity, intelligence, fun, and ambition.
+`\(n=102\)` participants were randomly matched with between 5 and 20 potential partners for a 4 minute conversation. They rated how much they liked their dating partners, as well as their attractiveness, sincerity, intelligence, fun, and ambition.
 
-&lt;img src="lecture5_files/figure-html/unnamed-chunk-4-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Speed-dating experiment
+
+`\(n=102\)` participants were randomly matched with between 5 and 20 potential partners for a 4 minute conversation. They rated how much they liked their dating partners, as well as their attractiveness, sincerity, intelligence, fun, and ambition.
+
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-12-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -75,8 +439,8 @@ Key intuitions:
 
 .scrollable[
 
-```r
-contrasts(dat$gender) &lt;- contr.sum(2)
+``` r
+contrasts(dat$gender) &lt;- contr.sum(2) # female = 1, male = -1
 mod0 &lt;- lm(like ~ attr*gender + intel*gender + fun*gender +
              sinc*gender + amb*gender, data=dat)
 summary(mod0)
@@ -133,12 +497,26 @@ Two sources of possible dependency:
 
 .scrollable[
 
-```r
+``` r
 mod &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
                      sinc*gender + amb*gender + 
                      (1 + attr + intel + fun + sinc + amb|iid) + 
                      (1 + attr + intel + fun + sinc + amb|pid), 
                    data=dat)
+```
+
+```
+Warning: Due to missing values, reduced number of observations to 1389
+```
+
+```
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+```
+
+``` r
 summary(mod)
 ```
 
@@ -224,9 +602,9 @@ boundary (singular) fit: see help('isSingular')
 
 ## (Boundary) singular fit
 
-It is common in practice for complex linear mixed-effects models to result in (almost) **singular fits**. Technically, singularity means that the covariance matrix of the random effects is of less than *full rank*. , which indicates that
+In practice, complex linear mixed-effects models can (often) result in (almost) **singular fits**. Technically, singularity means that the covariance matrix of the random effects is of less than *full rank*. , which indicates that:
 * some combinations of the elements of the random-effects vector are perfectly multicollinear
-* in models with a single random effects term, an estimated variance is (near) zero.
+* in models with a single random effects term, an estimated variance is (near) zero
 * in models with two random effects terms (e.g. intercept and slope), typically reflected by a perfect (+/- 1) correlation between slope and intercept
 * in models with more than two random effects terms, this can be difficult to spot in the covariance matrix of random effects
 
@@ -238,19 +616,19 @@ Singular fits commonly occur in two scenarios:
 
 --
 
-Resolving singular fit involve simplifying the model
-* If a variance component is zero, dropping it from the model will have no effect on the estimated quantities.
-* Stepwise elimination of redundant random effects terms based on e.g. likelihood-ratio tests.
+Resolving singular fit involves simplifying the model
+* if a variance component is zero, dropping it from the model will have no effect on the estimated quantities
+* stepwise elimination of redundant random effects terms can be based on e.g. likelihood-ratio tests.
 
 ---
 
 ## Diagnosing singular fit
 
-Multicollinearity for random effects terms can be diagnosed via **Principal Components Analysis** (PCA)
+Multicollinearity for random effects terms can be diagnosed via **Principal Components Analysis** (PCA). PCA decomposes a covariance matrix into independent components with decreasing variance.
 
 .scrollable2[
 
-```r
+``` r
 lme4::rePCA(mod$full_model)
 ```
 
@@ -294,7 +672,7 @@ attr(,"class")
 
 
 
-```r
+``` r
 summary(lme4::rePCA(mod$full_model))
 ```
 
@@ -322,12 +700,26 @@ Removing correlations between random effects is generally the first step in mode
 
 .scrollable2[
 
-```r
+``` r
 mod2 &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
                      sinc*gender + amb*gender + 
                      (1 + attr + intel + fun + sinc + amb||iid) + 
                      (1 + attr + intel + fun + sinc + amb||pid), 
                    data=dat)
+```
+
+```
+Warning: Due to missing values, reduced number of observations to 1389
+```
+
+```
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+```
+
+``` r
 summary(mod2)
 ```
 
@@ -412,7 +804,7 @@ boundary (singular) fit: see help('isSingular')
 ---
 
 
-```r
+``` r
 summary(lme4::rePCA(mod2$full_model))
 ```
 
@@ -440,7 +832,7 @@ Removing random effects with small variance is generally the next step in model 
 
 .scrollable2[
 
-```r
+``` r
 lme4::VarCorr(mod2$full_model)
 ```
 
@@ -470,12 +862,26 @@ Removing random effects with small variance is generally the next step in model 
 
 .scrollable2[
 
-```r
+``` r
 mod3 &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
                      sinc*gender + amb*gender + 
                      (1 + attr + intel + fun + sinc||iid) + 
                      (1 + attr + intel + fun + amb||pid), 
                    data=dat)
+```
+
+```
+Warning: Due to missing values, reduced number of observations to 1389
+```
+
+```
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+```
+
+``` r
 summary(mod3)
 ```
 
@@ -556,7 +962,7 @@ gender1:amb -0.158  -0.046
 ---
 
 
-```r
+``` r
 summary(lme4::rePCA(mod3$full_model))
 ```
 
@@ -580,21 +986,21 @@ Cumulative Proportion  0.7388 0.83078 0.90681 0.95666 1.00000
 
 ## Fixed and random slopes for sincerity
 
-&lt;img src="lecture5_files/figure-html/unnamed-chunk-10-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-18-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Fixed and random slopes for attractiveness
 
-&lt;img src="lecture5_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-19-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
-## Testing random effects for partner
+## Testing random slopes for partner
 
 
-```r
+``` r
 modr &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
                      sinc*gender + amb*gender + 
                      (1 + attr + intel + fun + sinc||iid) + 
@@ -609,19 +1015,19 @@ Data: data
 Models:
 modr$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 | pid)
 mod3$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
-                npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)   
-modr$full_model   19 4039.1 4138.6 -2000.6   4001.1                        
-mod3$full_model   23 4030.8 4151.3 -1992.4   3984.8 16.313  4   0.002626 **
+                npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(&gt;Chisq)   
+modr$full_model   19 4039.1 4138.6 -2000.6    4001.1                        
+mod3$full_model   23 4030.8 4151.3 -1992.4    3984.8 16.313  4   0.002626 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ---
 
-## Testing random effects for participants
+## Testing random slopes for participants
 
 
-```r
+``` r
 modr &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
                      sinc*gender + amb*gender + 
                      (1|iid) + 
@@ -636,19 +1042,19 @@ Data: data
 Models:
 modr$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 | iid) + (1 + attr + intel + fun + amb || pid)
 mod3$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
-                npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
-modr$full_model   19 4096.4 4195.9 -2029.2   4058.4                         
-mod3$full_model   23 4030.8 4151.3 -1992.4   3984.8 73.615  4  3.911e-15 ***
+                npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(&gt;Chisq)    
+modr$full_model   19 4096.4 4195.9 -2029.2    4058.4                         
+mod3$full_model   23 4030.8 4151.3 -1992.4    3984.8 73.615  4  3.911e-15 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ---
 
-## Testing random effects for both
+## Testing random slopes for both
 
 
-```r
+``` r
 modr &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
                      sinc*gender + amb*gender + 
                      (1|iid) + 
@@ -663,9 +1069,9 @@ Data: data
 Models:
 modr$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 | iid) + (1 | pid)
 mod3$full_model: like ~ attr * gender + intel * gender + fun * gender + sinc * gender + amb * gender + (1 + attr + intel + fun + sinc || iid) + (1 + attr + intel + fun + amb || pid)
-                npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
-modr$full_model   15 4102.0 4180.5 -2036.0   4072.0                         
-mod3$full_model   23 4030.8 4151.3 -1992.4   3984.8 87.173  8  1.741e-15 ***
+                npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(&gt;Chisq)    
+modr$full_model   15 4102.0 4180.5 -2036.0    4072.0                         
+mod3$full_model   23 4030.8 4151.3 -1992.4    3984.8 87.173  8  1.741e-15 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -674,10 +1080,20 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ## Choosing random-effects structure
 
-1. Theory
-2. Practical constraints
+Ideally should include any sources of variability that are truly present.
+
+1. Practical (design) constraints
+2. Theory
 3. "Maximal" structure
-4. "Optimal" parsimonious structure
+4. "Optimal" (parsimonious) structure
+
+--
+
+Scale all variables for numerical stability. Start with maximal structure. Until there are no more estimation issues:
+
+1. Remove correlations between random effects
+2. Remove higher-order interaction random effects, starting with lowest variability
+3. Remove low order random effects, starting with those with lowest variabilibty
 
 ---
 
@@ -688,7 +1104,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 .scrollable2[
 
 
-```r
+``` r
 library(buildmer)
 mod4 &lt;- buildmer(like ~ attr*gender + intel*gender + fun*gender + 
                      sinc*gender + amb*gender + 
@@ -708,7 +1124,7 @@ mod4 &lt;- buildmer(like ~ attr*gender + intel*gender + fun*gender +
 .scrollable2[
 
 
-```r
+``` r
 summary(mod4)
 ```
 
@@ -792,7 +1208,7 @@ amb:gender1 -0.163 -0.228
 .scrollable2[
 
 
-```r
+``` r
 f &lt;- formula(mod4@model)
 mod4 &lt;- buildmer(f, 
                    data=dat,
@@ -819,6 +1235,9 @@ mod4 &lt;- buildmer(f,
 16      iid        intel       NA iid intel         1 6.266924e-05
 17      pid            1           NA pid 1         1           NA
 18      pid          amb         NA pid amb         1 8.262185e-03
+```
+
+```
    grouping         term              block Iteration          LRT
 1      &lt;NA&gt;            1            NA NA 1         2           NA
 2      &lt;NA&gt;          fun          NA NA fun         2           NA
@@ -837,6 +1256,9 @@ mod4 &lt;- buildmer(f,
 16      iid        intel       NA iid intel         2 6.231033e-05
 17      pid            1           NA pid 1         2           NA
 18      pid          amb         NA pid amb         2 8.405190e-03
+```
+
+```
    grouping        term             block Iteration          LRT
 1      &lt;NA&gt;           1           NA NA 1         3           NA
 2      &lt;NA&gt;         fun         NA NA fun         3           NA
@@ -854,6 +1276,9 @@ mod4 &lt;- buildmer(f,
 16      iid       intel      NA iid intel         3 7.588048e-05
 17      pid           1          NA pid 1         3           NA
 18      pid         amb        NA pid amb         3          NaN
+```
+
+```
    grouping        term             block Iteration          LRT
 1      &lt;NA&gt;           1           NA NA 1         4           NA
 2      &lt;NA&gt;         fun         NA NA fun         4           NA
@@ -880,7 +1305,7 @@ mod4 &lt;- buildmer(f,
 .scrollable2[
 
 
-```r
+``` r
 summary(mod4)
 ```
 
@@ -938,19 +1363,20 @@ attr:gendr1  0.021 -0.014  0.013 -0.006 -0.011 -0.004 -0.320 -0.255
 ## Summary
 
 1. Linear mixed-effects models are very flexible. It may be difficult to *a priori* exclude random effects.
-2. A "maximal" random effects structure is straightforward in principle, and provides conservative tests for fixed effects. But it may lead to overly complex models.
-3. For a given data set or experimental design, there are practical constraints on whether random effects can be estimated
-4. Finding the "most maximal" model that can be estimated is not easy, and involves subjective decisions.
-5. One strategy is to first eliminate correlations between random effects, then remove (if necessary) random effects with small variance.
-6. Automatic model building should be used with caution!
+2. Excluding random effects that are actually present inflates type I error rates (don't assume random intercepts only is fine).
+3. A "maximal" random effects structure is straightforward in principle, and provides conservative tests for fixed effects. But it may lead to overly complex models.
+4. For a given data set or experimental design, there are practical constraints on whether random effects can be estimated
+5. Finding the "most maximal" model that can be estimated is not easy, and involves subjective decisions.
+6. One strategy is to first eliminate correlations between random effects, then remove (if necessary) random effects with small variance.
+7. Automatic model building should be used with caution!
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script src="macros.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
