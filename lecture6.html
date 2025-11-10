@@ -67,9 +67,6 @@ The function `\(h(\cdot) = \frac{\exp (\beta_0 + \beta_1 \times X)}{1+\exp(\beta
 
 &lt;img src="lecture6_files/figure-html/unnamed-chunk-5-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
 
---
-
-
 ---
 
 ### A latent-variable justification
@@ -221,7 +218,7 @@ and `\(h\)` is called the **inverse-link function**, e.g. the logistic function
 
 ### Generalized linear models in R
 
-.scrollable2[
+.scrollable[
 
 ``` r
 data("metacognition")
@@ -289,7 +286,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ### Generalized linear models in R
 
-.scrollable2[
+.scrollable[
 
 ``` r
 dat$pred &lt;- predict(mod, type="response")
@@ -305,7 +302,7 @@ dat |&gt;
 
 ### Probit regression alternative
 
-.scrollable2[
+.scrollable[
 
 ``` r
 mod &lt;- glm(correct~confidence_c*contrast_c, data=dat,
@@ -396,7 +393,7 @@ gestures %&gt;%
 
 ### Example: Hand gestures
 
-.scrollable2[
+.scrollable[
 
 ``` r
 contrasts(gestures$context) &lt;- c(1,-1)
@@ -443,7 +440,7 @@ pois_mod &lt;- glm(gestures ~ context*language*gender, data=gestures, family=poi
 
 ### Example: Hand gestures
 
-.scrollable2[
+.scrollable[
 
 ``` r
 summary(pois_mod)
@@ -529,7 +526,7 @@ ggplot(aes(x=residual)) + geom_histogram(binwidth=bw, colour="black") +
 
 ### Quasi-Poisson regression
 
-.scrollable2[
+.scrollable[
 
 ``` r
 qpois_mod &lt;-  glm(gestures ~ context*language*gender, data=gestures, family=quasipoisson(), offset=log_dur)
@@ -615,7 +612,7 @@ Residuals                272.0 46
 
 ### Generalized linear mixed-effects models
 
-.scrollable2[
+.scrollable[
 
 ``` r
 pois_glmer &lt;- afex::mixed(gestures ~ context*language*gender + (1|ID), data=gestures, family=poisson(), offset=dat$log_d, method="LRT", test_intercept = TRUE)
