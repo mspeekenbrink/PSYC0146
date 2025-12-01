@@ -3,7 +3,7 @@
   <head>
     <title>Statistics: Data analysis and modelling</title>
     <meta charset="utf-8" />
-    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.30/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="mycss.css" type="text/css" />
   </head>
@@ -43,7 +43,7 @@ class: center, middle, inverse
 
 &lt;img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Thomas_Bayes.gif" width="20%" style="display: block; margin: auto;" /&gt;
 
-* `\(H\)` is a hypothesis (e.g. "car is behind door 1")
+* `\(H\)` is an hypothesis (e.g. "car is behind door 1")
 * `\(E\)` is evidence (e.g. "there is a goat behind door 3")
 
 **Posterior probability**
@@ -92,7 +92,7 @@ p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta) p(\theta)}{p(\text{data
 \end{aligned}$$`
 ---
 
-### Bayes' theorem for parameters
+### Bayes' theorem for model parameters
 
 &lt;img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Thomas_Bayes.gif" width="20%" style="display: block; margin: auto;" /&gt;
 
@@ -103,7 +103,7 @@ p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta) p(\theta)}{p(\text{data
 
 ---
 
-### Bayes' theorem for parameters
+### Bayes' theorem for model parameters
 
 &lt;img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Thomas_Bayes.gif" width="20%" style="display: block; margin: auto;" /&gt;
 
@@ -116,14 +116,14 @@ p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta) p(\theta)}{p(\text{data
 ---
 
 
-### Bayes' theorem for parameters
+### Bayes' theorem for model parameters
 
 &lt;img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Thomas_Bayes.gif" width="20%" style="display: block; margin: auto;" /&gt;
 
 `$$\begin{aligned}
 p(\theta|\text{data}) &amp;= \frac{p(\text{data}|\theta) p(\theta)}{p(\text{data})} \\
 &amp;= \frac{p(\text{data}|\theta)}{p(\text{data})} \times  p(\theta) \\
-&amp;= \frac{p(\text{data}|\theta)}{\int_\theta p(\text{data|\theta}) p(\theta)} \times  p(\theta) \\
+&amp;= \frac{p(\text{data}|\theta)}{\int_\theta p(\text{data}|\theta) p(\theta)} \times  p(\theta) \\
 \text{posterior} &amp;= \text{normalized likelihood} \times \text{prior}
 \end{aligned}$$`
 
@@ -310,7 +310,6 @@ $$
 
 
 ``` r
-library(ggplot2)
 ggplot(data.frame(theta = posterior, t = 1:nsim), aes(y = theta, x=t)) + geom_line() + theme_minimal()
 ```
 
@@ -379,7 +378,6 @@ $$
 
 
 ``` r
-library(ggplot2)
 ggplot(data.frame(theta = posterior, t = 1:nsim), aes(y = theta, x=t)) + geom_line() + theme_minimal()
 ```
 
@@ -420,7 +418,6 @@ $$
 
 
 ``` r
-library(ggplot2)
 ggplot(data.frame(theta = posterior, t = 1:nsim), aes(y = theta, x=t)) + geom_line() + theme_minimal()
 ```
 
@@ -662,7 +659,7 @@ summary(mod)
 
 ```
  Family: gaussian 
-  Links: mu = identity; sigma = identity 
+  Links: mu = identity 
 Formula: percent_Trump_votes ~ hate_groups_per_million + percent_bachelors_degree_or_higher 
    Data: dat (Number of observations: 50) 
   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
@@ -1066,7 +1063,7 @@ summary(mod3)
 
 ```
  Family: gaussian 
-  Links: mu = identity; sigma = identity 
+  Links: mu = identity 
 Formula: percent_Trump_votes ~ hate_groups_per_million + percent_bachelors_degree_or_higher 
    Data: dat (Number of observations: 50) 
   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
@@ -1138,9 +1135,9 @@ class: center, middle, inverse
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script src="macros.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
