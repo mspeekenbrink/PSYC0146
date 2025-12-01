@@ -517,8 +517,8 @@ mod &lt;- brms::brm(percent_Trump_votes ~ hate_groups_per_million + percent_bach
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
 Chain 1: 
-Chain 1: Gradient evaluation took 2.4e-05 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.24 seconds.
+Chain 1: Gradient evaluation took 8e-06 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
 Chain 1: Adjust your expectations accordingly!
 Chain 1: 
 Chain 1: 
@@ -535,15 +535,15 @@ Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 1: 
-Chain 1:  Elapsed Time: 0.047 seconds (Warm-up)
-Chain 1:                0.038 seconds (Sampling)
-Chain 1:                0.085 seconds (Total)
+Chain 1:  Elapsed Time: 0.012 seconds (Warm-up)
+Chain 1:                0.01 seconds (Sampling)
+Chain 1:                0.022 seconds (Total)
 Chain 1: 
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
 Chain 2: 
-Chain 2: Gradient evaluation took 8e-06 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
+Chain 2: Gradient evaluation took 3e-06 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
 Chain 2: Adjust your expectations accordingly!
 Chain 2: 
 Chain 2: 
@@ -560,15 +560,15 @@ Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 2: 
-Chain 2:  Elapsed Time: 0.048 seconds (Warm-up)
-Chain 2:                0.036 seconds (Sampling)
-Chain 2:                0.084 seconds (Total)
+Chain 2:  Elapsed Time: 0.012 seconds (Warm-up)
+Chain 2:                0.01 seconds (Sampling)
+Chain 2:                0.022 seconds (Total)
 Chain 2: 
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
 Chain 3: 
-Chain 3: Gradient evaluation took 8e-06 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
+Chain 3: Gradient evaluation took 3e-06 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
 Chain 3: Adjust your expectations accordingly!
 Chain 3: 
 Chain 3: 
@@ -585,15 +585,15 @@ Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 3: 
-Chain 3:  Elapsed Time: 0.045 seconds (Warm-up)
-Chain 3:                0.035 seconds (Sampling)
-Chain 3:                0.08 seconds (Total)
+Chain 3:  Elapsed Time: 0.012 seconds (Warm-up)
+Chain 3:                0.008 seconds (Sampling)
+Chain 3:                0.02 seconds (Total)
 Chain 3: 
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
 Chain 4: 
-Chain 4: Gradient evaluation took 7e-06 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
+Chain 4: Gradient evaluation took 4e-06 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
 Chain 4: Adjust your expectations accordingly!
 Chain 4: 
 Chain 4: 
@@ -610,9 +610,9 @@ Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 4: 
-Chain 4:  Elapsed Time: 0.047 seconds (Warm-up)
-Chain 4:                0.035 seconds (Sampling)
-Chain 4:                0.082 seconds (Total)
+Chain 4:  Elapsed Time: 0.012 seconds (Warm-up)
+Chain 4:                0.009 seconds (Sampling)
+Chain 4:                0.021 seconds (Total)
 Chain 4: 
 ```
 ]
@@ -667,17 +667,17 @@ Formula: percent_Trump_votes ~ hate_groups_per_million + percent_bachelors_degre
 
 Regression Coefficients:
                                    Estimate Est.Error l-95% CI u-95% CI Rhat
-Intercept                             82.13      6.34    69.57    94.69 1.00
-hate_groups_per_million                1.29      0.52     0.26     2.29 1.00
-percent_bachelors_degree_or_higher    -1.22      0.19    -1.59    -0.85 1.00
+Intercept                             82.16      6.36    69.56    94.87 1.00
+hate_groups_per_million                1.28      0.51     0.24     2.26 1.00
+percent_bachelors_degree_or_higher    -1.22      0.19    -1.60    -0.84 1.00
                                    Bulk_ESS Tail_ESS
-Intercept                              3662     2746
-hate_groups_per_million                3831     3032
-percent_bachelors_degree_or_higher     3904     2787
+Intercept                              3230     2868
+hate_groups_per_million                3421     3042
+percent_bachelors_degree_or_higher     3633     2868
 
 Further Distributional Parameters:
       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-sigma     6.78      0.73     5.58     8.41 1.00     3869     2823
+sigma     6.79      0.71     5.61     8.39 1.00     3840     3014
 
 Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -692,10 +692,10 @@ scale reduction factor on split chains (at convergence, Rhat = 1).
 
 |              |  mean|   SD| lower 95% HDI| upper 95% HDI| `\(\hat{R}\)`|  ESS|
 |:-------------|-----:|----:|-------------:|-------------:|---------:|----:|
-|Intercept     | 82.13| 6.34|         69.57|         94.69|         1| 3662|
-|Hate_groups   |  1.29| 0.52|          0.26|          2.29|         1| 3831|
-|Education     | -1.22| 0.19|         -1.59|         -0.85|         1| 3904|
-|sigma_epsilon |  6.78| 0.73|          5.58|          8.41|         1| 3869|
+|Intercept     | 82.16| 6.36|         69.56|         94.87|         1| 3230|
+|Hate_groups   |  1.28| 0.51|          0.24|          2.26|         1| 3421|
+|Education     | -1.22| 0.19|         -1.60|         -0.84|         1| 3633|
+|sigma_epsilon |  6.79| 0.71|          5.61|          8.39|         1| 3840|
 
 `\(\hat{R}\)` is a measure of convergence, defined as the ratio of the *between-chain variance* and the *within-chain variance*. After convergence, `\(\hat{R} = 1\)`.
 
@@ -730,8 +730,8 @@ mod2 &lt;- brms::brm(formula = percent_Trump_votes ~ hate_groups_per_million + p
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
 Chain 1: 
-Chain 1: Gradient evaluation took 1.2e-05 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.12 seconds.
+Chain 1: Gradient evaluation took 4e-06 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
 Chain 1: Adjust your expectations accordingly!
 Chain 1: 
 Chain 1: 
@@ -748,15 +748,15 @@ Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 1: 
-Chain 1:  Elapsed Time: 0.062 seconds (Warm-up)
-Chain 1:                0.033 seconds (Sampling)
-Chain 1:                0.095 seconds (Total)
+Chain 1:  Elapsed Time: 0.017 seconds (Warm-up)
+Chain 1:                0.009 seconds (Sampling)
+Chain 1:                0.026 seconds (Total)
 Chain 1: 
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
 Chain 2: 
-Chain 2: Gradient evaluation took 7e-06 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
+Chain 2: Gradient evaluation took 3e-06 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
 Chain 2: Adjust your expectations accordingly!
 Chain 2: 
 Chain 2: 
@@ -773,15 +773,15 @@ Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 2: 
-Chain 2:  Elapsed Time: 0.06 seconds (Warm-up)
-Chain 2:                0.038 seconds (Sampling)
-Chain 2:                0.098 seconds (Total)
+Chain 2:  Elapsed Time: 0.016 seconds (Warm-up)
+Chain 2:                0.01 seconds (Sampling)
+Chain 2:                0.026 seconds (Total)
 Chain 2: 
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
 Chain 3: 
-Chain 3: Gradient evaluation took 6e-06 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
+Chain 3: Gradient evaluation took 3e-06 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
 Chain 3: Adjust your expectations accordingly!
 Chain 3: 
 Chain 3: 
@@ -798,15 +798,15 @@ Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 3: 
-Chain 3:  Elapsed Time: 0.066 seconds (Warm-up)
-Chain 3:                0.035 seconds (Sampling)
-Chain 3:                0.101 seconds (Total)
+Chain 3:  Elapsed Time: 0.018 seconds (Warm-up)
+Chain 3:                0.009 seconds (Sampling)
+Chain 3:                0.027 seconds (Total)
 Chain 3: 
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
 Chain 4: 
-Chain 4: Gradient evaluation took 6e-06 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
+Chain 4: Gradient evaluation took 3e-06 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
 Chain 4: Adjust your expectations accordingly!
 Chain 4: 
 Chain 4: 
@@ -823,9 +823,9 @@ Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 4: 
-Chain 4:  Elapsed Time: 0.067 seconds (Warm-up)
-Chain 4:                0.037 seconds (Sampling)
-Chain 4:                0.104 seconds (Total)
+Chain 4:  Elapsed Time: 0.017 seconds (Warm-up)
+Chain 4:                0.009 seconds (Sampling)
+Chain 4:                0.026 seconds (Total)
 Chain 4: 
 ```
 ]
@@ -867,20 +867,20 @@ brms::mcmc_plot(mod2, type="acf_bar")
 
 |              |  mean|    SD| lower 95% HDI| upper 95% HDI| `\(\hat{R}\)`|  ESS|
 |:-------------|-----:|-----:|-------------:|-------------:|---------:|----:|
-|Intercept     | 37.54| 12.63|         12.31|         62.31|         1| 3717|
-|Hate_groups   |  0.58|  0.78|         -0.93|          2.10|         1| 3939|
-|Education     | -1.07|  0.40|         -1.86|         -0.26|         1| 3826|
-|sigma_epsilon | 16.73|  0.53|         15.73|         17.79|         1| 3705|
+|Intercept     | 38.01| 12.68|         13.55|         63.21|         1| 3824|
+|Hate_groups   |  0.57|  0.78|         -0.93|          2.08|         1| 3772|
+|Education     | -1.09|  0.41|         -1.87|         -0.29|         1| 3956|
+|sigma_epsilon | 16.73|  0.52|         15.74|         17.78|         1| 3397|
 
 Earlier model
 
 
 |              |  mean|   SD| lower 95% HDI| upper 95% HDI| `\(\hat{R}\)`|  ESS|
 |:-------------|-----:|----:|-------------:|-------------:|---------:|----:|
-|Intercept     | 82.13| 6.34|         69.57|         94.69|         1| 3662|
-|Hate_groups   |  1.29| 0.52|          0.26|          2.29|         1| 3831|
-|Education     | -1.22| 0.19|         -1.59|         -0.85|         1| 3904|
-|sigma_epsilon |  6.78| 0.73|          5.58|          8.41|         1| 3869|
+|Intercept     | 82.16| 6.36|         69.56|         94.87|         1| 3230|
+|Hate_groups   |  1.28| 0.51|          0.24|          2.26|         1| 3421|
+|Education     | -1.22| 0.19|         -1.60|         -0.84|         1| 3633|
+|sigma_epsilon |  6.79| 0.71|          5.61|          8.39|         1| 3840|
 
 ---
 
@@ -928,12 +928,12 @@ brms::get_prior(percent_Trump_votes ~ hate_groups_per_million + percent_bachelor
                    (flat)         b percent_bachelors_degree_or_higher      
  student_t(3, 49.3, 11.9) Intercept                                         
     student_t(3, 0, 11.9)     sigma                                         
- resp dpar nlpar lb ub       source
-                            default
-                       (vectorized)
-                       (vectorized)
-                            default
-                  0         default
+ resp dpar nlpar lb ub tag       source
+                                default
+                           (vectorized)
+                           (vectorized)
+                                default
+                  0             default
 ```
 
 ``` r
@@ -945,8 +945,8 @@ mod3 &lt;- brms::brm(percent_Trump_votes ~ hate_groups_per_million + percent_bac
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
 Chain 1: 
-Chain 1: Gradient evaluation took 3.1e-05 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.31 seconds.
+Chain 1: Gradient evaluation took 7e-06 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
 Chain 1: Adjust your expectations accordingly!
 Chain 1: 
 Chain 1: 
@@ -963,15 +963,15 @@ Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 1: 
-Chain 1:  Elapsed Time: 0.048 seconds (Warm-up)
-Chain 1:                0.036 seconds (Sampling)
-Chain 1:                0.084 seconds (Total)
+Chain 1:  Elapsed Time: 0.013 seconds (Warm-up)
+Chain 1:                0.01 seconds (Sampling)
+Chain 1:                0.023 seconds (Total)
 Chain 1: 
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
 Chain 2: 
-Chain 2: Gradient evaluation took 7e-06 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
+Chain 2: Gradient evaluation took 4e-06 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
 Chain 2: Adjust your expectations accordingly!
 Chain 2: 
 Chain 2: 
@@ -988,15 +988,15 @@ Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 2: 
-Chain 2:  Elapsed Time: 0.048 seconds (Warm-up)
-Chain 2:                0.035 seconds (Sampling)
-Chain 2:                0.083 seconds (Total)
+Chain 2:  Elapsed Time: 0.013 seconds (Warm-up)
+Chain 2:                0.01 seconds (Sampling)
+Chain 2:                0.023 seconds (Total)
 Chain 2: 
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
 Chain 3: 
-Chain 3: Gradient evaluation took 8e-06 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
+Chain 3: Gradient evaluation took 3e-06 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
 Chain 3: Adjust your expectations accordingly!
 Chain 3: 
 Chain 3: 
@@ -1013,15 +1013,15 @@ Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 3: 
-Chain 3:  Elapsed Time: 0.046 seconds (Warm-up)
-Chain 3:                0.035 seconds (Sampling)
-Chain 3:                0.081 seconds (Total)
+Chain 3:  Elapsed Time: 0.012 seconds (Warm-up)
+Chain 3:                0.009 seconds (Sampling)
+Chain 3:                0.021 seconds (Total)
 Chain 3: 
 
 SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
 Chain 4: 
-Chain 4: Gradient evaluation took 7e-06 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
+Chain 4: Gradient evaluation took 3e-06 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.03 seconds.
 Chain 4: Adjust your expectations accordingly!
 Chain 4: 
 Chain 4: 
@@ -1038,9 +1038,9 @@ Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 4: 
-Chain 4:  Elapsed Time: 0.049 seconds (Warm-up)
-Chain 4:                0.038 seconds (Sampling)
-Chain 4:                0.087 seconds (Total)
+Chain 4:  Elapsed Time: 0.013 seconds (Warm-up)
+Chain 4:                0.01 seconds (Sampling)
+Chain 4:                0.023 seconds (Total)
 Chain 4: 
 ```
 ]
@@ -1071,17 +1071,17 @@ Formula: percent_Trump_votes ~ hate_groups_per_million + percent_bachelors_degre
 
 Regression Coefficients:
                                    Estimate Est.Error l-95% CI u-95% CI Rhat
-Intercept                             82.13      6.47    69.48    94.77 1.00
-hate_groups_per_million                1.30      0.53     0.26     2.34 1.00
-percent_bachelors_degree_or_higher    -1.22      0.20    -1.60    -0.84 1.00
+Intercept                             82.10      6.47    69.20    94.81 1.00
+hate_groups_per_million                1.31      0.53     0.26     2.34 1.00
+percent_bachelors_degree_or_higher    -1.22      0.19    -1.61    -0.84 1.00
                                    Bulk_ESS Tail_ESS
-Intercept                              3388     2512
-hate_groups_per_million                3754     2855
-percent_bachelors_degree_or_higher     3718     2605
+Intercept                              3645     2708
+hate_groups_per_million                3981     2989
+percent_bachelors_degree_or_higher     3959     2815
 
 Further Distributional Parameters:
       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-sigma     6.79      0.71     5.58     8.36 1.00     3323     2610
+sigma     6.78      0.71     5.57     8.36 1.00     3380     2401
 
 Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
