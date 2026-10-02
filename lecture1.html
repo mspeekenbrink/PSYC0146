@@ -4,7 +4,7 @@
     <title>Advanced statistics: Data analysis and modelling</title>
     <meta charset="utf-8" />
     <meta name="author" content="Maarten Speekenbrink" />
-    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.31/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="mycss.css" type="text/css" />
   </head>
@@ -31,7 +31,7 @@ class: center, middle, inverse, title-slide
 
 ## The "cookbook" approach
 
-&lt;img src="img/test_flow_chart.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/test_flow_chart.jpg" alt="" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -94,11 +94,11 @@ Weekly homework counts for !0% of the total mark. You should submit homework via
 
 A single piece of coursework (3000 words) describing statistical analyses and results. You will be assigned a dataset to analyse, with information about the study and research questions. You can come up with additional hypotheses of interest to test.
 
-Deadline **19 January 2026 13:00**.
+Deadline **Monday 18th January 2027, 1pm UK time.**.
 
 In addition to the write-up, you will also be asked to submit your analyses code (R script). This is not marked but can be helpful in case things are unclear to markers.
 
-It is recommended to use R Markdown for the report and to start practising R Markdown in the weekly exercises. 
+It is recommended to use R Markdown for the report and to start practicing R Markdown in the weekly exercises. 
 
 ---
 
@@ -120,7 +120,7 @@ It is recommended to use R Markdown for the report and to start practising R Mar
 * Read the chapters of the SDAM and R companion books listed on Moodle
 * Install `R` and `R-studio` on your laptop, as well as the `sdamr` package.
 * Complete the homework
-* Read the exercise sheet
+* Read the practical exercise sheet
 
 ---
 
@@ -135,7 +135,7 @@ It is recommended to use R Markdown for the report and to start practising R Mar
 
 ## Data
 
-&lt;img src="img/sdam1_data_Gemini.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/sdam1_data_Gemini.png" alt="" width="60%" style="display: block; margin: auto;" /&gt;
 
 &lt;!-- 
 Different types of data
@@ -166,7 +166,7 @@ Different types of data
 
 ## What is the height of Mount Everest?
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-3-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-3-1.png" alt="" width="60%" style="display: block; margin: auto;" /&gt;
 
 `\(n=109\)` Polish participants, provided with an *anchor* of 610 meters.
 
@@ -178,14 +178,14 @@ Different types of data
 * Participants were recruited in-person (Polish university) or online (visitors to Polish website). Number of participants likely based on opportunity.
 * Among other questions, participants were asked "Mount Everest is taller than 610 meters. How tall is Mount Everest?"
 
-The **Data Generating Process** refers to how this data was collected, as well as *all possible replications* of the study.
+The **Data Generating Process** refers to how this data was collected and responses generated, as well as in *all possible replications* of this study.
 
 ---
 
 ## The Data Generating Process
 
 
-&lt;img src="https://images.alphacoders.com/478/thumb-1920-478516.jpg" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="https://images.alphacoders.com/478/thumb-1920-478516.jpg" alt="" width="60%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -195,7 +195,7 @@ The **Data Generating Process** refers to how this data was collected, as well a
 * Participants were recruited in-person (Polish university) or online (visitors to Polish website). Number of participants likely based on opportunity.
 * Among other questions, participants were asked "Mount Everest is taller than 610 meters. How tall is Mount Everest?"
 
-The **Data Generating Process** refers to how this data was collected, as well as *all possible replications* of the study.
+The **Data Generating Process** refers to how this data was collected and responses generated, as well as in *all possible replications* of this study.
 
 The set of all possible replications of the study defines the **population** from which the current **sample** was drawn. The scientific interest is not in the current sample, but in the population: We want to **generalize** from sample to population.
 
@@ -216,35 +216,50 @@ Models contain **parameters** which are assumed known or otherwise can be estima
 
 ## The Normal distribution
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-5-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 --
 
 Two parameters:
-* The mean `\(\mu\)`
-* The standard deviation `\(\sigma\)`
+* The mean `\(\mu\)` (location)
+* The standard deviation `\(\sigma\)` (dispersion)
 
 ---
 
 ## Unbiased but noisy judgements?
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-6-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 Two parameters:
-* `\(\underline{\mu} = 8848\)`
-* The standard deviation `\(\sigma\)`
+* `\(\underline{\mu} = 8848\)` (location)
+* The standard deviation `\(\sigma\)` (dispersion)
 
 ---
 
 ## A good model?
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-7-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## A good model?
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-8-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Maximum likelihood estimation
+
+Assuming independence, the **likelihood** is
+
+`$$p(\text{DATA}|\text{MODEL}) = \prod_{i=1}^n p(Y_i|\underline{\mu} = 8848, \sigma)$$`
+--
+
+`$$p(Y_i|\mu, \sigma) = \frac{1}{\sigma\sqrt{2 \pi}} e^{- \frac{(Y_i - \mu)^2}{2 \sigma^2}}$$`
+
+--
+
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-9-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -258,13 +273,32 @@ Assuming independence, the **likelihood** is
 
 --
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-9-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+Easier to work with the **log-likelihood**
+
+`$$\begin{aligned} \log p(\text{DATA}|\text{MODEL}) &amp;= \sum_{i=1}^n \log p(Y_i|\underline{\mu} = 8848, \sigma) \\
+&amp;= - \frac{n}{2}\log{2\pi} - n \log \sigma - \frac{1}{2\sigma^2} \sum_{i=1}^n (Y_i - \mu)^2
+\end{aligned}$$`
+
+---
+
+## Maximum likelihood estimation
+
+Assuming independence, the **likelihood** is
+
+`$$p(\text{DATA}|\text{MODEL}) = \prod_{i=1}^n p(Y_i|\underline{\mu} = 8848, \sigma)$$`
+
+**Maximum likelihood estimation**: Find the value of `\(\sigma\)` such that (log) `\(p(\text{DATA}|\text{MODEL})\)` reaches its maximum.
+
+
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-10-1.png" alt="" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Maximum likelihood MODEL R
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+`$$\hat{\sigma} = \frac{\sum_{i=1}^n (Y_i - \underline{\mu})^2}{n} = 4021.56$$`
+
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-11-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 ---
 
 ## Why maximum likelihood?
@@ -279,13 +313,13 @@ Good estimators are
 
 --
 
-Maximum likelihood estimators are consistent and (asymptotically) efficient. They are not always unbiased, but the bias decreases with larger datasets. Maximum likelihood estimates are (asymptotically) Normal-distributed. 
+Maximum likelihood estimators are consistent and (asymptotically) efficient. They are not always unbiased, but the bias decreases with `\(n\)` (i.e. larger datasets). Maximum likelihood estimates are (asymptotically) Normal-distributed. 
 
 ---
 
 ## Maximum likelihood estimation MODEL G
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-11-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-12-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 Two estimated parameters
 
 * `\(\hat{\mu} = 6312.19\)`
@@ -295,7 +329,7 @@ Two estimated parameters
 
 ## Two alternative models
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-12-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-13-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -303,7 +337,7 @@ Two estimated parameters
 
 Two models
 
-* MODEL R: `\(\mu = 8848\)`, `\(\sigma\)` unknown but can be estimated
+* MODEL R: `\(\underline{\mu} = 8848\)`, `\(\sigma\)` unknown but can be estimated
 * MODEL G: both `\(\mu\)` and `\(\sigma\)` unknown but can be estimated
 
 MODEL R is more specific and contains more information.
@@ -335,7 +369,7 @@ Two alternative models:
 
 --
 
-With maximum likelihood estimation, it will *always* be the case that
+Using maximum likelihood estimation, it will *always* be the case that
 
 `$$p(\text{DATA}|\text{MODEL G}) \geq p(\text{DATA}|\text{MODEL R})$$`
 so
@@ -350,7 +384,7 @@ Is the difference *sufficient* to reject MODEL R?
 
 Using MODEL R, we can simulate (noisy) datasets of `\(n=109\)` and for each compute the value of the likelihood ratio for estimated MODEL R and MODEL G based on that data. This provides a distribution of likelihood ratio values under the assumption that MODEL R is true.
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-14-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-15-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 --
 
 A value of .000000000001 is very unlikely!
@@ -359,14 +393,14 @@ A value of .000000000001 is very unlikely!
 
 ## `\(p\)`-value and significance
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-15-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-16-1.png" alt="" width="70%" style="display: block; margin: auto;" /&gt;
 The `\(p\)`-value is the probability of obtaining a particular *or more extreme* value for a given test statistic (e.g. likelihood-ratio), assuming MODEL R is true.
 
 ---
 
 ## `\(p\)`-value and significance
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-16-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-17-1.png" alt="" width="70%" style="display: block; margin: auto;" /&gt;
 The `\(p\)`-value is the probability of obtaining a particular *or more extreme* value for a given test statistic (e.g. likelihood-ratio), assuming MODEL R is true.
 
 For a significance level `\(\alpha\)` (usually `\(\alpha = .05\)`), we can determine a *critical value* (the value of the statistic with `\(p\)`-value = `\(\alpha\)`). Rejecting models which exceed the critical value will limit the probability of Type 1 errors to at most `\(\alpha\)`.
@@ -381,13 +415,13 @@ Deriving the distribution of the likelihood ratio under the assumption that MODE
 `$$t = \frac{\overline{Y} - \underline{\mu}}{\hat{\sigma}/\sqrt{n}}$$`
 Assuming MODEL R is true, this statistic follows a t-distribution with *degrees of freedom* `\(\text{df} = n-1\)`.
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-17-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-18-1.png" alt="" width="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Is there a better model?
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-18-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-19-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 A *mixture model*:
 
 * With probability `\(p = 0.232\)` affected by the anchor `\((\hat{\mu} = 1518, \hat{\sigma} = 715)\)`
@@ -412,7 +446,7 @@ The distribution of the sum of n independent variables approaches the Normal dis
 ]
 
 .pull-right[
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-20-1.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 
