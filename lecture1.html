@@ -83,14 +83,14 @@ Online:
 
 In person:
 
-* Monday Q&amp;A and discussion session
+* Monday highlights and Q&amp;A/discussion session
 * Thursday practical
 
 ---
 
 ## Assessment
 
-Weekly homework counts for !0% of the total mark. You should submit homework via Moodle before the practical on Thursday.
+Weekly homework counts for 10% of the total mark. You should bring your completed homework to the practical on Thursday where it will be checked by the TAs. 
 
 A single piece of coursework (3000 words) describing statistical analyses and results. You will be assigned a dataset to analyse, with information about the study and research questions. You can come up with additional hypotheses of interest to test.
 
@@ -98,7 +98,7 @@ Deadline **Monday 18th January 2027, 1pm UK time.**.
 
 In addition to the write-up, you will also be asked to submit your analyses code (R script). This is not marked but can be helpful in case things are unclear to markers.
 
-It is recommended to use R Markdown for the report and to start practicing R Markdown in the weekly exercises. 
+It is recommended to use R Markdown for the report and to start practising R Markdown in the weekly exercises. 
 
 ---
 
@@ -152,6 +152,8 @@ Different types of data
 
 ## Measurement scales
 
+We can assign numbers to the values of data variables. But what we can sensibly do with these numbers depends on the *measurement scale* of the variable.
+
 *Categorical*
 
 * Nominal
@@ -186,6 +188,21 @@ The **Data Generating Process** refers to how this data was collected and respon
 
 
 &lt;img src="https://images.alphacoders.com/478/thumb-1920-478516.jpg" alt="" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## The Data Generating Process
+
+* The experimenter designs a study to replicate the anchoring effect. He considers many classic questions that have provided this effect and ultimately decides on the Mount Everest question.
+* The experimenter comes to work wearing green shorts and a yellow t-shirt. He has collected data from 20 participants, but would like more.
+* A possible participant is identified and asked for her willingness to participate.
+* After pleading by the experimenter, participant agrees to take part.
+* Participant sits down at a table in a small cubicle. The cubicle has an unpleasant smell.
+* The experimenter hands the participant a piece of paper and a pen. It reads "Mount Everest is taller than 610 meters. How tall is Mount Everest?"
+* Participant thinks about this and remembers reading that Mount Everest is one of the tallest mountains in the world.
+* Participant considers looking the answer up on her phone. But the experimenter is standing outside the cubicle, so she decides against this.
+* Participant does not want to spend much longer in the cubicle. It's smelly. It is also almost lunch time and she skipped breakfast. 
+* Participant thinks about other tall mountains and guesses an answer. She writes down "I'm not sure, perhaps something like 6000 meters?"
 
 
 ---
@@ -424,9 +441,20 @@ Assuming MODEL R is true, this statistic follows a t-distribution with *degrees 
 
 ---
 
+## t-test
+
+Deriving the distribution of the likelihood ratio under the assumption that MODEL R is true is generally difficult. It can be easier to work with a related statistic, in this case
+
+`$$t = \frac{6312.193 - 8848}{3135.738/\sqrt{109}} = -8.443$$`
+Assuming MODEL R is true, this statistic follows a t-distribution with *degrees of freedom* `\(\text{df} = n-1\)`.
+
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-19-1.png" alt="" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
 ## Is there a better model?
 
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-19-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/mixture-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 A *mixture model*:
 
 * With probability `\(p = 0.232\)` affected by the anchor `\((\hat{\mu} = 1518, \hat{\sigma} = 715)\)`
@@ -451,7 +479,7 @@ The distribution of the sum of n independent variables approaches the Normal dis
 ]
 
 .pull-right[
-&lt;img src="lecture1_files/figure-html/unnamed-chunk-20-1.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture1_files/figure-html/simulation-1.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -459,6 +487,63 @@ The distribution of the sum of n independent variables approaches the Normal dis
 
 In statistical tests, assumptions such as a Normal distribution matter only for the distribution of the test statistic.
 
+
+---
+
+## Everything has a distribution
+
+The Data Generating Process provides a distribution of possible datasets. Any quantity calculated from that data (e.g., mean, standard deviation, `\(t\)`-statistic) also has a distribution. That distribution follows from the distribution of the data, but is not the same.
+
+.pull-left[
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-20-1.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-21-1.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+## Everything has a distribution
+
+The Data Generating Process provides a distribution of possible datasets. Any quantity calculated from that data (e.g., mean, standard deviation, `\(t\)`-statistic) also has a distribution. That distribution follows from the distribution of the data, but is not the same.
+
+.pull-left[
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-22-1.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-23-1.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Everything has a distribution
+
+The Data Generating Process provides a distribution of possible datasets. Any quantity calculated from that data (e.g., mean, standard deviation, `\(t\)`-statistic) also has a distribution. That distribution follows from the distribution of the data, but is not the same.
+
+.pull-left[
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-24-1.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="lecture1_files/figure-html/t-dist-1.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Everything has a distribution
+
+The Data Generating Process provides a distribution of possible datasets. Any quantity calculated from that data (e.g., mean, standard deviation, `\(t\)`-statistic) also has a distribution. That distribution follows from the distribution of the data, but is not the same.
+
+.pull-left[
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-25-1.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="lecture1_files/figure-html/unnamed-chunk-26-1.png" alt="" width="100%" style="display: block; margin: auto;" /&gt;
+]
 
 ---
 
