@@ -4,7 +4,7 @@
     <title>Statistics: Data analysis and modelling</title>
     <meta charset="utf-8" />
     <meta name="author" content="Maarten Speekenbrink" />
-    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.31/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="mycss.css" type="text/css" />
   </head>
@@ -54,7 +54,7 @@ The General Linear Model has the form
 
 `$$Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-2-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -62,7 +62,7 @@ The General Linear Model has the form
 
 `$$Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-3-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -70,7 +70,7 @@ The General Linear Model has the form
 
 `$$Y_i = \beta_0 + \beta_1 \times X_{i} + \epsilon_i \quad \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-4-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -80,11 +80,11 @@ The General Linear Model has the form
 
 The **conditional mean** of `\(Y\)`:
 
-`$$\mu_{Y|X_i} = \beta_0 + \beta_1 \times X_i$$` 
+`$$\mu_{Y|X_i} = \beta_0 + \beta_1 \times X_i = \hat{Y}_i$$` 
 
 `$$Y_i = \mu_{Y|X_i} + \epsilon_i \quad \quad \epsilon_i \sim \mathbf{Normal}(0,\sigma_\epsilon)$$`
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-5-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -102,7 +102,7 @@ would be the true model. We can test this by model comparison
 
 --
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-6-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -131,7 +131,7 @@ with `\(\text{SSE}(M) = \sum_{i=1}^n (Y_i - \hat{Y}_{M,i})^2\)`
 
 `$$F = \frac{\frac{\text{SSE}(R) - \text{SSE}(G)}{\text{npar}(G) - \text{npar}(R)}}{\frac{\text{SSE}(G)}{n - \text{npar}(G)}}  \quad \quad \quad F \sim \mathbf{F}(\text{npar}(G) - \text{npar}(R), n - \text{npar}(G))$$`
 
-&lt;img src="lecture2_files/figure-html/f-distribution-plot-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/f-distribution-plot-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -143,13 +143,13 @@ with `\(\text{SSE}(M) = \sum_{i=1}^n (Y_i - \hat{Y}_{M,i})^2\)`
 t = \frac{\hat{\beta}_j}{\text{SE}(\hat{\beta}_j)} \quad \quad \quad t \sim \mathbf{T}(n-2)
 \end{equation}`
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-8-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Example
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-9-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -187,42 +187,36 @@ F-statistic:  1241 on 1 and 1529 DF,  p-value: &lt; 2.2e-16
 
 ---
 
-## Example
-
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-11-1.png" width="80%" style="display: block; margin: auto;" /&gt;
-
----
-
 ## Multiple regression
 
 
 ``` r
 data("speeddate")
-mod2 &lt;- lm(other_like ~ other_attr + other_intel, data=speeddate)
+mod2 &lt;- lm(other_like ~ other_attr + other_sinc, data=speeddate)
 summary(mod2)
 ```
 
 ```
 
 Call:
-lm(formula = other_like ~ other_attr + other_intel, data = speeddate)
+lm(formula = other_like ~ other_attr + other_sinc, data = speeddate)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--4.8825 -0.7194  0.0894  0.7258  6.4129 
+-5.3392 -0.6893  0.0542  0.7284  6.7474 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -0.07328    0.17369  -0.422    0.673    
-other_attr   0.52673    0.01791  29.410   &lt;2e-16 ***
-other_intel  0.39171    0.02324  16.852   &lt;2e-16 ***
+(Intercept)  0.26824    0.16328   1.643    0.101    
+other_attr   0.53380    0.01804  29.588   &lt;2e-16 ***
+other_sinc   0.35007    0.02210  15.838   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1.249 on 1506 degrees of freedom
-  (53 observations deleted due to missingness)
-Multiple R-squared:  0.5345,	Adjusted R-squared:  0.5339 
-F-statistic: 864.6 on 2 and 1506 DF,  p-value: &lt; 2.2e-16
+Residual standard error: 1.262 on 1517 degrees of freedom
+  (42 observations deleted due to missingness)
+Multiple R-squared:  0.5275,	Adjusted R-squared:  0.5269 
+F-statistic: 846.9 on 2 and 1517 DF,  p-value: &lt; 2.2e-16
 ```
 
 ---
@@ -230,10 +224,10 @@ F-statistic: 864.6 on 2 and 1506 DF,  p-value: &lt; 2.2e-16
 
 ``` r
 dat &lt;- speeddate |&gt;
-  dplyr::select(other_like, other_attr, other_intel) |&gt;
+  dplyr::select(other_like, other_attr, other_sinc) |&gt;
   tidyr::drop_na()
 mod1 &lt;- lm(other_like ~ other_attr, data=dat)
-mod2 &lt;- lm(other_like ~ other_attr + other_intel, data=dat)
+mod2 &lt;- lm(other_like ~ other_attr + other_sinc, data=dat)
 summary(mod1)
 ```
 
@@ -244,18 +238,18 @@ lm(formula = other_like ~ other_attr, data = dat)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--5.2705 -0.7293  0.0001  0.7295  7.1766 
+-5.2724 -0.7202  0.0037  0.7276  7.1940 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  2.18812    0.12017   18.21   &lt;2e-16 ***
-other_attr   0.63530    0.01821   34.88   &lt;2e-16 ***
+(Intercept)  2.16797    0.11955   18.13   &lt;2e-16 ***
+other_attr   0.63806    0.01813   35.20   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1.362 on 1507 degrees of freedom
-Multiple R-squared:  0.4467,	Adjusted R-squared:  0.4464 
-F-statistic:  1217 on 1 and 1507 DF,  p-value: &lt; 2.2e-16
+Residual standard error: 1.361 on 1518 degrees of freedom
+Multiple R-squared:  0.4494,	Adjusted R-squared:  0.449 
+F-statistic:  1239 on 1 and 1518 DF,  p-value: &lt; 2.2e-16
 ```
 
 ---
@@ -268,23 +262,23 @@ summary(mod2)
 ```
 
 Call:
-lm(formula = other_like ~ other_attr + other_intel, data = dat)
+lm(formula = other_like ~ other_attr + other_sinc, data = dat)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--4.8825 -0.7194  0.0894  0.7258  6.4129 
+-5.3392 -0.6893  0.0542  0.7284  6.7474 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -0.07328    0.17369  -0.422    0.673    
-other_attr   0.52673    0.01791  29.410   &lt;2e-16 ***
-other_intel  0.39171    0.02324  16.852   &lt;2e-16 ***
+(Intercept)  0.26824    0.16328   1.643    0.101    
+other_attr   0.53380    0.01804  29.588   &lt;2e-16 ***
+other_sinc   0.35007    0.02210  15.838   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1.249 on 1506 degrees of freedom
-Multiple R-squared:  0.5345,	Adjusted R-squared:  0.5339 
-F-statistic: 864.6 on 2 and 1506 DF,  p-value: &lt; 2.2e-16
+Residual standard error: 1.262 on 1517 degrees of freedom
+Multiple R-squared:  0.5275,	Adjusted R-squared:  0.5269 
+F-statistic: 846.9 on 2 and 1517 DF,  p-value: &lt; 2.2e-16
 ```
 
 ---
@@ -300,10 +294,10 @@ anova(mod1, mod2)
 Analysis of Variance Table
 
 Model 1: other_like ~ other_attr
-Model 2: other_like ~ other_attr + other_intel
+Model 2: other_like ~ other_attr + other_sinc
   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
-1   1507 2793.9                                  
-2   1506 2350.6  1    443.25 283.98 &lt; 2.2e-16 ***
+1   1518 2813.8                                  
+2   1517 2414.5  1    399.27 250.85 &lt; 2.2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -330,7 +324,7 @@ data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
   ggplot(aes(x=predicted, y=residual)) + geom_point() + geom_hline(yintercept=0, lty=3)
 ```
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-16-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-15-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -339,10 +333,11 @@ data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
 
 ``` r
 data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
-  ggplot(aes(x=residual)) + geom_histogram()
+  ggplot(aes(x=residual)) + geom_histogram(aes(y=after_stat(density)), bins=50) +
+  geom_function(fun=dnorm, args = list(mean=0, sd = sd(residuals(mod2))))
 ```
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-17-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-16-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -351,10 +346,10 @@ data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
 
 ``` r
 data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
-  ggplot(aes(sample=residual)) + geom_qq() + stat_qq_line()
+  ggplot(aes(sample=residual)) + geom_qq() + stat_qq_line() + xlab("Theoretical") + ylab("Sample")
 ```
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-18-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-17-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -362,7 +357,7 @@ data.frame(residual=residuals(mod2), predicted = predict(mod2)) |&gt;
 
 Moderation means that the slope of one predictor depends on the value of another predictor
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-18-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -370,7 +365,7 @@ Moderation means that the slope of one predictor depends on the value of another
 
 Moderation means that the slope of one predictor depends on the value of another predictor
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-20-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-19-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -382,11 +377,13 @@ The model with moderation is
 For a particular value of `\(X_1\)` (e.g. `\(X_1 = 3\)`), we get
 
 `$$\begin{aligned} Y_i &amp;= \beta_0 + \beta_1 \times 3 + \beta_2 \times X_{2,i} + \beta_3 \times (3 \times X_{2})_i \\
-&amp;= (\beta_0 + \beta_1 \times 3) + (\beta_2 + \beta_3 \times 3) \times X_{2,i} \end{aligned}$$`
+&amp;= (\beta_0 + \beta_1 \times 3) + (\beta_2 + \beta_3 \times 3) \times X_{2,i} \\
+&amp;= \beta_0' + \beta_2' \times X_{2,i}\end{aligned}$$`
 
 Similarly, for e.g. `\(X_2 = 5\)`, we get
 `$$\begin{aligned} Y_i &amp;= \beta_0 + \beta_1 \times X_{1,i} + \beta_2 \times 5 + \beta_3 \times (X_1 \times 5)_i \\
-&amp;= (\beta_0 + \beta_2 \times 5) + (\beta_1 + \beta_3 \times 5) \times X_{1,i} \end{aligned}$$`
+&amp;= (\beta_0 + \beta_2 \times 5) + (\beta_1 + \beta_3 \times 5) \times X_{1,i} \\
+&amp;= \beta_0'' + \beta_1'' X_{1,i} \end{aligned}$$`
 
 ---
 
@@ -394,36 +391,204 @@ Similarly, for e.g. `\(X_2 = 5\)`, we get
 
 Moderation is "symmetric" so the relation of the other predictor is moderated as well
 
-&lt;img src="lecture2_files/figure-html/unnamed-chunk-21-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-20-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Moderation
 
 
+``` r
+mod3 &lt;- lm(other_like ~ other_attr*other_sinc, data=speeddate)
+summary(mod3)
+```
+
 ```
 
 Call:
-lm(formula = other_like ~ other_attr * other_intel, data = speeddate)
+lm(formula = other_like ~ other_attr * other_sinc, data = speeddate)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--4.9241 -0.7147  0.0759  0.7249  6.3658 
+-5.3330 -0.6715  0.0524  0.7087  6.7697 
 
 Coefficients:
-                        Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)            -0.791311   0.446842  -1.771   0.0768 .  
-other_attr              0.657284   0.076975   8.539  &lt; 2e-16 ***
-other_intel             0.488173   0.059996   8.137 8.42e-16 ***
-other_attr:other_intel -0.017145   0.009832  -1.744   0.0814 .  
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           -0.669067   0.424613  -1.576   0.1153    
+other_attr             0.701791   0.072543   9.674  &lt; 2e-16 ***
+other_sinc             0.479414   0.058430   8.205 4.87e-16 ***
+other_attr:other_sinc -0.022618   0.009461  -2.391   0.0169 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1.248 on 1505 degrees of freedom
-  (53 observations deleted due to missingness)
-Multiple R-squared:  0.5354,	Adjusted R-squared:  0.5345 
-F-statistic: 578.2 on 3 and 1505 DF,  p-value: &lt; 2.2e-16
+Residual standard error: 1.26 on 1516 degrees of freedom
+  (42 observations deleted due to missingness)
+Multiple R-squared:  0.5293,	Adjusted R-squared:  0.5284 
+F-statistic: 568.3 on 3 and 1516 DF,  p-value: &lt; 2.2e-16
 ```
+
+---
+
+## Model tables with `sjPlot`
+
+
+``` r
+sjPlot::tab_model(mod3)
+```
+
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;tr&gt;
+&lt;th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; "&gt;&amp;nbsp;&lt;/th&gt;
+&lt;th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;other like&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; "&gt;Predictors&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;Estimates&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;CI&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;p&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;(Intercept)&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&amp;#45;0.67&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&amp;#45;1.50&amp;nbsp;&amp;ndash;&amp;nbsp;0.16&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;0.115&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;other attr&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;0.70&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;0.56&amp;nbsp;&amp;ndash;&amp;nbsp;0.84&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;other sinc&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;0.48&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;0.36&amp;nbsp;&amp;ndash;&amp;nbsp;0.59&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;other attr × other sinc&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&amp;#45;0.02&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&amp;#45;0.04&amp;nbsp;&amp;ndash;&amp;nbsp;-0.00&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;strong&gt;0.017&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;"&gt;Observations&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;1520&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;0.529 / 0.528&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;/table&gt;
+
+---
+
+## Model tables with `sjPlot`
+
+
+``` r
+sjPlot::tab_model(mod1, mod3, 
+                  pred.labels = c("Intercept", "Attractiveness", "Sincerity", "Attr &amp;times; Sinc"))
+```
+
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;tr&gt;
+&lt;th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; "&gt;&amp;nbsp;&lt;/th&gt;
+&lt;th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;other like&lt;/th&gt;
+&lt;th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;other like&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; "&gt;Predictors&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;Estimates&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;CI&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;p&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;Estimates&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;CI&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col7"&gt;p&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;Intercept&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;2.17&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;1.93&amp;nbsp;&amp;ndash;&amp;nbsp;2.40&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&amp;#45;0.67&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&amp;#45;1.50&amp;nbsp;&amp;ndash;&amp;nbsp;0.16&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"&gt;0.115&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;Attractiveness&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;0.64&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;0.60&amp;nbsp;&amp;ndash;&amp;nbsp;0.67&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;0.70&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;0.56&amp;nbsp;&amp;ndash;&amp;nbsp;0.84&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"&gt;&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;Sincerity&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;0.48&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;0.36&amp;nbsp;&amp;ndash;&amp;nbsp;0.59&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"&gt;&lt;strong&gt;&amp;lt;0.001&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;Attr &amp;times; Sinc&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&amp;#45;0.02&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&amp;#45;0.04&amp;nbsp;&amp;ndash;&amp;nbsp;-0.00&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"&gt;&lt;strong&gt;0.017&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;"&gt;Observations&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;1520&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;1520&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;0.449 / 0.449&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;0.529 / 0.528&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;/table&gt;
+
+---
+
+## Plotting effects with `sjPlot`
+
+
+``` r
+sjPlot::plot_model(mod3, type="est")
+```
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-24-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Plotting effects with `sjPlot`
+
+
+``` r
+sjPlot::plot_model(mod3, type="int", mdrt.values = "meansd")
+```
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-25-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Plotting effects with `sjPlot`
+
+
+``` r
+sjPlot::plot_model(mod3, type="int", mdrt.values = "meansd", show.data = TRUE, jitter = .2) +
+  labs(colour = "sincerity") + xlab("attractiveness") + ylab("liking") + theme_minimal()
+```
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-26-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -444,42 +609,47 @@ This can be obtained by **centering** the predictors:
 `$$X'_{j,i} = X_{j,i} - \overline{X}_j$$`
 After centering, `\(X'_{j,i} = 0\)` when `\(X_{j,i} = \overline{X}_j\)`
 
+--
+
+If a predictor `\(X_j\)` has an interval scale, the 0-point is effectively arbitrary, so we can rescale the values as we like!
+
 ---
 
 ## Centering
 
 
+``` r
+mod3a &lt;- lm(other_like ~ center(other_attr)*center(other_sinc), data=speeddate); summary(mod3a)
+```
+
 ```
 
 Call:
-lm(formula = other_like ~ center(other_attr) * center(other_intel), 
+lm(formula = other_like ~ center(other_attr) * center(other_sinc), 
     data = speeddate)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--4.9241 -0.7147  0.0759  0.7249  6.3658 
+-5.3330 -0.6715  0.0524  0.7087  6.7697 
 
 Coefficients:
-                                        Estimate Std. Error t value Pr(&gt;|t|)
-(Intercept)                             6.213392   0.033692 184.417   &lt;2e-16
-center(other_attr)                      0.528357   0.017922  29.480   &lt;2e-16
-center(other_intel)                     0.379998   0.024180  15.715   &lt;2e-16
-center(other_attr):center(other_intel) -0.017145   0.009832  -1.744   0.0814
-                                          
-(Intercept)                            ***
-center(other_attr)                     ***
-center(other_intel)                    ***
-center(other_attr):center(other_intel) .  
+                                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                            6.217654   0.033965 183.059   &lt;2e-16 ***
+center(other_attr)                     0.536629   0.018052  29.727   &lt;2e-16 ***
+center(other_sinc)                     0.336708   0.022766  14.790   &lt;2e-16 ***
+center(other_attr):center(other_sinc) -0.022618   0.009461  -2.391   0.0169 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1.248 on 1505 degrees of freedom
-  (53 observations deleted due to missingness)
-Multiple R-squared:  0.5354,	Adjusted R-squared:  0.5345 
-F-statistic: 578.2 on 3 and 1505 DF,  p-value: &lt; 2.2e-16
+Residual standard error: 1.26 on 1516 degrees of freedom
+  (42 observations deleted due to missingness)
+Multiple R-squared:  0.5293,	Adjusted R-squared:  0.5284 
+F-statistic: 568.3 on 3 and 1516 DF,  p-value: &lt; 2.2e-16
 ```
 
 ---
+
+## Centering
 
 As a whole, centering does not affect predictive quality of models
 
@@ -490,14 +660,18 @@ anova(mod3, mod3a)
 ```
 Analysis of Variance Table
 
-Model 1: other_like ~ other_attr * other_intel
-Model 2: other_like ~ center(other_attr) * center(other_intel)
-  Res.Df    RSS Df   Sum of Sq F Pr(&gt;F)
-1   1505 2345.9                        
-2   1505 2345.9  0 -4.5475e-12         
+Model 1: other_like ~ other_attr * other_sinc
+Model 2: other_like ~ center(other_attr) * center(other_sinc)
+  Res.Df    RSS Df  Sum of Sq F Pr(&gt;F)
+1   1516 2405.5                       
+2   1516 2405.5  0 4.5475e-13         
 ```
 
-Model comparison can be used to test multiple parameters simultaneously:
+---
+
+## Omnibus tests
+
+Model comparison can be used to test multiple parameters simultaneously. For example, in the model `$$\mathtt{like}_i = \beta_0 + \beta_\mathtt{attr} \mathtt{attr}_i + \beta_\mathtt{intel} \mathtt{intel}_i + \beta_{\mathtt{attr} \times \mathtt{intel}} (\mathtt{attr} \times \mathtt{intel})_i + \epsilon_i$$` the hypothesis `\(H_0: \beta_\mathtt{intel} = \beta_{\mathtt{attr} \times \mathtt{intel}} = 0\)`:
 
 
 ``` r
@@ -508,10 +682,10 @@ anova(mod1, mod3)
 Analysis of Variance Table
 
 Model 1: other_like ~ other_attr
-Model 2: other_like ~ other_attr * other_intel
-  Res.Df    RSS Df Sum of Sq     F    Pr(&gt;F)    
-1   1507 2793.9                                 
-2   1505 2345.9  2    447.99 143.7 &lt; 2.2e-16 ***
+Model 2: other_like ~ other_attr * other_sinc
+  Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+1   1518 2813.8                                  
+2   1516 2405.5  2    408.34 128.67 &lt; 2.2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -523,6 +697,272 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 * Nonlinear relations can be captured in the linear model by **polynomial regression**, e.g. `$$Y_i = \beta_0 + \beta_1 \times X_{i} + \beta_2 \times (X^2)_i + \beta_3 \times (X^3)_i + \ldots$$`
 * Correlation between predictors, called **multicollinearity**, may lead to issues in hypothesis testing.
 * **Outliers** may strongly bias the results!
+
+---
+
+## Multicollinearity
+
+
+``` r
+summary(lm(other_attr ~ other_sinc + other_attr:other_sinc, data=speeddate))
+```
+
+```
+
+Call:
+lm(formula = other_attr ~ other_sinc + other_attr:other_sinc, 
+    data = speeddate)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.8595 -0.1093  0.0602  0.1962  1.8044 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            5.4290445  0.0561187   96.74   &lt;2e-16 ***
+other_sinc            -0.6959181  0.0103898  -66.98   &lt;2e-16 ***
+other_attr:other_sinc  0.1263954  0.0008261  153.00   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4438 on 1534 degrees of freedom
+  (25 observations deleted due to missingness)
+Multiple R-squared:  0.9467,	Adjusted R-squared:  0.9466 
+F-statistic: 1.362e+04 on 2 and 1534 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+## Multicollinearity
+
+
+``` r
+# pairwise correlation
+cor(dat$other_attr, dat$other_sinc)
+```
+
+```
+[1] 0.3648816
+```
+
+``` r
+# R-squared (including interaction)
+summary(lm(other_attr ~ other_sinc + other_attr:other_sinc, data=speeddate))$r.squared
+```
+
+```
+[1] 0.9467035
+```
+
+``` r
+# Tolerance
+1/car::vif(mod3)
+```
+
+```
+           other_attr            other_sinc other_attr:other_sinc 
+           0.05344725            0.12366144            0.02981455 
+```
+
+``` r
+# Variance inflation factor
+car::vif(mod3)
+```
+
+```
+           other_attr            other_sinc other_attr:other_sinc 
+            18.710037              8.086595             33.540668 
+```
+
+---
+
+## Multicollinearity
+
+
+``` r
+# pairwise correlation
+cor(dat$other_attr, dat$other_sinc)
+```
+
+```
+[1] 0.3648816
+```
+
+``` r
+# R-squared (including interaction)
+summary(lm(other_sinc ~ other_attr + other_attr:other_sinc, data=speeddate))$r.squared
+```
+
+```
+[1] 0.8769861
+```
+
+``` r
+# Tolerance
+1/car::vif(mod3)
+```
+
+```
+           other_attr            other_sinc other_attr:other_sinc 
+           0.05344725            0.12366144            0.02981455 
+```
+
+``` r
+# Variance inflation factor
+car::vif(mod3)
+```
+
+```
+           other_attr            other_sinc other_attr:other_sinc 
+            18.710037              8.086595             33.540668 
+```
+
+---
+
+## Multicollinearity (after centering)
+
+
+``` r
+# pairwise correlation with interaction (uncentered vs uncentered)
+c(cor(dat$other_attr, dat$other_sinc*dat$other_attr), cor(center(dat$other_attr), center(dat$other_sinc)*center(dat$other_attr)))
+```
+
+```
+[1]  0.8893825 -0.0290930
+```
+
+``` r
+# R-squared
+summary(lm(center(other_sinc) ~ center(other_attr) + center(other_attr):center(other_sinc), data=speeddate))$r.squared
+```
+
+```
+[1] 0.1850282
+```
+
+``` r
+# Tolerance
+1/car::vif(mod3a)
+```
+
+```
+                   center(other_attr)                    center(other_sinc) 
+                            0.8631271                             0.8145731 
+center(other_attr):center(other_sinc) 
+                            0.9389569 
+```
+
+---
+
+## Multicollinearity and centering
+
+Before centering
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-34-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Multicollinearity and centering
+
+After centering
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-35-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Multicollinearity and centering
+
+* In a *moderated regression model* (a model with interactions), the product predictor(s) (`\(X_j \times X_k\)`) will introduce apparent multicollinearity.
+* Whilst this can be reduced by centering predictors, the overall predictive quality of the model (e.g. `\(R^2\)`) remains the same.
+* Product predictors are artificial variables that allow estimation of moderation. Multicollinearity with their constituent parts (the original predictors) is not really an issue to worry about.
+* When considering multicollinearity, focus on the original (measured) variables, not artificial predictors.
+
+---
+
+## Polynomial regression
+
+Nonlinear relations between a predictor and dependent variable can be incorporated in a *linear* model by including powers of the predictor. E.g.
+`$$\mathtt{like}_i = \beta_0 + \beta_1 \mathtt{intel}_i + \beta_2 (\mathtt{intel}^2)_i + \epsilon_i$$`
+
+---
+
+## Polynomial regression
+
+Nonlinear relations between a predictor and dependent variable can be incorporated in a *linear* model by including powers of the predictor. E.g.
+`$$\mathtt{like}_i = \beta_0 + \beta_1 \mathtt{intel}_i + \beta_2 (\mathtt{intel}^2)_i + \epsilon_i$$`
+
+
+```
+
+Call:
+lm(formula = other_attr ~ other_intel + I(other_intel^2), data = speeddate)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.6336 -1.1294  0.0596  1.3664  4.6798 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      -0.05970    0.71465  -0.084    0.933    
+other_intel       1.30768    0.20016   6.533 8.75e-11 ***
+I(other_intel^2) -0.05888    0.01383  -4.256 2.21e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.782 on 1527 degrees of freedom
+  (32 observations deleted due to missingness)
+Multiple R-squared:  0.1395,	Adjusted R-squared:  0.1384 
+F-statistic: 123.8 on 2 and 1527 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+## Polynomial regression
+
+Nonlinear relations between a predictor and dependent variable can be incorporated in a *linear* model by including powers of the predictor. E.g.
+`$$\mathtt{like}_i = \beta_0 + \beta_1 \mathtt{intel}_i + \beta_2 (\mathtt{intel}^2)_i + \epsilon_i$$`
+
+
+```
+
+Call:
+lm(formula = other_attr ~ poly(other_intel, 2, raw = TRUE), data = speeddate)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.6336 -1.1294  0.0596  1.3664  4.6798 
+
+Coefficients:
+                                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                       -0.05970    0.71465  -0.084    0.933    
+poly(other_intel, 2, raw = TRUE)1  1.30768    0.20016   6.533 8.75e-11 ***
+poly(other_intel, 2, raw = TRUE)2 -0.05888    0.01383  -4.256 2.21e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.782 on 1527 degrees of freedom
+  (32 observations deleted due to missingness)
+Multiple R-squared:  0.1395,	Adjusted R-squared:  0.1384 
+F-statistic: 123.8 on 2 and 1527 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+## Polynomial regression
+
+Nonlinear relations between a predictor and dependent variable can be incorporated in a *linear* model by including powers of the predictor. E.g.
+`$$\mathtt{like}_i = \beta_0 + \beta_1 \mathtt{intel}_i + \beta_2 (\mathtt{intel}^2)_i + \epsilon_i$$`
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-38-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Polynomial regression
+
+Nonlinear relations between a predictor and dependent variable can be incorporated in a *linear* model by including powers of the predictor. E.g.
+`$$\mathtt{like}_i = \beta_0 + \beta_1 \mathtt{intel}_i + \beta_2 (\mathtt{intel}^2)_i + \epsilon_i$$`
+
+&lt;img src="lecture2_files/figure-html/unnamed-chunk-39-1.png" alt="" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
