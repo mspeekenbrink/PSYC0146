@@ -4,7 +4,7 @@
     <title>Statistics: Data analysis and modelling</title>
     <meta charset="utf-8" />
     <meta name="author" content="Maarten Speekenbrink" />
-    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.31/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="mycss.css" type="text/css" />
   </head>
@@ -73,7 +73,7 @@ The General Linear Model has the form
 
 
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-4-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-4-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -173,7 +173,7 @@ F-statistic: 98.58 on 4 and 395 DF,  p-value: &lt; 2.2e-16
 
 ## Homogenous regression slopes
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-9-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-9-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -262,7 +262,7 @@ F-statistic: 56.22 on 7 and 392 DF,  p-value: &lt; 2.2e-16
 
 ## Non-homogeneous regresssion slopes
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-13-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-13-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -383,7 +383,7 @@ Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \m
 \beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
 \end{equation}`
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-15-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-15-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -397,7 +397,7 @@ Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \m
 \beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
 \end{equation}`
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-16-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-16-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -411,7 +411,7 @@ Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \m
 \beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
 \end{equation}`
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-17-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-17-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -425,23 +425,7 @@ Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \m
 \beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
 \end{equation}`
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-18-1.png" width="90%" style="display: block; margin: auto;" /&gt;
-
-
----
-
-## A random intercepts model
-
-`\begin{equation}
-Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \mathbf{Normal}(0,\sigma_{\epsilon})
-\end{equation}`
-
-`\begin{equation}
-\beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
-\end{equation}`
-
-
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-19-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-18-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -457,13 +441,29 @@ Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \m
 \end{equation}`
 
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-20-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-19-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## A random intercepts model
+
+`\begin{equation}
+Y_{i,j} = \beta_{0,j} + \epsilon_{i,j} \quad \quad \quad  \epsilon_{i,j} \sim \mathbf{Normal}(0,\sigma_{\epsilon})
+\end{equation}`
+
+`\begin{equation}
+\beta_{0,j} = \beta_0 + \gamma_{0,j} \quad \quad \quad \gamma_{0,j} \sim \mathbf{Normal}(0,\sigma_{\gamma_0})
+\end{equation}`
+
+
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-20-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Random intercepts and anchoring
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-21-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-21-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -623,7 +623,7 @@ Y_{i,j} &amp;= \beta_0 + \gamma_{0,j} + \epsilon_{i,j} \\
 
 ## Shrinkage and partial pooling
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-28-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-28-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -706,6 +706,17 @@ anchor1 0.051
 
 ## Do we need random intercepts?
 
+To compare any nested models estimated by maximum likelihood, we can use a general likelihood ratio test (also known as Wilks' test):
+
+`$$-2 \log (\text{likelihood-ratio}) = -2 \log p(\text{DATA}|\text{MODEL R}) - (-2 \log p(\text{DATA}|\text{MODEL G}))$$`
+
+Under `\(H_0\)` (MODEL R generated the data), and provided that MODEL R lies in the interior of the parameter space of MODEL G, as sample size `\(n \rightarrow \infty\)`:
+
+`$$-2 \log (\text{likelihood-ratio}) \sim \mathbf{Chisq}(\text{npar}(G) - \text{npar}(R))$$`
+---
+
+## Do we need random intercepts?
+
 
 ``` r
 ## estimaye model without random intercepts
@@ -718,11 +729,13 @@ logLik(modr)
 ```
 
 ``` r
+modg &lt;- afex::mixed(everest_meters ~ 1 + anchor + (1|referrer), data=dat, 
+                    REML=FALSE)
 logLik(modg$full_model)
 ```
 
 ```
-'log Lik.' -6109.433 (df=4)
+'log Lik.' -6121.806 (df=4)
 ```
 
 ---
@@ -739,7 +752,7 @@ chisq
 ```
 
 ```
-[1] 66.51199
+[1] 41.76611
 ```
 
 ``` r
@@ -747,10 +760,10 @@ chisq
 ```
 
 ```
-[1] 3.330669e-16
+[1] 1.02871e-10
 ```
 
-&lt;img src="lecture4_files/figure-html/unnamed-chunk-33-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture4_files/figure-html/unnamed-chunk-33-1.png" alt="" width="50%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
