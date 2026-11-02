@@ -4,7 +4,7 @@
     <title>Statistics: Data analysis and modelling</title>
     <meta charset="utf-8" />
     <meta name="author" content="Maarten Speekenbrink" />
-    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.31/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="mycss.css" type="text/css" />
   </head>
@@ -122,7 +122,7 @@ CC1:TV1 -0.003 -0.006  0.001  0.032
 &amp; \epsilon_{i,k} \sim \mathbf{Normal}(0,\sigma_{\epsilon}) \\
 &amp; \gamma_{0,k} \sim \mathbf{Normal}(0, \sigma_{\gamma_0}) \end{aligned}$$`
 
-&lt;img src="lecture5_files/figure-html/unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-4-1.png" alt="" width="75%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -132,7 +132,7 @@ CC1:TV1 -0.003 -0.006  0.001  0.032
 &amp; \epsilon_{i,k} \sim \mathbf{Normal}(0,\sigma_{\epsilon}) \\
 &amp; \gamma_{0,k} \sim \mathbf{Normal}(0, \sigma_{\gamma_0}) \end{aligned}$$`
 
-&lt;img src="lecture5_files/figure-html/unnamed-chunk-5-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-5-1.png" alt="" width="75%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -190,12 +190,12 @@ Scaled residuals:
 -2.6166 -0.7085 -0.0073  0.6913  3.2127 
 
 Random effects:
- Groups    Name     Variance Std.Dev. Corr             
- classroom CCCC:no  0.000000 0.00000                   
-           CCCC:yes 0.007507 0.08664    NaN            
-           TV1      0.064353 0.25368    NaN -0.15      
-           CC1:TV1  1.168657 1.08104    NaN  0.45 -0.40
- Residual           1.604411 1.26665                   
+ Groups    Name     Variance Std.Dev. Corr              
+ classroom CCCC:no  0.000000 0.00000                    
+           CCCC:yes 0.007507 0.08664    NaN             
+           TV1      0.064353 0.25368    NaN -0.15       
+           CC1:TV1  1.168657 1.08104    NaN  0.45 -0.40 
+ Residual           1.604411 1.26665                    
 Number of obs: 1600, groups:  classroom, 135
 
 Fixed effects:
@@ -241,8 +241,8 @@ unable to evaluate scaled gradient
 ```
 
 ```
-Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
-Model failed to converge: degenerate Hessian with 2 negative eigenvalues
+Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, : Model failed to converge: degenerate  Hessian with 2 negative eigenvalues
+  See ?lme4::convergence and ?lme4::troubleshooting.
 ```
 
 ```
@@ -295,6 +295,7 @@ CC1:TV1 -0.003 -0.006  0.002 -0.074
 optimizer (nloptwrap) convergence code: 0 (OK)
 unable to evaluate scaled gradient
 Model failed to converge: degenerate  Hessian with 2 negative eigenvalues
+  See ?lme4::convergence and ?lme4::troubleshooting.
 ```
 ]
 
@@ -323,8 +324,8 @@ unable to evaluate scaled gradient
 ```
 
 ```
-Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, :
-Model failed to converge: degenerate Hessian with 2 negative eigenvalues
+Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv, : Model failed to converge: degenerate  Hessian with 2 negative eigenvalues
+  See ?lme4::convergence and ?lme4::troubleshooting.
 ```
 
 ```
@@ -377,6 +378,7 @@ CCn:TVn -0.003 -0.006  0.001  0.032
 optimizer (nloptwrap) convergence code: 0 (OK)
 unable to evaluate scaled gradient
 Model failed to converge: degenerate  Hessian with 2 negative eigenvalues
+  See ?lme4::convergence and ?lme4::troubleshooting.
 ```
 ]
 
@@ -422,7 +424,7 @@ mod2n$full_model    9 5378 5426.4  -2680      5360     0  2          1
 
 
 
-&lt;img src="lecture5_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-11-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -430,7 +432,7 @@ mod2n$full_model    9 5378 5426.4  -2680      5360     0  2          1
 
 `\(n=102\)` participants were randomly matched with between 5 and 20 potential partners for a 4 minute conversation. They rated how much they liked their dating partners, as well as their attractiveness, sincerity, intelligence, fun, and ambition.
 
-&lt;img src="lecture5_files/figure-html/unnamed-chunk-12-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-12-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -535,20 +537,20 @@ Scaled residuals:
 -4.0982 -0.5296 -0.0072  0.5487  3.2685 
 
 Random effects:
- Groups   Name        Variance Std.Dev. Corr                         
- pid      (Intercept) 0.013752 0.11727                               
-          attr        0.016055 0.12671  -0.19                        
-          intel       0.028042 0.16746   0.48 -0.07                  
-          fun         0.008633 0.09291   0.04 -0.23 -0.03            
-          sinc        0.004322 0.06574  -0.62 -0.22 -0.86 -0.23      
-          amb         0.032014 0.17892  -0.07 -0.15 -0.85 -0.25  0.80
- iid      (Intercept) 0.279970 0.52912                               
-          attr        0.051010 0.22585  -0.31                        
-          intel       0.019814 0.14076  -0.28 -0.27                  
-          fun         0.024787 0.15744   0.16 -0.48 -0.03            
-          sinc        0.016506 0.12848   0.17 -0.83  0.66  0.59      
-          amb         0.001428 0.03779  -0.71 -0.35  0.35 -0.14  0.22
- Residual             0.672950 0.82034                               
+ Groups   Name        Variance Std.Dev. Corr                          
+ pid      (Intercept) 0.013752 0.11727                                
+          attr        0.016055 0.12671  -0.19                         
+          intel       0.028042 0.16746   0.48 -0.07                   
+          fun         0.008633 0.09291   0.04 -0.23 -0.03             
+          sinc        0.004322 0.06574  -0.62 -0.22 -0.86 -0.23       
+          amb         0.032014 0.17892  -0.07 -0.15 -0.85 -0.25  0.80 
+ iid      (Intercept) 0.279970 0.52912                                
+          attr        0.051010 0.22585  -0.31                         
+          intel       0.019814 0.14076  -0.28 -0.27                   
+          fun         0.024787 0.15744   0.16 -0.48 -0.03             
+          sinc        0.016506 0.12848   0.17 -0.83  0.66  0.59       
+          amb         0.001428 0.03779  -0.71 -0.35  0.35 -0.14  0.22 
+ Residual             0.672950 0.82034                                
 Number of obs: 1389, groups:  pid, 102; iid, 100
 
 Fixed effects:
@@ -602,7 +604,7 @@ boundary (singular) fit: see help('isSingular')
 
 ## (Boundary) singular fit
 
-In practice, complex linear mixed-effects models can (often) result in (almost) **singular fits**. Technically, singularity means that the covariance matrix of the random effects is of less than *full rank*. , which indicates that:
+In practice, complex linear mixed-effects models can (often) result in (almost) **singular fits**. Technically, singularity means that the covariance matrix of the random effects is of less than *full rank*, which indicates that:
 * some combinations of the elements of the random-effects vector are perfectly multicollinear
 * in models with a single random effects term, an estimated variance is (near) zero
 * in models with two random effects terms (e.g. intercept and slope), typically reflected by a perfect (+/- 1) correlation between slope and intercept
@@ -691,6 +693,115 @@ Standard deviation     0.6561 0.3228 0.17618 0.13784 7.115e-05 6.195e-22
 Proportion of Variance 0.7362 0.1782 0.05308 0.03249 0.000e+00 0.000e+00
 Cumulative Proportion  0.7362 0.9144 0.96751 1.00000 1.000e+00 1.000e+00
 ```
+
+---
+
+## Changing optimizer
+
+.scrollable[
+
+``` r
+mod_all &lt;- afex::mixed(like ~ attr*gender + intel*gender + fun*gender + 
+                     sinc*gender + amb*gender + 
+                     (1 + attr + intel + fun + sinc + amb|iid) + 
+                     (1 + attr + intel + fun + sinc + amb|pid), 
+                   data=dat,
+                   all_fit = TRUE)
+```
+
+```
+Warning: Due to missing values, reduced number of observations to 1389
+```
+
+```
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+Warning: contrasts dropped from factor iid due to missing levels
+```
+
+``` r
+summary(mod_all)
+```
+
+```
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: like ~ attr * gender + intel * gender + fun * gender + sinc *  
+    gender + amb * gender + (1 + attr + intel + fun + sinc +  
+    amb | iid) + (1 + attr + intel + fun + sinc + amb | pid)
+   Data: data
+Control: ctrl
+
+REML criterion at convergence: 3978.6
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.0982 -0.5296 -0.0072  0.5485  3.2685 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr                          
+ pid      (Intercept) 0.013748 0.11725                                
+          attr        0.016053 0.12670  -0.19                         
+          intel       0.028047 0.16747   0.48 -0.07                   
+          fun         0.008632 0.09291   0.04 -0.23 -0.03             
+          sinc        0.004320 0.06573  -0.62 -0.22 -0.86 -0.23       
+          amb         0.032015 0.17893  -0.07 -0.15 -0.85 -0.25  0.80 
+ iid      (Intercept) 0.279996 0.52915                                
+          attr        0.051009 0.22585  -0.31                         
+          intel       0.019814 0.14076  -0.28 -0.27                   
+          fun         0.024785 0.15743   0.16 -0.48 -0.03             
+          sinc        0.016508 0.12848   0.17 -0.83  0.66  0.59       
+          amb         0.001430 0.03782  -0.71 -0.35  0.35 -0.14  0.22 
+ Residual             0.672955 0.82034                                
+Number of obs: 1389, groups:  pid, 102; iid, 100
+
+Fixed effects:
+                Estimate Std. Error         df t value Pr(&gt;|t|)    
+(Intercept)     6.173362   0.065178  92.643587  94.715  &lt; 2e-16 ***
+attr            0.381684   0.034390 103.790898  11.099  &lt; 2e-16 ***
+gender1         0.043272   0.065178  92.643587   0.664 0.508400    
+intel           0.137184   0.038452 106.067049   3.568 0.000542 ***
+fun             0.337752   0.029780  78.664222  11.342  &lt; 2e-16 ***
+sinc            0.153704   0.030418  93.254983   5.053 2.16e-06 ***
+amb             0.081153   0.030859 103.659643   2.630 0.009843 ** 
+attr:gender1   -0.059534   0.034390 103.790898  -1.731 0.086399 .  
+gender1:intel  -0.009901   0.038452 106.067049  -0.257 0.797309    
+gender1:fun    -0.006989   0.029780  78.664222  -0.235 0.815073    
+gender1:sinc    0.069265   0.030418  93.254983   2.277 0.025067 *  
+gender1:amb     0.039103   0.030859 103.659643   1.267 0.207937    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) attr   gendr1 intel  fun    sinc   amb    attr:1 gndr1:n
+attr        -0.219                                                         
+gender1      0.010  0.033                                                  
+intel       -0.050 -0.112 -0.018                                           
+fun          0.036 -0.435 -0.014 -0.044                                    
+sinc         0.037 -0.334  0.041 -0.281  0.063                             
+amb         -0.084 -0.094 -0.073 -0.429 -0.192  0.091                      
+attr:gendr1  0.033  0.028 -0.219 -0.028 -0.009 -0.010  0.012               
+gender1:ntl -0.018 -0.028 -0.050  0.030  0.049 -0.012 -0.052 -0.112        
+gender1:fun -0.014 -0.009  0.036  0.049  0.000 -0.003 -0.036 -0.435 -0.044 
+gender1:snc  0.041 -0.010  0.037 -0.012 -0.003 -0.002 -0.004 -0.334 -0.281 
+gender1:amb -0.073  0.012 -0.084 -0.052 -0.036 -0.004  0.062 -0.094 -0.429 
+            gndr1:f gndr1:s
+attr                       
+gender1                    
+intel                      
+fun                        
+sinc                       
+amb                        
+attr:gendr1                
+gender1:ntl                
+gender1:fun                
+gender1:snc  0.063         
+gender1:amb -0.192   0.091 
+optimizer (bobyqa) convergence code: 0 (OK)
+boundary (singular) fit: see help('isSingular')
+```
+]
 
 ---
 
@@ -986,13 +1097,13 @@ Cumulative Proportion  0.7388 0.83078 0.90681 0.95666 1.00000
 
 ## Fixed and random slopes for sincerity
 
-&lt;img src="lecture5_files/figure-html/unnamed-chunk-18-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-18-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Fixed and random slopes for attractiveness
 
-&lt;img src="lecture5_files/figure-html/unnamed-chunk-19-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture5_files/figure-html/unnamed-chunk-19-1.png" alt="" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1091,9 +1202,10 @@ Ideally should include any sources of variability that are truly present.
 
 Scale all variables for numerical stability. Start with maximal structure. Until there are no more estimation issues:
 
-1. Remove correlations between random effects
-2. Remove higher-order interaction random effects, starting with lowest variability
-3. Remove low order random effects, starting with those with lowest variabilibty
+1. Try other optimizers
+2. Remove correlations between random effects
+3. Remove higher-order interaction random effects, starting with lowest variability
+4. Remove low order random effects, starting with those with lowest variabilibty
 
 ---
 
@@ -1133,56 +1245,57 @@ Linear mixed model fit by REML
 (p-values based on Wald z-scores) ['lmerMod']
 Formula: like ~ 1 + fun + attr + amb + intel + sinc + gender + sinc:gender +  
     attr:gender + fun:gender + intel:gender + amb:gender + (1 +  
-    attr + fun + intel | iid) + (1 + amb | pid)
+    attr + fun + intel | iid) + (1 + amb + fun | pid)
    Data: dat
 
-REML criterion at convergence: 4032.3
+REML criterion at convergence: 4028.6
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--4.0851 -0.5338  0.0068  0.5470  5.1359 
+-4.1177 -0.5344  0.0040  0.5397  5.2057 
 
 Random effects:
- Groups   Name        Variance Std.Dev. Corr             
- pid      (Intercept) 0.01586  0.1259                    
-          amb         0.01021  0.1010   0.42             
- iid      (Intercept) 0.28373  0.5327                    
-          attr        0.04552  0.2134   -0.38            
-          fun         0.02829  0.1682    0.12 -0.54      
-          intel       0.04083  0.2021   -0.15 -0.43  0.26
- Residual             0.76988  0.8774                    
+ Groups   Name        Variance Std.Dev. Corr              
+ pid      (Intercept) 0.013480 0.1161                     
+          amb         0.015446 0.1243    0.33             
+          fun         0.004914 0.0701   -0.10 -0.76       
+ iid      (Intercept) 0.286421 0.5352                     
+          attr        0.046631 0.2159   -0.37             
+          fun         0.028920 0.1701    0.11 -0.56       
+          intel       0.039569 0.1989   -0.15 -0.44  0.28 
+ Residual             0.761551 0.8727                     
 Number of obs: 1389, groups:  pid, 102; iid, 100
 
 Fixed effects:
                Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)    6.155446   0.064995  94.706  &lt; 2e-16 ***
-fun            0.332265   0.029107  11.415  &lt; 2e-16 ***
-attr           0.377353   0.031111  12.129  &lt; 2e-16 ***
-amb            0.087049   0.026142   3.330 0.000869 ***
-intel          0.131700   0.037847   3.480 0.000502 ***
-sinc           0.167774   0.025880   6.483 9.01e-11 ***
-gender1        0.029536   0.064995   0.454 0.649515    
-sinc:gender1   0.079699   0.025880   3.080 0.002073 ** 
-attr:gender1  -0.061830   0.031111  -1.987 0.046880 *  
-fun:gender1   -0.005839   0.029107  -0.201 0.841009    
-intel:gender1 -0.010017   0.037847  -0.265 0.791274    
-amb:gender1    0.044535   0.026142   1.704 0.088467 .  
+(Intercept)    6.155639   0.065057  94.619  &lt; 2e-16 ***
+fun            0.335811   0.030260  11.097  &lt; 2e-16 ***
+attr           0.378681   0.031293  12.101  &lt; 2e-16 ***
+amb            0.082404   0.027316   3.017 0.002556 ** 
+intel          0.132531   0.037601   3.525 0.000424 ***
+sinc           0.165501   0.025910   6.388 1.69e-10 ***
+gender1        0.030701   0.065057   0.472 0.636990    
+sinc:gender1   0.078963   0.025910   3.048 0.002307 ** 
+attr:gender1  -0.061175   0.031293  -1.955 0.050592 .  
+fun:gender1   -0.002477   0.030260  -0.082 0.934767    
+intel:gender1 -0.010654   0.037601  -0.283 0.776913    
+amb:gender1    0.041975   0.027316   1.537 0.124379    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Correlation of Fixed Effects:
             (Intr) fun    attr   amb    intel  sinc   gendr1 snc:g1 attr:1
-fun          0.020                                                        
-attr        -0.248 -0.500                                                 
-amb          0.039 -0.163 -0.038                                          
-intel       -0.076  0.070 -0.224 -0.228                                   
-sinc        -0.001 -0.099 -0.049 -0.045 -0.372                            
-gender1      0.006 -0.012  0.048 -0.084 -0.016  0.023                     
-sinc:gendr1  0.023 -0.003  0.000  0.015 -0.028 -0.021 -0.001              
-attr:gendr1  0.048 -0.021  0.031  0.020 -0.035  0.000 -0.248 -0.049       
-fun:gender1 -0.012  0.010 -0.021 -0.048  0.055 -0.003  0.020 -0.099 -0.500
-intel:gndr1 -0.016  0.055 -0.035 -0.062  0.036 -0.028 -0.076 -0.372 -0.224
-amb:gender1 -0.084 -0.048  0.020  0.074 -0.062  0.015  0.039 -0.045 -0.038
+fun          0.014                                                        
+attr        -0.250 -0.493                                                 
+amb          0.034 -0.248 -0.035                                          
+intel       -0.075  0.073 -0.227 -0.220                                   
+sinc         0.000 -0.094 -0.051 -0.041 -0.373                            
+gender1      0.006 -0.013  0.046 -0.077 -0.015  0.022                     
+sinc:gendr1  0.022 -0.002  0.002  0.009 -0.027 -0.019  0.000              
+attr:gendr1  0.046 -0.017  0.028  0.018 -0.036  0.002 -0.250 -0.051       
+fun:gender1 -0.013  0.009 -0.017 -0.045  0.053 -0.002  0.014 -0.094 -0.493
+intel:gndr1 -0.015  0.053 -0.036 -0.057  0.034 -0.027 -0.075 -0.373 -0.227
+amb:gender1 -0.077 -0.045  0.018  0.071 -0.057  0.009  0.034 -0.041 -0.035
             fn:gn1 intl:1
 fun                      
 attr                     
@@ -1193,8 +1306,8 @@ gender1
 sinc:gendr1              
 attr:gendr1              
 fun:gender1              
-intel:gndr1  0.070       
-amb:gender1 -0.163 -0.228
+intel:gndr1  0.073       
+amb:gender1 -0.248 -0.220
 ```
 ]
 
@@ -1216,25 +1329,26 @@ mod4 &lt;- buildmer(f,
 ```
 
 ```
-   grouping         term              block Iteration          LRT
-1      &lt;NA&gt;            1            NA NA 1         1           NA
-2      &lt;NA&gt;          fun          NA NA fun         1           NA
-3      &lt;NA&gt;         attr         NA NA attr         1           NA
-4      &lt;NA&gt;          amb          NA NA amb         1           NA
-5      &lt;NA&gt;        intel        NA NA intel         1           NA
-6      &lt;NA&gt;         sinc         NA NA sinc         1           NA
-7      &lt;NA&gt;       gender       NA NA gender         1           NA
-8      &lt;NA&gt;  sinc:gender  NA NA sinc:gender         1 2.257634e-03
-9      &lt;NA&gt;  attr:gender  NA NA attr:gender         1 4.902992e-02
-10     &lt;NA&gt;   fun:gender   NA NA fun:gender         1 8.682273e-01
-11     &lt;NA&gt; intel:gender NA NA intel:gender         1 8.004679e-01
-12     &lt;NA&gt;   amb:gender   NA NA amb:gender         1 9.180860e-02
-13      iid            1           NA iid 1         1           NA
-14      iid         attr        NA iid attr         1          NaN
-15      iid          fun         NA iid fun         1 5.901490e-06
-16      iid        intel       NA iid intel         1 6.266924e-05
-17      pid            1           NA pid 1         1           NA
-18      pid          amb         NA pid amb         1 8.262185e-03
+   grouping         term              block Iteration         LRT
+1      &lt;NA&gt;            1            NA NA 1         1          NA
+2      &lt;NA&gt;          fun          NA NA fun         1          NA
+3      &lt;NA&gt;         attr         NA NA attr         1          NA
+4      &lt;NA&gt;          amb          NA NA amb         1          NA
+5      &lt;NA&gt;        intel        NA NA intel         1          NA
+6      &lt;NA&gt;         sinc         NA NA sinc         1          NA
+7      &lt;NA&gt;       gender       NA NA gender         1          NA
+8      &lt;NA&gt;  sinc:gender  NA NA sinc:gender         1 0.002671007
+9      &lt;NA&gt;  attr:gender  NA NA attr:gender         1 0.052748878
+10     &lt;NA&gt;   fun:gender   NA NA fun:gender         1 0.960095474
+11     &lt;NA&gt; intel:gender NA NA intel:gender         1         NaN
+12     &lt;NA&gt;   amb:gender   NA NA amb:gender         1 0.128178150
+13      iid            1           NA iid 1         1          NA
+14      iid         attr        NA iid attr         1         NaN
+15      iid          fun         NA iid fun         1         NaN
+16      iid        intel       NA iid intel         1         NaN
+17      pid            1           NA pid 1         1          NA
+18      pid          amb         NA pid amb         1 0.005758730
+19      pid          fun         NA pid fun         1 0.227478987
 ```
 
 ```
@@ -1246,16 +1360,17 @@ mod4 &lt;- buildmer(f,
 5      &lt;NA&gt;        intel        NA NA intel         2           NA
 6      &lt;NA&gt;         sinc         NA NA sinc         2           NA
 7      &lt;NA&gt;       gender       NA NA gender         2           NA
-8      &lt;NA&gt;  sinc:gender  NA NA sinc:gender         2 2.270120e-03
+8      &lt;NA&gt;  sinc:gender  NA NA sinc:gender         2 2.583736e-03
 9      &lt;NA&gt;  attr:gender  NA NA attr:gender         2          NaN
-11     &lt;NA&gt; intel:gender NA NA intel:gender         2 8.069275e-01
-12     &lt;NA&gt;   amb:gender   NA NA amb:gender         2 9.260483e-02
+11     &lt;NA&gt; intel:gender NA NA intel:gender         2 7.894312e-01
+12     &lt;NA&gt;   amb:gender   NA NA amb:gender         2 1.189367e-01
 13      iid            1           NA iid 1         2           NA
-14      iid         attr        NA iid attr         2          NaN
-15      iid          fun         NA iid fun         2 7.464892e-06
-16      iid        intel       NA iid intel         2 6.231033e-05
+14      iid         attr        NA iid attr         2 2.371996e-12
+15      iid          fun         NA iid fun         2 1.438808e-05
+16      iid        intel       NA iid intel         2 1.058368e-04
 17      pid            1           NA pid 1         2           NA
-18      pid          amb         NA pid amb         2 8.405190e-03
+18      pid          amb         NA pid amb         2          NaN
+19      pid          fun         NA pid fun         2 2.322053e-01
 ```
 
 ```
@@ -1267,15 +1382,16 @@ mod4 &lt;- buildmer(f,
 5      &lt;NA&gt;       intel       NA NA intel         3           NA
 6      &lt;NA&gt;        sinc        NA NA sinc         3           NA
 7      &lt;NA&gt;      gender      NA NA gender         3           NA
-8      &lt;NA&gt; sinc:gender NA NA sinc:gender         3 1.431603e-03
-9      &lt;NA&gt; attr:gender NA NA attr:gender         3 1.218491e-02
-12     &lt;NA&gt;  amb:gender  NA NA amb:gender         3 9.496922e-02
+8      &lt;NA&gt; sinc:gender NA NA sinc:gender         3 1.701039e-03
+9      &lt;NA&gt; attr:gender NA NA attr:gender         3          NaN
+12     &lt;NA&gt;  amb:gender  NA NA amb:gender         3          NaN
 13      iid           1          NA iid 1         3           NA
 14      iid        attr       NA iid attr         3          NaN
-15      iid         fun        NA iid fun         3 7.396870e-06
-16      iid       intel      NA iid intel         3 7.588048e-05
+15      iid         fun        NA iid fun         3 1.437751e-05
+16      iid       intel      NA iid intel         3 1.299804e-04
 17      pid           1          NA pid 1         3           NA
-18      pid         amb        NA pid amb         3          NaN
+18      pid         amb        NA pid amb         3 5.959868e-03
+19      pid         fun        NA pid fun         3 2.320396e-01
 ```
 
 ```
@@ -1283,16 +1399,38 @@ mod4 &lt;- buildmer(f,
 1      &lt;NA&gt;           1           NA NA 1         4           NA
 2      &lt;NA&gt;         fun         NA NA fun         4           NA
 3      &lt;NA&gt;        attr        NA NA attr         4           NA
-4      &lt;NA&gt;         amb         NA NA amb         4 1.206132e-17
+4      &lt;NA&gt;         amb         NA NA amb         4           NA
 5      &lt;NA&gt;       intel       NA NA intel         4           NA
 6      &lt;NA&gt;        sinc        NA NA sinc         4           NA
 7      &lt;NA&gt;      gender      NA NA gender         4           NA
-8      &lt;NA&gt; sinc:gender NA NA sinc:gender         4 1.343040e-04
-9      &lt;NA&gt; attr:gender NA NA attr:gender         4 2.007941e-02
+8      &lt;NA&gt; sinc:gender NA NA sinc:gender         4 1.431603e-03
+9      &lt;NA&gt; attr:gender NA NA attr:gender         4 1.218491e-02
+12     &lt;NA&gt;  amb:gender  NA NA amb:gender         4 9.496922e-02
 13      iid           1          NA iid 1         4           NA
-14      iid        attr       NA iid attr         4 6.064284e-12
-15      iid         fun        NA iid fun         4 1.806500e-05
-16      iid       intel      NA iid intel         4 3.332969e-04
+14      iid        attr       NA iid attr         4          NaN
+15      iid         fun        NA iid fun         4 7.396870e-06
+16      iid       intel      NA iid intel         4 7.588048e-05
+17      pid           1          NA pid 1         4           NA
+18      pid         amb        NA pid amb         4 8.491671e-03
+```
+
+```
+   grouping        term             block Iteration          LRT
+1      &lt;NA&gt;           1           NA NA 1         5           NA
+2      &lt;NA&gt;         fun         NA NA fun         5           NA
+3      &lt;NA&gt;        attr        NA NA attr         5           NA
+4      &lt;NA&gt;         amb         NA NA amb         5           NA
+5      &lt;NA&gt;       intel       NA NA intel         5           NA
+6      &lt;NA&gt;        sinc        NA NA sinc         5           NA
+7      &lt;NA&gt;      gender      NA NA gender         5           NA
+8      &lt;NA&gt; sinc:gender NA NA sinc:gender         5 4.848315e-04
+9      &lt;NA&gt; attr:gender NA NA attr:gender         5 2.732456e-02
+13      iid           1          NA iid 1         5           NA
+14      iid        attr       NA iid attr         5          NaN
+15      iid         fun        NA iid fun         5 9.044149e-06
+16      iid       intel      NA iid intel         5 1.009693e-04
+17      pid           1          NA pid 1         5           NA
+18      pid         amb        NA pid amb         5          NaN
 ```
 ]
 
@@ -1313,48 +1451,50 @@ summary(mod4)
 Linear mixed model fit by REML
 (p-values based on Wald z-scores) ['lmerMod']
 Formula: like ~ 1 + fun + attr + amb + intel + sinc + gender + sinc:gender +  
-    attr:gender + (1 + attr + fun + intel | iid)
+    attr:gender + (1 + attr + fun + intel | iid) + (1 + amb |      pid)
    Data: dat
 
-REML criterion at convergence: 4030.7
+REML criterion at convergence: 4019.7
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--4.3327 -0.5494  0.0074  0.5583  5.2082 
+-4.1539 -0.5328  0.0055  0.5379  5.0564 
 
 Random effects:
- Groups   Name        Variance Std.Dev. Corr             
- iid      (Intercept) 0.27891  0.5281                    
-          attr        0.04508  0.2123   -0.40            
-          fun         0.02581  0.1607    0.16 -0.57      
-          intel       0.03716  0.1928   -0.14 -0.39  0.25
- Residual             0.81955  0.9053                    
-Number of obs: 1389, groups:  iid, 100
+ Groups   Name        Variance Std.Dev. Corr              
+ pid      (Intercept) 0.01658  0.1287                     
+          amb         0.01035  0.1017   0.39              
+ iid      (Intercept) 0.27981  0.5290                     
+          attr        0.04592  0.2143   -0.37             
+          fun         0.02689  0.1640    0.12 -0.54       
+          intel       0.03928  0.1982   -0.16 -0.41  0.27 
+ Residual             0.77125  0.8782                     
+Number of obs: 1389, groups:  pid, 102; iid, 100
 
 Fixed effects:
              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   6.16604    0.06296  97.930  &lt; 2e-16 ***
-fun           0.33922    0.02825  12.009  &lt; 2e-16 ***
-attr          0.37747    0.03063  12.324  &lt; 2e-16 ***
-amb           0.07929    0.02354   3.368 0.000757 ***
-intel         0.13728    0.03702   3.709 0.000208 ***
-sinc          0.16646    0.02582   6.447 1.14e-10 ***
-gender1       0.02390    0.06312   0.379 0.704890    
-sinc:gender1  0.08990    0.02339   3.844 0.000121 ***
-attr:gender1 -0.05853    0.02498  -2.343 0.019122 *  
+(Intercept)   6.16531    0.06442  95.700  &lt; 2e-16 ***
+fun           0.33417    0.02875  11.625  &lt; 2e-16 ***
+attr          0.37632    0.03117  12.072  &lt; 2e-16 ***
+amb           0.08380    0.02605   3.217 0.001297 ** 
+intel         0.13553    0.03748   3.616 0.000299 ***
+sinc          0.16715    0.02588   6.460 1.05e-10 ***
+gender1       0.02569    0.06447   0.398 0.690268    
+sinc:gender1  0.08314    0.02362   3.519 0.000433 ***
+attr:gender1 -0.05753    0.02588  -2.223 0.026235 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Correlation of Fixed Effects:
             (Intr) fun    attr   amb    intel  sinc   gendr1 snc:g1
-fun          0.040                                                 
-attr        -0.271 -0.520                                          
-amb          0.014 -0.181 -0.045                                   
-intel       -0.075  0.065 -0.205 -0.249                            
-sinc         0.003 -0.099 -0.041 -0.045 -0.385                     
-gender1      0.005 -0.009  0.045 -0.100 -0.015  0.023              
-sinc:gendr1  0.001  0.009 -0.010 -0.002 -0.020 -0.035 -0.024       
-attr:gendr1  0.021 -0.014  0.013 -0.006 -0.011 -0.004 -0.320 -0.255
+fun          0.017                                                 
+attr        -0.247 -0.499                                          
+amb          0.041 -0.160 -0.042                                   
+intel       -0.085  0.066 -0.216 -0.224                            
+sinc        -0.001 -0.098 -0.050 -0.048 -0.374                     
+gender1      0.007 -0.007  0.046 -0.090 -0.015  0.021              
+sinc:gendr1  0.003  0.015 -0.014 -0.004 -0.020 -0.033 -0.029       
+attr:gendr1  0.029 -0.015  0.018 -0.007 -0.011 -0.006 -0.299 -0.252
 ```
 ]
 
